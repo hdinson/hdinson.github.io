@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android共享元素场景切换动画的实现 | DINSON</title><meta name="keywords" content="Android,共享元素"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 我们知道安卓5.0系统引入了共享元素，能做出非常炫酷的场景切换效果，这让人非常兴奋同时非常蛋疼，因为低版本没法使用啊，所以今天就跟大家分享一下自己写的一个库，其实只有2个文件而已，还是叫它工具比较合适吧……非常轻量级，简直是人畜无害，兼容安卓5.0以下的版本。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android共享元素场景切换动画的实现">
+<meta property="og:url" content="http://hdinson.cn/2017/04/16/17-04-16/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述 我们知道安卓5.0系统引入了共享元素，能做出非常炫酷的场景切换效果，这让人非常兴奋同时非常蛋疼，因为低版本没法使用啊，所以今天就跟大家分享一下自己写的一个库，其实只有2个文件而已，还是叫它工具比较合适吧……非常轻量级，简直是人畜无害，兼容安卓5.0以下的版本。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2017-04-16T01:41:19.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:10:11.492Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2017/04/16/17-04-16/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android共享元素场景切换动画的实现',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 19:10:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android共享元素场景切换动画的实现</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2017-04-16T01:41:19.000Z" title="undefined 2017-04-16 09:41:19">2017-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android%E5%AB%A1%E7%B3%BB/">Android嫡系</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android共享元素场景切换动画的实现"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>我们知道安卓5.0系统引入了共享元素，能做出非常炫酷的场景切换效果，这让人非常兴奋同时非常蛋疼，因为低版本没法使用啊，所以今天就跟大家分享一下自己写的一个库，其实只有2个文件而已，还是叫它工具比较合适吧……非常轻量级，简直是人畜无害，兼容安卓5.0以下的版本。</p>
+</blockquote>
+<span id="more"></span>
+<!-- 这是　　缩进-->
+<p>先看看效果：<br><img src="http://dinson-blog.hdinson.cn/FuAsXRvr0p3XH756f5X0YoVWzwid.gif" alt=""><br>效果图涉及了Activity中的元素（顶部bar）和ListView中的元素（icon和name），事实上无论哪个位置的元素都能轻松实现。</p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>使用这个工具非常简单，假设有ActivityA（简称A）和ActivityB（简称B），在A中启动B，再从B回退到A，首先需要在A和B中，各自定义id相同的两个View，这里可以是ListView的item布局中的View，只要获取到View即可，然后：</p>
+<p><strong>·A启动B：</strong><br><img src="http://dinson-blog.hdinson.cn/FsQNPZ4ay7W6EjnqWp5lM3gbMX7o.png" alt=""><br><strong>·B回退到A：</strong><br><img src="http://dinson-blog.hdinson.cn/FqJBAMpZBWsFUi_ob4YzPEOMzrjO.png" alt=""></p>
+<p>用法非常简单，当然以上只是最少参数的基本用法，除此之外可以设置的参数还有时间、加减速以及动画监听，其中动画监听可以方便在动画开始前做一些初始化操作，以及动画结束后做一些显示操作，下面就来讲一下实现的原理。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>从A启动B时，首先需要构造一个EasyTransitionOptions对象，直接通过EasyTransitionOptions.makeTransitionOptions方法进行构造，传入的参数为ActivityA以及需要共享的元素View，我们看一下EasyTransitionOptions有啥：<br><img src="http://dinson-blog.hdinson.cn/FoHI7ZVr4oe5ArnzcvyA_QoGliAj.png" alt=""><br>可以看到前两个即为构造时传入的参数，第三个attrs接下来会用到。</p>
+<p>接着我们跟往常一样，构造一个Intent对象，然后调用EasyTransition.startActivity方法，传入了该Intent以及前面构造好的options，我们看看EasyTransition.startActivity做了什么：<br><img src="http://dinson-blog.hdinson.cn/FhV13pgqrzTBaPTQa7a2qQ6S0OVn.png" alt=""><br>首先调用了options.update方法，接着又获取了options的attrs并放到intent中，看看update方法：<br><img src="http://dinson-blog.hdinson.cn/Fp6PhrgxeEOwz62IAv7qlv3hupXW.png" alt=""><br>就是这里，options使用传入的View填充了之前看到的那个ViewAttrs集合attrs，attrs存储了View的一些属性，分别为：<br><img src="http://dinson-blog.hdinson.cn/FuhInkYnHM0VHscuPaK8rJY6QqxX.png" alt=""><br>id用于获取B中的对应的View，接下来会讲到。startX和startY分别为View在A中的x、y坐标，这里通过View的getLocationOnScreen方法获取View在屏幕中的坐标，可以看到该方法的参数为int[] outLocation，以out开头的参数，意思即为执行方法后将填充该参数。width和height分别为View在A中的宽和高。</p>
+<p>接下来通过options获取Activity并调用真正的startActivity方法，然后再调用overridePendingTransition(0, 0)将系统的转场动画覆盖，0表示没有转场动画。</p>
+<p>然后进入到B，我们在B的onCreate方法中，只调用了一个方法EasyTransition.enter，看看这个方法做了什么：<br><img src="http://dinson-blog.hdinson.cn/FjU_eSsjyaj2Fhm93Fl7Zl-PLn1C.png" alt=""><br>这个方法有很多个重载，最简单的只需要传入一个Activity参数即可。参数都很简单，分别为ActivityB，动画时间，动画的差值器以及动画监听。</p>
+<p>首先通过Activity获取到Intent并拿到从A传入的ViewAttrs集合，接着执行了runEnterAnimation方法，到这里就要开始执行动画了，看看runEnterAnimation方法：<br><img src="http://dinson-blog.hdinson.cn/Fq1k7n-d1dXjqVYHGT-JZHRDk8T3.png" alt=""><br>看似挺长的，其实只做了一件事，<strong>即根据ViewAttrs集合attrs，给B中的View先设置属性，再执行一段动画。</strong></p>
+<p>首先遍历attrs，通过id找到B中对应的View；然后在ViewTreeObserver.OnPreDrawListener中设置View的属性，其中scale属性设置为A中View的宽高与B中View的宽高的比，transition属性设置为A中View的坐标相对于B中View的坐标的偏移量，之所以使用屏幕坐标就是为了准确地算出坐标的偏移量，而不受状态栏等其他因素的影响。</p>
+<p>设置完成后，再调用View.animate方法，将动画结束状态设置为View在B中的初始状态，再传入时间、动画差值器以及监听器，就这样简单地完成了转场动画。</p>
+<p>接着我们需要从B回退到A，在回退的操作中，调用了EasyTransition.exit方法，看看它做了什么：<br><img src="http://dinson-blog.hdinson.cn/FgMNcEbDy1bKlJxuezkHk_nS4xuM.png" alt=""><br>看起来跟enter方法差不多，通过Activity获取到Intent，再拿到ViewAttrs集合，是的它又派上用场了，接着执行了runExitAnimation方法，可以看到也是挺眼熟的：<br><img src="http://dinson-blog.hdinson.cn/FlQzDy1wE3dBBJ1w0qiBSyyzopdQ.png" alt=""><br>也是遍历attrs，找到B中对应id的View，只不过这次动画是从View在B中的初始状态开始，变到View在A中的状态，属性还是那些属性，没有啥其他的。不一样的是，在执行动画后需要关闭B，所以调用了View.postDelayed方法，然后finish掉当前的Activity，依旧是覆盖一下系统的转场动画overridePendingTransition(0, 0)。</p>
+<p>就这样简单的实现了共享元素炫酷的转场动画，最初纠结于如何实现比较优雅，然后开始看5.0共享元素有关的那部分源码（也只是粗略看了一下），再看了看网上一些其他人的做法，最终提炼出了这个工具，非常轻量，用起来也挺舒服的。</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=27571329&auto=1&height=66"></iframe></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2017/04/16/17-04-16/">http://hdinson.cn/2017/04/16/17-04-16/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/04/17/17-04-17/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Minimum supported Gradle version is 3.3. Current version is 2.14.1</div></div></a></div><div class="next-post pull-right"><a href="/2016/07/28/16-07-28/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">android 最全缓存目录获取方式和函数解析</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">原理</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

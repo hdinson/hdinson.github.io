@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android ConstraintLayout 使用指南 | DINSON</title><meta name="keywords" content="ConstraintLayout"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 升级Android Studio 2.3之后，IDE默认生成的Activity布局都是以ConstraintLayout做为根布局，体验了一把这个Google去年就开始力推的ConstraintLayout后，觉得非常不错，本文用于记录ConstraintLayout各个方面的使用知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android ConstraintLayout 使用指南">
+<meta property="og:url" content="http://hdinson.cn/2017/05/11/17-05-11/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述 升级Android Studio 2.3之后，IDE默认生成的Activity布局都是以ConstraintLayout做为根布局，体验了一把这个Google去年就开始力推的ConstraintLayout后，觉得非常不错，本文用于记录ConstraintLayout各个方面的使用知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2017-05-11T09:19:18.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:10:15.077Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="ConstraintLayout">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2017/05/11/17-05-11/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android ConstraintLayout 使用指南',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 19:10:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android ConstraintLayout 使用指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2017-05-11T09:19:18.000Z" title="undefined 2017-05-11 17:19:18">2017-05-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android%E5%AB%A1%E7%B3%BB/">Android嫡系</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android ConstraintLayout 使用指南"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>升级Android Studio 2.3之后，IDE默认生成的Activity布局都是以ConstraintLayout做为根布局，体验了一把这个Google去年就开始力推的ConstraintLayout后，觉得非常不错，本文用于记录ConstraintLayout各个方面的使用知识。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="平台支持"><a href="#平台支持" class="headerlink" title="平台支持"></a>平台支持</h2><ul>
+<li>ConstraintLayout最低兼容Android 2.3；</li>
+<li>目前Android Studio 2.3默认使用ConstraintLayout作为布局文件的根布局；</li>
+<li>想要使用ConstraintLayout，需在项目的build.gradle添加com.android.support.constraint:constraint-layout：XXX版本号依赖；</li>
+</ul>
+<h2 id="基础使用"><a href="#基础使用" class="headerlink" title="基础使用"></a>基础使用</h2><p>ConstraintLayout翻译成中文也称为约束布局，在整个使用体验过程中真的是贯穿约束二字，这一节先来介绍一些基础使用，后面你就会慢慢感受到约束布局的魅力。创建完工程后打开布局文件，底部切换Design的Tab上，可以看到整个操作界面<br><img src="http://dinson-blog.hdinson.cn/Fh88OzTWuj-tCkdgHRA4cfXqVNiZ.png" alt=""> </p>
+<p>左上角的面板是放置了系统内置各种各样的控件，想要布局直接拖到到布局文件中即可（所见即所得），右边的面板是选中布局文件中的控件时期各种各样的空间属性，ConstraintLayout最大的好处在于让我们通过拖控件的形式进行布局，并且不用担心适配问题。所以，先来拖个控件试试看，将一个Button拖动到屏幕正中央，然后运行显示看看效果。<br><img src="http://dinson-blog.hdinson.cn/Fk9RCseEVhX1YMe1HgpvyfRgXSgK.gif" alt=""></p>
+<p><img src="http://dinson-blog.hdinson.cn/Fh5ZFnU_lprrxHcRDq6bRkSfn_dH.png" alt=""><br>而实际运行后却发现，这个Button还是位于屏幕左上角，说好的居中效果呢？<br>这里就要开始引入ConstraintLayout的约束概念，我们切换回去看xml的布局代码，发现了两个问题。<br>第一，布局预览时能够看到显示居中的Button，是因为控件属性设置中引用了两个tools命名空间下的属性。<br><img src="http://dinson-blog.hdinson.cn/FhfHzegfsnDjDfUcSq1myX6wS65z.png" alt=""><br>我们都知道，这两个属性只在布局编辑器的预览中有效，实际运行效果是不生效的。</p>
+<p>第二，Button标签下有红色波浪线警告，我们把鼠标移到对应位置会发现警告内容，告诉我们Button没有任何约束设置，当前效果只支持预览，实际运行后会返回到左上角去，同时提示我们应该给控件添加约束。<br><img src="http://dinson-blog.hdinson.cn/FvQG1W61UkNfFJgK2koGJ_YsIbHf.png" alt=""><br>如何增加约束？回到Design页面，对着控件上下左右四个原点拖动添加对应的约束即可<br><img src="http://dinson-blog.hdinson.cn/FuIMSr43yM-CT5v1UrwDfaY1aZld.gif" alt=""><br>成功添加约束后，即可得到正常的运行效果了。<br><img src="http://dinson-blog.hdinson.cn/FmuneIrlzFFdwgBcyb-e0BIsMnbw.png" alt=""><br>实际操作不一定要在Tab，也可以直接在Text页面拖动控件添加约束<br><img src="http://dinson-blog.hdinson.cn/FqukVcGA7UTeISA3PFnP1tz2cQku.png" alt=""><br>成功实现添加约束后，可以看到Button多了下面几个属性设置<br><img src="http://dinson-blog.hdinson.cn/Fl1j15gsnVPfVL1sZONRs5ERxYXC.png" alt=""></p>
+<p><code>app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</code> 意思是Button底部的布局约束是位于parent的底部，parent是指包裹着它的ConstraintLayout，也可以设置指定某个控件的id，其他类似的属性就不再赘述，以上四个约束联合起来便实现了Button的居中，ConstraintLayout总共有下面这些同类的属性<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintLeft_toLeftOf</span><br><span class="line">app:layout_constraintLeft_toRightOf</span><br><span class="line"></span><br><span class="line">app:layout_constraintRight_toLeftOf</span><br><span class="line">app:layout_constraintRight_toRightOf</span><br><span class="line"></span><br><span class="line">app:layout_constraintTop_toTopOf</span><br><span class="line">app:layout_constraintTop_toBottomOf</span><br><span class="line"></span><br><span class="line">app:layout_constraintBottom_toTopOf</span><br><span class="line">app:layout_constraintBottom_toBottomOf</span><br><span class="line"></span><br><span class="line">app:layout_constraintStart_toEndOf</span><br><span class="line">app:layout_constraintStart_toStartOf</span><br><span class="line"></span><br><span class="line">app:layout_constraintEnd_toStartOf</span><br><span class="line">app:layout_constraintEnd_toEndOf</span><br><span class="line"></span><br><span class="line">app:layout_constraintBaseline_toBaselineOf```</span><br><span class="line"></span><br><span class="line">你会发现ConstraintLayout非常灵活的把RelativeLayout的活给干了，关于left、right、top、bottom、start、end、baseline的基准可以参照下图</span><br><span class="line">![](http://dinson-blog.hdinson.cn/FsKl7bMhdTD8qXyQDnFAi-4Kxfjo.png)</span><br><span class="line">如果我想加多一个Button2并且将其放置到原先居中Button的右方并且与其底部对齐，只需如下操作即可</span><br><span class="line">![](http://dinson-blog.hdinson.cn/FqliwdR_M5jojMB502KyRRSJIzjp.gif)</span><br><span class="line">并且你也可以发现，Button2依赖与Button后会随着Button的移动而跟着发生相对移动，目的是了保证我设置的依赖，时刻保持Button2就在Button的右边，并且底部对齐。你也可以看到布局文件中也为Button2添加了如下两个属性</span><br><span class="line">![](http://dinson-blog.hdinson.cn/FudjacpmywOSX8_e4celVfQh76Sw.png)</span><br><span class="line">如果你已经理解上面提到的属性含义，这里应该不会有疑惑。</span><br><span class="line"></span><br><span class="line">介绍完上下左右的依赖设置后，下面介绍一些Margin属性，除了Android常见的各种android:layout_marginXXX外，ConstraintLayout自行添加了如下属性</span><br></pre></td></tr></table></figure><br>app:layout_goneMarginBottom<br>app:layout_goneMarginEnd<br>app:layout_goneMarginLeft<br>app:layout_goneMarginRight<br>app:layout_goneMarginStart<br>app:layout_goneMarginTop```</p>
+<p>这些设置生效于当依赖的约束对象被设置visibility为gone时。</p>
+<pre><code>app:layout_constraintVertical_bias
+app:layout_constraintHorizontal_bias
+</code></pre><p>当为目标控件设置好横纵向的约束时（app:layout_constraintLeft_toLeftOf=”parent”、app:layout_constraintRight_toRightOf=”parent”或者app:layout_constraintTop_toTopOf=”parent”、app:layout_constraintBottom_toBottomOf=”parent”），这个两个属性才会生效。实际操作过程中，你会发现对着设置好横纵向约束的Button进行拖动，布局中的layout_constraintHorizontal_bias和layout_constraintVertical_bias会一直发生相应的变化，如果你需要Button居中，那么直接将这两个属性的参数值设置为0.5即可。<br><img src="http://dinson-blog.hdinson.cn/Fj8JMcH1IR1cbDpfn7TnzupsmW2Y.gif" alt=""></p>
+<h2 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h2><blockquote>
+<p>这里先补充一个关于ConstraintLayout的知识点，与其他Layout不同之处在于，它的layout_width和layout_height不支持设置match_parent，其属性取值只有以下三种情况：</p>
+<ul>
+<li>wrap_content；</li>
+<li>指定具体dp值；</li>
+<li>0dp（match_constraint），代表填充约束之意，注意不要以为和match_parent是一样的；</li>
+</ul>
+</blockquote>
+<p>想想如果没有ConstraintLayout，我们要让一个控件的宽高按某个比例进行布局应该怎么做？有了ConstraintLayout后，我们可以使用layout_constraintDimentionRatio属性设置宽高比例，前提是目标控件的layout_width和layout_height至少有一个设置为0dp，如下让一个ImageView宽高按照2:1的比例显示</p>
+<p><img src="http://dinson-blog.hdinson.cn/Fsf4Y9m69YwE5HujvsEGNIr-HBNH.png" alt=""><br>layout_constraintDimentionRatio默认参数比例是指宽：高，变成高:宽可以设app:layout_constraintDimensionRatio=”H,2:1”。</p>
+<p>ConstraintLayout的链条（Chains）特性非常强大，在没有ConstraintLayout之前，线性布局我们主要都依靠LinearLayout来完成，有了ConstraintLayout之后，它把LinearLayout的活也干了，例如要把按钮水平排成一行，可以这样操作<br><img src="http://dinson-blog.hdinson.cn/FqYICFlgWhQmP9vk-xHU8hPF0i33.gif" alt=""><br>这样ButtonA、B、C就在水平方向形成了一条Chain，并且底部对齐。回去看xml文件，会见到ButtonA新增app:layout_constraintHorizontal_chainStyle的属性设置，这个属性在一条Chain中只会出现在第一个控件中，这个控件是整条Chain的Head。<br><img src="http://dinson-blog.hdinson.cn/FtGPVrfIVjFmGFRNWHqzxnoLXTbl.png" alt=""><br>除了水平方向的layout_constraintHorizontal_chainStyle外还有垂直方向的layout_constraintVertical_chainStyle，两者均有spread,spread_inside,packed这三种取值，如果将控件的layout_width和layout_height设置成为0dp，还可以配合layout_constraintHorizontal_weight、layout_constraintVertical_weight两个属性实现和LinearLayout中设置layout_weight相同的效果，具体的操作这里就不再展示了，下面一张图告诉你Chain的强大之处。<br><img src="http://dinson-blog.hdinson.cn/FnHoSNDHIKaTMcmeAQLkqovC0ZDs.png" alt=""><br>关于Chain的就介绍到此，进阶的最后一部分再介绍一下Guideline功能，如果我们需要对着屏幕的中轴线进行布局，就可以使用到Guideline进行操作，例如下面两个Button分别分布在中轴线的左右两侧<br><img src="http://dinson-blog.hdinson.cn/FpwkfWafTRKbMMwnblVjXogv9uiW.gif" alt=""><br>从操作上我们可以看到Guideline也分为垂直和水平两种，并且支持设置在屏幕中所处的位置，可以使用layout_constraintGuide_begin和layout_constraintGuide_end设置具体dp值，也可以使用layout_constraintGuide_percent来设置比例。实际上它也只是一个辅助我们布局的View而已，其源码内部实现也非常简单，并且默认设置了visibility为gone，关于ConstraintLayout的进阶使用便介绍到这里。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>ConstraintLayout的使用优势</p>
+<ul>
+<li>高效布局，Android这么多年以来真正意义上的实现了所见即所得的拖曳方式布局，极大的提高开发效率；</li>
+<li>轻松灵活的实现复杂的布局；</li>
+<li>解决多重布局嵌套问题，通过前面介绍你会发现ConstraintLayout真的是非常灵活，可以很大程度的避免Layout之间的嵌套；</li>
+<li>满足屏幕适配的需求，想想没有ConstraintLayout之前的拖曳式布局，你就知道有多恶心；</li>
+</ul>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=33410478&auto=1&height=66"></iframe>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2017/05/11/17-05-11/">http://hdinson.cn/2017/05/11/17-05-11/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ConstraintLayout/">ConstraintLayout</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/05/13/17-05-12/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Android录屏与截图功能(5.0以上有效)</div></div></a></div><div class="next-post pull-right"><a href="/2017/05/10/17-05-10/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Android全屏／沉浸式状态栏下，各种键盘挡住输入框解决办法</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B3%E5%8F%B0%E6%94%AF%E6%8C%81"><span class="toc-number">2.</span> <span class="toc-text">平台支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">基础使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">进阶使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

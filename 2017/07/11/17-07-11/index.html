@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android进程保活 | DINSON</title><meta name="keywords" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述所谓保活即进程在后台一直运行不被杀死。统计一下目前的保活手段：  监听系统广播，如开机、充电状态、网络变化、安装卸载app、锁屏解锁、集成的推送消息等等，亲测无效，在进程被杀了之后也无法再监听到系统广播，也就不存在拉起，只能作为辅助手段，稍后会提起。 实现一个隐藏的前台服务，这个网上很多实现方法，也是我最开始使用的手段。实际上是把进程的优先级给提高了一级，锁屏时间长了还是会被杀死。 使用Lin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android进程保活">
+<meta property="og:url" content="http://hdinson.cn/2017/07/11/17-07-11/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述所谓保活即进程在后台一直运行不被杀死。统计一下目前的保活手段：  监听系统广播，如开机、充电状态、网络变化、安装卸载app、锁屏解锁、集成的推送消息等等，亲测无效，在进程被杀了之后也无法再监听到系统广播，也就不存在拉起，只能作为辅助手段，稍后会提起。 实现一个隐藏的前台服务，这个网上很多实现方法，也是我最开始使用的手段。实际上是把进程的优先级给提高了一级，锁屏时间长了还是会被杀死。 使用Lin">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2017-07-11T01:08:38.000Z">
+<meta property="article:modified_time" content="2021-09-24T13:28:46.928Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2017/07/11/17-07-11/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android进程保活',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 21:28:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android进程保活</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2017-07-11T01:08:38.000Z" title="undefined 2017-07-11 09:08:38">2017-07-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android进程保活"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>所谓保活即进程在后台一直运行不被杀死。统计一下目前的保活手段：</p>
+<ul>
+<li>监听系统广播，如开机、充电状态、网络变化、安装卸载app、锁屏解锁、集成的推送消息等等，亲测无效，在进程被杀了之后也无法再监听到系统广播，也就不存在拉起，只能作为辅助手段，稍后会提起。</li>
+<li>实现一个隐藏的前台服务，这个网上很多实现方法，也是我最开始使用的手段。实际上是把进程的优先级给提高了一级，锁屏时间长了还是会被杀死。</li>
+<li>使用Linux命令启动一个新进程进行相互保护。才疏学浅，并不太理解原理，不敢多说，详情看这篇博客。亲测无效，不敢说是大神写的不对，可能是我姿势不对。</li>
+<li>使用子进程进行相互保护，简而言之就是建两个service,一个是子进程： <strong>android:process=”:remote”</strong><br>亲测无效，这个一点点用都没有，因为进程被杀了之后子进程也同时被杀。</li>
+<li>谣传QQ曾经让自己不被杀死，曾使用过后台显示一个全透明的、只有1x1像素大小的窗口，这个很匪夷所思，像IOS5之后的后台无限播放无声音乐一样狗血。 </li>
+</ul>
+<p>以上所有出现的”被杀死”字样全部指的是进程后台状态自动被杀死，而不是指用户手用杀死，类似iphone连按两次HOME键上划杀死后台进程，这个只有一种办法保证不被杀死，就是把你应用加入到系统杀死进程的白名单。所谓跟手机厂商合作加入白名单就是指这个。这里不得不说一个很有意思的app：<code>日程管理时间管理</code>。</p>
+<p>简单说上它就是引导用户手动设置了“厂商把你的app加入白名单”这个操作，这个也被我学了过去，连带着页面一起。这只是第一步。<br>接下来如我上面所说，除了4被遗弃之外，把所有的手段都用上了，一开始并没有用5，因为我感觉已经够了。但是依然无法阻止在锁屏+后台的情况下被杀。于是我用上了最后一种手段。</p>
+<p>最后一步，我参考了360，在双击返回键后并没有<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Process.killProcess(Process.myPid());</span><br></pre></td></tr></table></figure><br>和<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.exit(0);</span><br></pre></td></tr></table></figure><br>而是<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = new Intent(Intent.ACTION_MAIN);</span><br><span class="line">intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">intent.addCategory(Intent.CATEGORY_HOME);</span><br><span class="line">getAppContext().startActivity(intent);</span><br></pre></td></tr></table></figure><br>并且在清单文件中加入了<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:excludeFromRecents=&quot;true&quot;</span><br></pre></td></tr></table></figure><br>作用是不在最近使用的列表中出现，也就是连按两次HOME键就不会出现我的app了。</p>
+<h2 id="1像素页面保活"><a href="#1像素页面保活" class="headerlink" title="1像素页面保活"></a>1像素页面保活</h2><ol>
+<li>新建一个Activity，作为1像素页面的主体，我姑且叫它HooliganActivity:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class HooliganActivity extends Activity &#123;</span><br><span class="line">    private static HooliganActivity instance;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        instance = this;</span><br><span class="line">        Window window = getWindow();</span><br><span class="line">        window.setGravity(Gravity.LEFT | Gravity.TOP);</span><br><span class="line">        WindowManager.LayoutParams params = window.getAttributes();</span><br><span class="line">        params.x = 0;</span><br><span class="line">        params.y = 0;</span><br><span class="line">        params.height = 1;</span><br><span class="line">        params.width = 1;</span><br><span class="line">        window.setAttributes(params);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 开启保活页面</span><br><span class="line">     */</span><br><span class="line">    public static void startHooligan() &#123;</span><br><span class="line">        Intent intent = new Intent(DWApplication.getAppContext(), HooliganActivity.class);</span><br><span class="line">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">        DWApplication.getAppContext().startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onDestroy() &#123;</span><br><span class="line">        super.onDestroy();</span><br><span class="line">        instance = null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 关闭保活页面</span><br><span class="line">     */</span><br><span class="line">    public static void killHooligan() &#123;</span><br><span class="line">        if(instance != null) &#123;</span><br><span class="line">            instance.finish();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>注册清单文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity android:name=&quot;.activity.HooliganActivity&quot;</span><br><span class="line">        android:configChanges=&quot;keyboardHidden|orientation|screenSize|navigation|keyboard&quot;</span><br><span class="line">        android:excludeFromRecents=&quot;true&quot;</span><br><span class="line">        android:exported=&quot;false&quot;</span><br><span class="line">        android:finishOnTaskLaunch=&quot;false&quot;</span><br><span class="line">        android:launchMode=&quot;singleInstance&quot;</span><br><span class="line">        android:theme=&quot;@style/HooliganActivityStyle&quot;/&gt; </span><br><span class="line"></span><br><span class="line">&lt;style name=&quot;HooliganActivityStyle&quot;&gt;</span><br><span class="line">    &lt;item name=&quot;android:windowBackground&quot;&gt;@color/transparent&lt;/item&gt;</span><br><span class="line">    &lt;item name=&quot;android:windowContentOverlay&quot;&gt;@null&lt;/item&gt;</span><br><span class="line">    &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;true&lt;/item&gt;</span><br><span class="line">    &lt;item name=&quot;android:windowNoDisplay&quot;&gt;false&lt;/item&gt;</span><br><span class="line">    &lt;item name=&quot;android:windowDisablePreview&quot;&gt;true&lt;/item&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure></li>
+<li>监听锁屏和解锁通知，不能静态注册广播，只能动态注册<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IntentFilter filter = new IntentFilter();</span><br><span class="line">filter.addAction(Intent.ACTION_SCREEN_ON);</span><br><span class="line">filter.addAction(Intent.ACTION_SCREEN_OFF);</span><br><span class="line">registerReceiver(new BootCompleteReceiver(),filter);</span><br></pre></td></tr></table></figure></li>
+<li>分别在解锁和锁屏时唤醒我的HooliganActivity<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class BootCompleteReceiver extends BroadcastReceiver &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onReceive(Context context, Intent intent) &#123;</span><br><span class="line">        if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) &#123;</span><br><span class="line">            HooliganActivity. startHooligan();</span><br><span class="line">        &#125; else if(intent.getAction().equals(Intent.ACTION_SCREEN_ON))&#123;</span><br><span class="line">            HooliganActivity. killHooligan();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这样你在后台每次锁屏，实际上都会吊起一个一像素的页面，假装app在前台，拥有最高进程优先级。</p>
+<p><code>不推荐使用，太流氓了- -！。</code></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><blockquote>
+<p>技术无罪。——王欣</p>
+</blockquote>
+<p>但人有罪。</p>
+<!-- <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=songid&auto=1&height=66"></iframe> --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2017/07/11/17-07-11/">http://hdinson.cn/2017/07/11/17-07-11/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/08/07/17-08-07/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Android安全防护</div></div></a></div><div class="next-post pull-right"><a href="/2017/07/10/17-07-03/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">在百度地图上绘制运动轨迹图及相关事件处理</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E5%83%8F%E7%B4%A0%E9%A1%B5%E9%9D%A2%E4%BF%9D%E6%B4%BB"><span class="toc-number">2.</span> <span class="toc-text">1像素页面保活</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

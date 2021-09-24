@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android自动测试之Monkey工具 | DINSON</title><meta name="keywords" content="Monkey工具,自动化测试"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 Monkey是一个命令行工具，可以运行在模拟器里或实际设备中，使用安卓调试桥(adb)来运行它，向系统发送伪随机的用户事件流，实现对正在开发的应用程序进行压力测试，可以根据获取的log信息进行修复。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android自动测试之Monkey工具">
+<meta property="og:url" content="http://hdinson.cn/2016/07/20/16-07-20/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述 Monkey是一个命令行工具，可以运行在模拟器里或实际设备中，使用安卓调试桥(adb)来运行它，向系统发送伪随机的用户事件流，实现对正在开发的应用程序进行压力测试，可以根据获取的log信息进行修复。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2016-07-20T06:07:39.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:10:09.437Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Monkey工具">
+<meta property="article:tag" content="自动化测试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2016/07/20/16-07-20/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android自动测试之Monkey工具',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 19:10:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android自动测试之Monkey工具</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2016-07-20T06:07:39.000Z" title="undefined 2016-07-20 14:07:39">2016-07-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android%E5%BA%B6%E7%B3%BB/">Android庶系</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android自动测试之Monkey工具"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>Monkey是一个命令行工具，可以运行在模拟器里或实际设备中，使用安卓调试桥(adb)来运行它，向系统发送伪随机的用户事件流，实现对正在开发的应用程序进行压力测试，可以根据获取的log信息进行修复。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="Monkey的基本使用"><a href="#Monkey的基本使用" class="headerlink" title="Monkey的基本使用"></a>Monkey的基本使用</h2><blockquote>
+<ol>
+<li>连接设备：adb devices 查看设备是否连接成功</li>
+<li>adb shell 进入shell界面</li>
+<li>设备安装要运行的程序包或apk（或者通过查看data/data下的程序包)：adb安装apk：在所安装的apk路径下，使用adb install **.apk</li>
+<li>执行monkey测试命令：monkey -p your.package.name -v 500</li>
+</ol>
+</blockquote>
+<p>在不知道所安装的apk的包名的时候，采用adb命令查看包名：</p>
+<blockquote>
+<ol>
+<li>清除logcat内容，使用命令adb logcat -c</li>
+<li>启动logcat，使用命令adb logcat ActivityManager:I *:s</li>
+<li>启动要查看的程序，</li>
+<li>打开已安装的apk，查看出现的ActivityManager信息，cmp=name，此name就是打开的apk的包名。</li>
+</ol>
+</blockquote>
+<h2 id="Monkey命令使用"><a href="#Monkey命令使用" class="headerlink" title="Monkey命令使用"></a>Monkey命令使用</h2><ul>
+<li><p><strong>-help</strong><br>列出简单用法</p>
+</li>
+<li><p><strong>-v</strong><br>作用：命令行上的每一个-v都将增加反馈信息的详细级别。<br>Lv0：默认，除了启动、测试完成和最终结果外只提供较少的信息。<br>Lv1：提供了较为详细的测试信息，如逐个发送到Activity的事件信息。<br>Lv2：提供了更多的设置信息，如测试中选中或未选中的Activity信息。<br>例：adb shell monkey -v 10<br>  adb shell monkey -v -v 10<br>  adb shell monkey -v -v -v 10</p>
+</li>
+<li><p><strong>-s <seed></strong><br>伪随机数生成器的seed值。如果用相同的seed值再次运行monkey，将生成相同的事件序列。<br>例： adb shell monkey -s 12345 -v 10</p>
+</li>
+<li><p><strong>-p <allowed-package-name></strong><br>如果你指定一个或多个包，Monkey将只允许访问这些包中的Activity。如果你的应用程序需要访问这些包(如选择联系人)以外的Activity，你需要指定这些包。如果你不指定任何包，Monkey将允许系统启动所有包的Activity。指定多个包，使用多个-p，一个-p后面接一个包名。<br>例： adb shell monkey -p com.android.browser -v 10 </p>
+</li>
+<li><p><strong>-c <main-category></strong><br>如果你指定一个或多个类别，Monkey将只允许系统启动这些指定类别中列出的Activity。如果你不指定任何类别，Monkey将选择谢列类别中列出的Activity，Intent.CATEGORY_LAUNCHER和Intent.CATEGORY_MONKEY。指定多个类别使用多个-c，每个-c指定一个类别。<br>例： adb shell monkey -p com.paipai.ershou -v 10 -c </p>
+</li>
+<li><p><strong>—ignore-crashes</strong><br>通常，应用发生崩溃或异常时Monkey会停止运行。如果设置此项，Monkey将继续发送事件给系统，直到事件计数完成。</p>
+</li>
+<li><p><strong>—ignore-timeouts</strong><br>事件请求超时会影响monkey的测试。如果设置此项，Monkey将继续发送事件给系统，直到事件计数完成。</p>
+</li>
+<li><p><strong>adb shell monkey -p com.ihongqiqu -v -v -v 500 &gt; monkeytest.txt</strong><br>保存测试日志</p>
+</li>
+</ul>
+<h2 id="九个事件及百分比控制"><a href="#九个事件及百分比控制" class="headerlink" title="九个事件及百分比控制"></a>九个事件及百分比控制</h2><p><code>0</code> <strong>—pct-touch <percent></strong><br>    调整触摸事件的百分比(触摸事件是一个down-up事件，它发生在屏幕上的某单一位置)（——点击事件，涉及down、up）</p>
+<p><code>1</code> <strong>—pct-motion <percent></strong><br>    调整动作事件的百分比(动作事件由屏幕上某处的一个down事件、一系列的伪随机事件和一个up事件组成) （——注：move事件，涉及down、up、move三个事件）</p>
+<p><code>2</code> <strong>—pct-pinchzoom <percent></strong><br>    二指缩放百分比，即智能机上的放大缩小手势操作</p>
+<p><code>3</code> <strong>—pct-trackball <percent> </strong><br>    调整轨迹事件的百分比(轨迹事件由一个或几个随机的移动组成，有时还伴随有点击)—（轨迹球）</p>
+<p><code>4</code> <strong>—pct-rotation <percent></strong><br>    屏幕旋转百分比，横屏竖屏</p>
+<p><code>5</code> <strong>—pct-permission <percent></strong><br>    权限变换测试</p>
+<p><code>6</code><strong>—pct-nav <percent></strong><br>    调整“基本”导航事件的百分比(导航事件由来自方向输入设备的up/down/left/right组成)</p>
+<p><code>7</code><strong>—pct-majornav <percent> </strong><br>    调整“主要”导航事件的百分比(这些导航事件通常引发图形界面中的动作，如：5-way键盘的中间按键、回退按键、菜单按键)</p>
+<p><code>8</code><strong>—pct-syskeys <percent></strong><br>    调整“系统”按键事件的百分比(这些按键通常被保留，由系统使用，如Home、Back、Start Call、End Call及音量控制键)</p>
+<p><code>9</code><strong>—pct-appswitch <percent></strong><br>    调整启动Activity的百分比。在随机间隔里，Monkey将执行一个startActivity()调用，作为最大程度覆盖包中全部Activity的一种方法。（从一个Activity跳转到另一个Activity）</p>
+<p><code>10</code><strong>—pct-flip <percent></strong><br>    调整“键盘翻转”事件的百分比。    </p>
+<p><code>11</code><strong>—pct-anyevent <percent></strong><br>    调整其它类型事件的百分比。它包罗了所有其它类型的事件，如：按键、其它不常用的设备按钮、等等。<br>红色的数字对应下面百分比对应的数字。比如下图中0：15.0%，表示分配—pct-touch事件15%。测试100次分配15次测试down-up。</p>
+<p>如果在monkey参数中不指定上述参数，这些动作都是随机分配的，9个动作其每个动作分配的百分比之和为100%，我们可以通过添加命令选项来控制每个事件的百分比，进而可以将操作限制在一定的范围内。<br>我们先来看一下不加动作百分比控制，系统默认分配事件百分比的情况<br><img src="http://dinson-blog.hdinson.cn/FvLtGNYniHZe0Z4UzzjG9Bvsjzk6.png" alt=""></p>
+<p>再看一下指定事件，控制事件百分比之后的情况<br><img src="http://dinson-blog.hdinson.cn/FunYqkTAgsV-8KpRPmDN_qDkpX3g.png" alt=""></p>
+<h2 id="Monkey测试信息"><a href="#Monkey测试信息" class="headerlink" title="Monkey测试信息"></a>Monkey测试信息</h2><blockquote>
+<p>在Monkey测试过程中可能会出现程序崩溃(CRASH)和程序无响应的情况(ANR),要将测试的log信息获取到，从而解决bug。</p>
+</blockquote>
+<ul>
+<li><p>CRASH:即崩溃信息，程序在运行中非正常退出。 不设置忽略crashes，在测试过程中出现CRASH，会中断测试，并显示CRASH信息和seed信息<br><img src="http://dinson-blog.hdinson.cn/Fi_n0qusMRBTZCF8LzfVbOQj05Gy.png" alt=""><br>根据seed值来完成bug的复现：adb shell monkey -p com.feicuiedu.monkeytestdemo -s 1476474162566 -v 1000</p>
+</li>
+<li><p>ANR:同样在monkey测试过程中，如果出现ANR现象，会输出相应的信息，以ANR开头，获取到信息进行问题的解决，同样可以通过seed来进行复现。<br><img src="http://dinson-blog.hdinson.cn/FiBg8JdFLfnqL9U3c32bplyUzrz6.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>附：如果在手动测试过程中出现ANR，日志信息出现在手机中：</p>
+<ul>
+<li>adb shell</li>
+<li>cd /data/anr 切换到设备路径下</li>
+<li>ls 可以看到traces.txt 里面即为log信息</li>
+</ul>
+</blockquote>
+<h2 id="MonkeyScript"><a href="#MonkeyScript" class="headerlink" title="MonkeyScript"></a>MonkeyScript</h2><blockquote>
+<p>MonkeyScript是monkey的脚本语言，是一组可以被Monkey识别的命令集合，可以帮我们完成一系列的被固定的重复性操作，Monkey通过脚本来进行测试，简单快捷、不需要任何工具，只是一个记事本文件，缺点是在坐标、按键等方面没有逻辑性。</p>
+</blockquote>
+<h3 id="脚本格式"><a href="#脚本格式" class="headerlink" title="脚本格式"></a>脚本格式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">#头文件、控制monkey发送消息的参数</span><br><span class="line">type=raw events</span><br><span class="line">count=10</span><br><span class="line">speed=1.0</span><br><span class="line"></span><br><span class="line">#以下为monkey命令</span><br><span class="line">start data &gt;&gt;</span><br><span class="line">DispatchPress (KEYCODE_HOME)</span><br><span class="line">DispatchPress (KEYCODE_MENU)```</span><br><span class="line">### 常用API</span><br><span class="line">&gt; 常用API的介绍，其中keycode参考keycode列表</span><br><span class="line"></span><br><span class="line">- LaunchActivity(pkg_name, cl_name)</span><br><span class="line">	启动应用的Activity。参数：包名和启动的Activity。</span><br><span class="line"></span><br><span class="line">- Tap(x, y, tapDuration)</span><br><span class="line">	模拟一次手指单击事件。参数：x,y为控件坐标，tapDuration为点击的持续时间，此参数可省略。</span><br><span class="line"></span><br><span class="line">- DispatchPress(keyName)</span><br><span class="line">	按键。参数： keycode</span><br><span class="line"></span><br><span class="line">- RotateScreen(rotationDegree, persist)</span><br><span class="line">	旋转屏幕。 参数：rotationDegree为旋转角度， e.g. 1代表90度；persist表示旋转之后是否固定，0表示旋转后恢复，非0则表示固定不变。</span><br><span class="line"></span><br><span class="line">- DispatchFlip(true/false)</span><br><span class="line">	打开或者关闭软键盘。</span><br><span class="line"></span><br><span class="line">- LongPress()</span><br><span class="line">	长按2秒。</span><br><span class="line"></span><br><span class="line">- PressAndHold(x, y, pressDuration)</span><br><span class="line">	模拟长按事件。</span><br><span class="line"></span><br><span class="line">- DispatchString(input)</span><br><span class="line">	输入字符串。</span><br><span class="line"></span><br><span class="line">- Drag(xStart, yStart, xEnd, yEnd, stepCount)</span><br><span class="line">	用于模拟一个拖拽操作。</span><br><span class="line"></span><br><span class="line">- PinchZoom(x1Start, y1Start, x1End, y1End, x2Start, y2Start, x2End, y2End, stepCount)</span><br><span class="line">	模拟缩放手势。</span><br><span class="line"></span><br><span class="line">- UserWait(sleepTime)</span><br><span class="line">	休眠一段时间</span><br><span class="line"></span><br><span class="line">- DeviceWakeUp()</span><br><span class="line">	唤醒屏幕。</span><br><span class="line"></span><br><span class="line">- PowerLog(power_log_type, test_case_status)</span><br><span class="line">	模拟电池电量信息。</span><br><span class="line"></span><br><span class="line">- WriteLog()</span><br><span class="line">	将电池信息写入sd卡。</span><br><span class="line"></span><br><span class="line">- RunCmd(cmd)</span><br><span class="line">	运行shell命令。</span><br><span class="line"></span><br><span class="line">- DispatchPointer(downtime,eventTime,action,x,yxpressure,size,metastate,xPrecision,yPrecision,device,edgeFlags)</span><br><span class="line">	向指定位置，发送单个手势。</span><br><span class="line"></span><br><span class="line">- DispatchPointer(downtime,eventTime,action,x,yxpressure,size,metastate,xPrecision,yPrecision,device,edgeFilags)</span><br><span class="line">	发送按键消息。</span><br><span class="line"></span><br><span class="line">- LaunchInstrumentation(test_name,runner_name)</span><br><span class="line">	运行一个instrumentation测试用例。</span><br><span class="line"></span><br><span class="line">- DispatchTrackball</span><br><span class="line">	模拟发送轨迹球事件。</span><br><span class="line"></span><br><span class="line">- ProfileWait</span><br><span class="line">	等待5秒。</span><br><span class="line"></span><br><span class="line">- StartCaptureFramerate()</span><br><span class="line">	获取帧率。</span><br><span class="line"></span><br><span class="line">- EndCaptureFramerate(input)</span><br><span class="line">	结束获取帧率。</span><br><span class="line"></span><br><span class="line">&gt;API方法中控件位置(X,Y轴的坐标)的获取：使用Android提供的工具uiautomatorviewer.bat</span><br><span class="line">&gt;</span><br><span class="line">&gt;在Android SDK路径下--&gt; tools --&gt; uiautomatorviewer.bat，打开就可以展示设备/模拟器上展示的视图，展示视图结构和坐标。</span><br><span class="line"></span><br><span class="line">![](http://dinson-blog.hdinson.cn/FhYFzvVV6xPr3fV33wdz8hSNcYZm.png)</span><br><span class="line"></span><br><span class="line">### 简单示例</span><br></pre></td></tr></table></figure>
+<h1 id="头文件、控制monkey发送消息的参数"><a href="#头文件、控制monkey发送消息的参数" class="headerlink" title="头文件、控制monkey发送消息的参数"></a>头文件、控制monkey发送消息的参数</h1><p>type=raw events<br>count=10<br>speed=1.0</p>
+<h1 id="以下为脚本正文"><a href="#以下为脚本正文" class="headerlink" title="以下为脚本正文"></a>以下为脚本正文</h1><p>start data &gt;&gt;</p>
+<h1 id="1-打开浏览器"><a href="#1-打开浏览器" class="headerlink" title="1.打开浏览器"></a>1.打开浏览器</h1><p>LaunchActivity(com.android.browser,com.android.browser.BrowserActivity)<br>ProfileWait()</p>
+<h1 id="2-清空网址"><a href="#2-清空网址" class="headerlink" title="2.清空网址"></a>2.清空网址</h1><p>Tap(223,146)<br>ProfileWait()<br>DispatchPress(112)<br>ProfileWait()</p>
+<h1 id="3-输入网址"><a href="#3-输入网址" class="headerlink" title="3.输入网址"></a>3.输入网址</h1><p>DispatchString(www.baidu.com)<br>ProfileWait()</p>
+<h1 id="4-确认，载入网址"><a href="#4-确认，载入网址" class="headerlink" title="4.确认，载入网址"></a>4.确认，载入网址</h1><p>DispatchPress(KEYCODE_ENTER)<br>ProfileWait()</p>
+<h1 id="5-完成退出浏览器"><a href="#5-完成退出浏览器" class="headerlink" title="5.完成退出浏览器"></a>5.完成退出浏览器</h1><p>DispatchPress(KEYCODE_HOME)<br>ProfileWait()```</p>
+<blockquote>
+<p>1.脚本完成后将.txt 文件push到手机中</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb push name.txt path```</span><br><span class="line"></span><br><span class="line">其中name是指monkey脚本文件的名称，path是要push到手机上的路径</span><br><span class="line"></span><br><span class="line">&gt;2.运行Monkey脚本</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>monkey -f path/name.txt -v 500```</p>
+<p>path是push的路径，name是脚本文件的名称。</p>
+<h2 id="案例实践"><a href="#案例实践" class="headerlink" title="案例实践"></a>案例实践</h2><p>随机事件流对MonketTestDemo进行测试：</p>
+<blockquote>
+<ol>
+<li>adb devices 查看设备是否连接</li>
+<li>adb shell 进入shell界面</li>
+<li>monkey -p com.feicuiedu.monkeytestdemo -v 500 执行monkey命令</li>
+<li>(可选)monkey -p com.feicuiedu.monkeytestdemo -v 500 &gt; monkeytest.txt 执行monkey命令，并将monkey日志存储</li>
+</ol>
+</blockquote>
+<p>一次随机的自动化Monkey测试完成。<br>MonkeyScript对MonkeyTestDemo进行测试：</p>
+<blockquote>
+<ol>
+<li>完成monkey.txt脚本的编写，保存到某一路径下</li>
+<li>切换到monkey.txt路径下</li>
+<li>adb push monkey.txt /data/local/temp/(设备的任一路径，无确切规定)</li>
+<li>adb shell 切换到设备下</li>
+<li>cd /data/local/temp 切换到monkey.txt路径下</li>
+<li>monkey -f monkey.txt -v 10 执行monkey脚本及执行次数</li>
+</ol>
+</blockquote>
+<p>一次MonkeyScript的自动化Monkey测试完成。</p>
+<h2 id="关于Monkey测试的停止条件"><a href="#关于Monkey测试的停止条件" class="headerlink" title="关于Monkey测试的停止条件"></a>关于Monkey测试的停止条件</h2><p>Monkey Test执行过程中在下列三种情况下会自动停止：</p>
+<ol>
+<li>如果限定了Monkey运行在一个或几个特定的包上，那么它会监测试图转到其它包的操作，并对其进行阻止。</li>
+<li>如果应用程序崩溃或接收到任何失控异常，Monkey将停止并报错。</li>
+<li>如果应用程序产生了应用程序不响应(application not responding)的错误，Monkey将会停止并报错。</li>
+</ol>
+<p>通过多次并且不同设定下的Monkey测试才算它是一个稳定性足够的程序。 </p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=33162226&auto=1&height=66"></iframe>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2016/07/20/16-07-20/">http://hdinson.cn/2016/07/20/16-07-20/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Monkey%E5%B7%A5%E5%85%B7/">Monkey工具</a><a class="post-meta__tags" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">自动化测试</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2016/07/21/16-07-21/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Android keycode</div></div></a></div><div class="next-post pull-right"><a href="/2016/07/17/16-07-17/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hexo设置指南</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Monkey%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">Monkey的基本使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Monkey%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">Monkey命令使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E4%B8%AA%E4%BA%8B%E4%BB%B6%E5%8F%8A%E7%99%BE%E5%88%86%E6%AF%94%E6%8E%A7%E5%88%B6"><span class="toc-number">4.</span> <span class="toc-text">九个事件及百分比控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Monkey%E6%B5%8B%E8%AF%95%E4%BF%A1%E6%81%AF"><span class="toc-number">5.</span> <span class="toc-text">Monkey测试信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MonkeyScript"><span class="toc-number">6.</span> <span class="toc-text">MonkeyScript</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E6%A0%BC%E5%BC%8F"><span class="toc-number">6.1.</span> <span class="toc-text">脚本格式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E3%80%81%E6%8E%A7%E5%88%B6monkey%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number"></span> <span class="toc-text">头文件、控制monkey发送消息的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A5%E4%B8%8B%E4%B8%BA%E8%84%9A%E6%9C%AC%E6%AD%A3%E6%96%87"><span class="toc-number"></span> <span class="toc-text">以下为脚本正文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%89%93%E5%BC%80%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number"></span> <span class="toc-text">1.打开浏览器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%B8%85%E7%A9%BA%E7%BD%91%E5%9D%80"><span class="toc-number"></span> <span class="toc-text">2.清空网址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%BE%93%E5%85%A5%E7%BD%91%E5%9D%80"><span class="toc-number"></span> <span class="toc-text">3.输入网址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%A1%AE%E8%AE%A4%EF%BC%8C%E8%BD%BD%E5%85%A5%E7%BD%91%E5%9D%80"><span class="toc-number"></span> <span class="toc-text">4.确认，载入网址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%AE%8C%E6%88%90%E9%80%80%E5%87%BA%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number"></span> <span class="toc-text">5.完成退出浏览器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.</span> <span class="toc-text">案例实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EMonkey%E6%B5%8B%E8%AF%95%E7%9A%84%E5%81%9C%E6%AD%A2%E6%9D%A1%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">关于Monkey测试的停止条件</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

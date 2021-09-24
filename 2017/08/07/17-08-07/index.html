@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android安全防护 | DINSON</title><meta name="keywords" content="安全，安卓"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 Android开发者常常面临的一个问题就是防破解、 防二次打包。现如今,安全问题越来越重要,越来越多 的Android开发者也开始寻求安全的保护方案。首先说一下，我做的是保险行业的应用。所以有很多安全监测的东西要过。其实一般的公司，外包什么的很少管APP的安全的。即使你的应用中集成了微信支付宝的支付。也不需要你自身做什么太多的安全性的东西 今天我根据绿盟和360监测出来的报告说一下（由于国企">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android安全防护">
+<meta property="og:url" content="http://hdinson.cn/2017/08/07/17-08-07/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述 Android开发者常常面临的一个问题就是防破解、 防二次打包。现如今,安全问题越来越重要,越来越多 的Android开发者也开始寻求安全的保护方案。首先说一下，我做的是保险行业的应用。所以有很多安全监测的东西要过。其实一般的公司，外包什么的很少管APP的安全的。即使你的应用中集成了微信支付宝的支付。也不需要你自身做什么太多的安全性的东西 今天我根据绿盟和360监测出来的报告说一下（由于国企">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2017-08-07T00:40:30.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:10:30.971Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2017/08/07/17-08-07/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android安全防护',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 19:10:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android安全防护</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2017-08-07T00:40:30.000Z" title="undefined 2017-08-07 08:40:30">2017-08-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android%E5%BA%B6%E7%B3%BB/">Android庶系</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android安全防护"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>Android开发者常常面临的一个问题就是防破解、 防二次打包。现如今,安全问题越来越重要,越来越多 的Android开发者也开始寻求安全的保护方案。首先说一下，我做的是保险行业的应用。所以有很多安全监测的东西要过。其实一般的公司，外包什么的很少管APP的安全的。即使你的应用中集成了微信支付宝的支付。也不需要你自身做什么太多的安全性的东西</p>
+<p>今天我根据绿盟和360监测出来的报告说一下（由于国企，所以是花钱请绿盟和360进行监测的。有大佬要笑了，当然这个检测不是码云上面的检测，后面我也会给新手说一下码云的检测）</p>
+</blockquote>
+<span id="more"></span>
+<!-- 这是　　缩进-->
+<h2 id="这里先说一下APK加固"><a href="#这里先说一下APK加固" class="headerlink" title="这里先说一下APK加固"></a>这里先说一下APK加固</h2><ul>
+<li>防止二次打包（盗版） </li>
+<li>防止逆向分析 </li>
+<li>防止调试及注入 </li>
+<li>防止应用数据窃取 </li>
+<li>防止木马病毒 </li>
+<li>防篡改（APK篡改工具：APK改之理，AndroidKiller） </li>
+</ul>
+<p>以上的防护都可以用APP加固来实现，这里先说一下最简单的反编译，相信很多人都用过反编译工具。其实我们正常打包出来的apk就是一个压缩包，你解压缩或者反编译基本就拿到了你这个应用的源代码。反编译工具:dex2jar(ApkToolkit) jd-gui 等。我使用的是<br><img src="http://dinson-blog.hdinson.cn/FuwnOg1V9-YOBAfM4PnxT7XUnCbU.png" alt=""></p>
+<p>当你对你的应用进行加固以后，你再尝试着去反编译，我这里以360加固为例，你反编译之后的得到东西如下<br>未加固APK(未混淆):<br><img src="http://dinson-blog.hdinson.cn/FoorAsDylsfjdQ5lIbt9qmd3f_2A.jpg" alt=""></p>
+<p>加固APK:<br><img src="http://dinson-blog.hdinson.cn/FsTQ1q2K-R4b5Ydu8AcvR1vaAz41.jpg" alt=""></p>
+<p>这里大家百度肯定能看到一些什么360脱壳圣战啊什么的文章介绍，基本上是不可能实现的。不相信的朋友可以按照那些文章去试试。这里介绍一下国内的几个加固商。<br><img src="http://dinson-blog.hdinson.cn/Fid1lDGmdJh7IsSpS1zNihJSSpW3.png" alt=""></p>
+<p>当然还有其他的加固厂商，比如百度、腾讯、阿里、通付盾、网易易盾。这里大家喜欢用哪个就用哪个。腾讯和阿里虽然是IT巨头，但是毕竟有些厂商是专业做这个的。这里我就不做推荐了，有些加固自带崩溃日志，数据分析等等。使用加固后可对以上进行有效的防护。</p>
+<p><code>加固APK之后：篡改后无法正常运行、无法正常动态调试、反动态注入无法注入、反编译无法获取到原dex代码或完整的dex代码、So文件的整体加密，使用自定义链接器的技术,对SO文件进行整体的加密,完全阻止 IDA等逆向工具的静态分析。</code></p>
+<h2 id="安全检测的项目"><a href="#安全检测的项目" class="headerlink" title="安全检测的项目"></a>安全检测的项目</h2><h3 id="客户端安全测试包含"><a href="#客户端安全测试包含" class="headerlink" title="客户端安全测试包含"></a>客户端安全测试包含</h3><ul>
+<li><p>客户端程序保护<br>– 描述：判断是否能反编译为源代码，是否存在代码保护措施<br>– 测试：是否能通过用反编译工具查看源代码<br>– 建议：建议客户端进行加壳处理防止攻击者反编译客户端，同时混淆客户端代码，并且一定要对核心代码进行代码混淆。</p>
+</li>
+<li><p>安装包签名<br>– 描述：客户端安装包是否正确签名。通过签名，可以检测出安装包在签名后是否被修改过。<br>– 检测：利用二次打包工具能否成功打包运行<br>– 建议：客户端使用从属方证书进行签名后进行发布而不是使用第三方开发商的证书进行签名，以防开发商内部监管异常，证书滥用的情况出现。</p>
+</li>
+<li><p>应用完整性校验<br>– 描述：测试客户端程序安装后，在每次启动时是否对自身文件进行完整性校验。<br>– 检测：修改资源文件，二次打包能否运行<br>– 建议：建议客户端在每次开机启动时进行客户端自身的应用完整性校验，在验证逻辑中不使用MANIFEST.MF中的数据作为验证凭证，同时需验证是否有不属于该客户端版本的新文件添加，验证过程于服务器端完成。</p>
+</li>
+<li><p>组件安全<br>– 描述：测试客户端是否包含后台服务、Content Provider、第三方调用和广播等组件，Intent权限的设置是否安全。应用不同组成部分之间的机密数据传递是否安全。程序是否窃取手机用户的隐私信息。<br>– 建议：建议在开发客户端时不要暴露内部组件，如果有特殊需求也需进行权限控制，令使用这些组件时需要申请相应权限。</p>
+</li>
+<li><p>整体解决：以上客户端程序保护可通过代码混淆配合apk加固全部解决</p>
+</li>
+</ul>
+<h3 id="敏感信息安全包含"><a href="#敏感信息安全包含" class="headerlink" title="敏感信息安全包含"></a>敏感信息安全包含</h3><ul>
+<li><p>私有目录下的文件权限<br>– 描述：测试客户端私有目录下的文件权限是否设置正确，非root账户是否可以读，写，执行私有目录下的文件。<br>– 检测：<br><img src="http://dinson-blog.hdinson.cn/Fv_jpLqsxJP9o3IcOV4q07lPBGN6.png" alt=""><br>– 建议：私有目录下文件不可读写</p>
+</li>
+<li><p>SQLite数据库文件的安全性<br>– 描述：敏感信息是否明文存储<br>– 检测：检测数据库里面的重要信息，比如账号密码之类的是否明文存储<br>– 建议：重要信息进行加密存储</p>
+</li>
+<li><p>Logcat日志<br>– 描述：检测客户端对应的Logcat日志是否会打印一些用户或服务器的敏感信息。<br>– 检测：用ddms工具寻找敏感信息输出<br>– 建议：具有敏感信息的调试信息开关一定要关闭。</p>
+</li>
+<li><p>整体解决：对于安卓开发来讲，我们解决敏感信息问题就是对重要数据进行加密存储，log日志不打印敏感信息。我是真的见过账号密码保存在本地明文存储的，所以切记加密存储重要信息</p>
+</li>
+</ul>
+<h3 id="密码软键盘"><a href="#密码软键盘" class="headerlink" title="密码软键盘"></a>密码软键盘</h3><ul>
+<li><p>键盘劫持测试<br>– 描述：测试客户端程序在密码等输入框是否使用自定义软键盘。安卓应用中的输入框默认使用系统软键盘，手机安装木马后，木马可以通过替换系统软键盘，记录应用的密码。<br>– 检测：这个应该通过看就能看出来<br>– 建议：建议客户端开发自定义软键盘而不是使用系统软件盘以防止键盘劫持攻击。</p>
+</li>
+<li><p>软键盘安全性测试<br>– 描述：测试客户端是否使用随机布局的密码软键盘。<br>– 检测：还是眼睛看<br>– 建议：建议客户端对自定义软键盘进行随机化处理，同时在每次点击输入框时都进行随机初始化。</p>
+</li>
+<li><p>屏幕录像测试<br>– 描述：测试通过连续截图，是否可以捕捉到用户密码输入框的密码。<br>– 检测：通过连续截图，是否可以捕捉到用户密码输入框的密码。<br>– 建议：建议客户端针对第三方或系统截屏编写抵抗逻辑，例如屏蔽和截屏相关的函数或是当客户端处于进程栈顶层时将截屏图片用纯黑色图片对象进行覆盖。</p>
+</li>
+<li><p>整体解决：键盘劫持一般都是要自定义键盘的，而且自定义的键盘不要长的和系统键盘一样就行，每次点击输入框时都进行随机初始化倒是没必要。因为很多银行的也没有这样做，而且做起来我认为困难还是有的。以手机银行例,大多数银行采用自绘键盘代替系统键盘,防止了系统键盘监听行为,但有些开发者忽略了截屏保护，这样连续快速截屏，或者视频录制就可以获取用户的密码。下面代码是防截屏、视频录制的代码 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);// 防止屏幕截屏```</span><br><span class="line"></span><br><span class="line">### 安全策略</span><br><span class="line">- 密码复杂度 </span><br><span class="line">– 描述：测试客户端程序是否检查用户输入的密码，禁止用户设置弱口令 </span><br><span class="line">– 测试：修改设置用户名密码时，可以设置111111类似弱口令 </span><br><span class="line">– 建议：建议在服务器编写检测密码复杂度的安全策略，并将其运用到账号注册，密码修改等需要进行密码变更的场景，以防止攻击者通过弱密钥遍历账户的方式进行暴力猜解。</span><br><span class="line"></span><br><span class="line">- 账户锁定策略 </span><br><span class="line">– 描述：测试客户端是否限制登录尝试次数。防止木马使用穷举法暴力破解用户密码 </span><br><span class="line">– 测试：错误密码登录请求多次（10次以上还没有就有问题了，一般都是3次） </span><br><span class="line">– 建议：建议在服务端编写账户锁定策略的逻辑，当一天内多次输入密码错误时进行账号锁定以防止攻击者通过暴力猜解密码。</span><br><span class="line"></span><br><span class="line">- 会话安全设置 </span><br><span class="line">– 描述：测试客户端在一定时间内无操作后，是否会使会话超时并要求重新登录。超时时间设置是否合理。 </span><br><span class="line">– 检测：客户端在一定时间内无操作（20分钟足够），是否会话超时登录 </span><br><span class="line">– 建议： 建议在客户端编写会话安全设置的逻辑，当10分钟或20分钟无操作时自动退出登录状态或是关闭客户端。</span><br><span class="line"></span><br><span class="line">- 界面切换保护 </span><br><span class="line">– 描述：检查客户端程序在切换到后台或其他应用时，是否能恰当响应（如清除表单或退出会话），防止用户敏感信息泄露 </span><br><span class="line">– 检测：应用切换到后台但程序没有结束运行，再返回应用的时候是否有身份验证 ，手势密码或者登陆密码。 </span><br><span class="line">– 建议：建议客户端添加响应的逻辑，在进行进程切换操作时提示用户确认是否为本人操作。</span><br><span class="line"></span><br><span class="line">- 界面劫持保护 </span><br><span class="line">– 描述：检查客户端是否对非正常的界面切换进行检测，并对用户进行提示。 </span><br><span class="line">– 检测：界面被劫持时是否有提示 </span><br><span class="line">– 建议： 由于Activity界面劫持攻击通常是将自己的页面附着在客户端之上，因此需要进行界面切换操作，因此使用界面切换保护的安全建议可以达到一定的效果。除此之外，因为Android进程栈的工作原理，建议开发客户端时针对进程栈进行相应的保护，可禁止其他进程放置于客户端之上。</span><br><span class="line"></span><br><span class="line">- UI信息泄露 </span><br><span class="line">– 描述：检查客户端的各种功能，看是否存在敏感信息泄露问题。 </span><br><span class="line">– 检测：比如登录时，密码输入错误，APP是否会提示密码输入错误 </span><br><span class="line">– 建议：建议用户名或密码输入错误均提示“用户名或密码错误”，若客户端同时还希望保证客户使用的友好性，可以在登陆界面通过温馨提示的方式提示输入错误次数，密码安全策略等信息，以防用户多次输入密码错误导致账号锁定。</span><br><span class="line"></span><br><span class="line">- 账号登录限制 </span><br><span class="line">– 描述：测试能否在两个设备上同时登录同一个帐号。 </span><br><span class="line">– 检测：测试能否在两个设备上同时登录同一个帐号。 </span><br><span class="line">– 建议：建议在服务器进行账号登陆限制相应逻辑代码的编写，通过Session或数据库标志位的方式控制同一时间只有一个设备可以登陆某一账号。</span><br><span class="line"></span><br><span class="line">- 安全退出 </span><br><span class="line">– 描述：验证客户端在用户退出登录状态时是否会和服务器进行通信以保证退出的及时性 </span><br><span class="line">– 检测：客户端在用户退出登录时，查看session是否可用 </span><br><span class="line">建议：保证客户端和服务器同步退出，APP退出时服务器端的清除会话</span><br><span class="line"></span><br><span class="line">- 密码修改验证 </span><br><span class="line">– 描述：验证客户端在进行密码修改时的安全性 </span><br><span class="line">– 检测：是否存在原密码验证 </span><br><span class="line">– 建议：建议在修改密码时，客户端及服务器系统增添原密码输入验证身份的逻辑，以防Cookie登陆修改密码的攻击。</span><br><span class="line"></span><br><span class="line">- 私密问题验证 </span><br><span class="line">– 描述：验证客户端是否存在忘记密码时的私密问题验证 </span><br><span class="line">– 检测：类似于QQ的私密问题验证 </span><br><span class="line">– 建议：我觉得这个根据需求走，也不一定说这个就好。一个普通的APP这样搞，用户体验会很差。除非你做到了QQ那种地步</span><br><span class="line"></span><br><span class="line">- 整体解决：无，一个一个搞吧，需要和后台配合着。这里只说一下界面劫持 </span><br></pre></td></tr></table></figure>
+<p>@Override<br>protected void onPause() {<br>  // 若程序进入后台不是用户自身造成的，则需要弹出警示<br>  if (needAlarm) {<br>  // 弹出警示信息 </p>
+<pre><code>  Toast.makeText(getApplicationContext(),
+      &quot;XX的登陆界面被覆盖，请确认登陆环境是否安全&quot;, Toast.LENGTH_SHORT).show();
+</code></pre><p>  }<br>  super.onPause();<br>}```<br>就是在登录界面重写onPause方法。这个界面劫持只需要在登录界面做防护。needAlarm是定义的变量，初始化为true，然后监听home键和返回键以及你自身登录界面的其他activity的跳转。如果用户执行了监听的操作needAlarm赋值为false，说明是用户自身的操作，不是界面劫持。</p>
+</li>
+</ul>
+<h3 id="手势密码"><a href="#手势密码" class="headerlink" title="手势密码"></a>手势密码</h3><ul>
+<li><p>手势密码复杂度<br>– 描述：测试客户端手势密码复杂度，观察是否有点位数量判断逻辑<br>– 检测：这个应该没有明确的，就是自身感受吧<br>– 建议：自己定标准吧</p>
+</li>
+<li><p>手势密码修改和取消<br>– 描述：检测客户端在取消手势密码时是否会验证之前设置的手势密码，检测是否存在其他导致手势密码取消的逻辑问题<br>– 检测：检测客户端在取消手势密码时是否会验证之前设置的手势密码，检测是否存在其他导致手势密码取消的逻辑问题<br>– 建议：不应该存在其他导致手势密码取消的逻辑，客户端在取消手势密码时应验证之前设置的手势密码</p>
+</li>
+<li><p>手势密码本地信息保存<br>– 描述：检测在输入手势密码以后客户端是否会在本地记录一些相关信息，例如明文或加密过的手势密码。<br>– 检测：找到存储文件，看其是否加密<br>– 建议：应该进行加密</p>
+</li>
+<li><p>手势密码锁定策略<br>– 描述：测试客户端是否存在手势密码多次输入错误被锁定的安全策略。防止木马使用穷举法暴力破解用户密码。因为手势密码的存储容量非常小，一共只有9！=362880种不同手势，若手势密码不存在锁定策略，木马可以轻易跑出手势密码结果。手势密码在输入时通常以a[2][2]这种3*3的二维数组方式保存，在进行客户端同服务器的数据交互时通常将此二维数组中数字转化为类似手机数字键盘的b[8]这种一维形式，之后进行一系列的处理进行发送。</p>
+</li>
+<li><p>手势密码抗攻击测试<br>– 描述：验证是否可以通过插件绕过手势密码的验证页面</p>
+</li>
+<li><p>整体解决：手势密码的后面两个检测我也没有遇到过。而且现在手势密码怎么说，可能我接触的不是很多吧。有兴趣的朋友可以找相关资料研究下</p>
+</li>
+</ul>
+<h3 id="通信安全"><a href="#通信安全" class="headerlink" title="通信安全"></a>通信安全</h3><ul>
+<li><p>通信加密<br>– 描述：验证客户端和服务器之前的通信是否使用加密信道。<br>– 检测：可以利用抓包软件进行查看<br>– 建议：使用https或者是http+403端口进行通信。</p>
+</li>
+<li><p>关键数据加密和校验<br>– 描述：测试客户端程序提交数据给服务端时，密码等关键字段是否进行了加密和校验，防止恶意用户嗅探和修改用户数据包中的密码等敏感信息。<br>– 检测：抓包<br>– 建议：建议账号，密码，卡号，金额等进行加密处理，同时整个数据包进行二次加密，返回的敏感信息进行加密，同时返回数据包进行二次加密，并且使用增加随机因子的校验字段，并且确定服务器逻辑标志位正确，在删除校验字段时服务器不响应提交的数据包。</p>
+</li>
+<li><p>证书有效性验证<br>– 描述：验证客户端和服务器之间是否存在双向验证的机制，同时确认此机制是否完善，服务器是否以白名单的方式对发包者的身份进行验证<br>– 检测：抓包<br>– 建议：建议客户端和服务器进行双向认证，并且服务器通过白名单的方式验证客户端证书以保证证书的有效性。</p>
+</li>
+<li><p>访问控制<br>– 描述：测试客户端访问的URL是否仅能由手机客户端访问。是否可以绕过登录限制直接访问登录后才能访问的页面，对需要二次验证的页面（如私密问题验证），能否绕过验证。<br>– 检测：利用截包工具获取url，能用浏览器打开该url。<br>– 建议：建议服务器进行相应的访问控制，控制对应页面仅能通过手机客户端访问。同时进行页面访问控制，防止绕过登陆直接访问页面的非法访问。</p>
+</li>
+<li><p>短信重放攻击<br>– 描述：检测应用中是否存在数据包重放攻击的安全问题。是否会对客户端用户造成短信轰炸的困扰。<br>– 建议：抓包<br>– 建议：token和手机号一起，重放无法造成短信轰炸</p>
+</li>
+</ul>
+<h3 id="业务安全"><a href="#业务安全" class="headerlink" title="业务安全"></a>业务安全</h3><p>这个需要根据业务进行检测</p>
+<h3 id="模拟器安全"><a href="#模拟器安全" class="headerlink" title="模拟器安全"></a>模拟器安全</h3><p>这里我多介绍一个，一般黑客进行攻击肯定不会是用手机进行，多用模拟器进行攻击。现在的模拟器基本和手机一样。我们无法过滤所有的模拟器，但是可以过滤免费的模拟器，也就是一定程度上进行防护</p>
+<ul>
+<li>实践大多数免费的模拟器，都没有蓝牙的功能</li>
+</ul>
+<pre><code>BluetoothAdapter blueadapter = BluetoothAdapter.getDefaultAdapter();
+if ((blueadapter == null)
+    || (blueadapter.getAddress() == null &amp;&amp; blueadapter.getName() == null)) &#123;
+    MessageBox.promptDialog(&quot;请使用真实手机登陆&quot;, LoginActivity.this);
+&#125;
+</code></pre><p>当然else之后我是登录操作，但是登录前做了一些东西。这个就像消息推送一样，手机的唯一标识cid之类的绑定。这里只是给出个思路</p>
+<h3 id="短信验证"><a href="#短信验证" class="headerlink" title="短信验证"></a>短信验证</h3><p>最好是做60秒倒计时。</p>
+<h3 id="App测试安全等级划分"><a href="#App测试安全等级划分" class="headerlink" title="App测试安全等级划分"></a>App测试安全等级划分</h3><p><img src="http://dinson-blog.hdinson.cn/FsYFepMvGGPtLJ-Wee0LoeLvxR5k.png" alt=""></p>
+<h3 id="工具及相关资源"><a href="#工具及相关资源" class="headerlink" title="工具及相关资源"></a>工具及相关资源</h3><ul>
+<li><p>Apktool:  GOOGLE提供的APK编译工具，能够反编译及回编译apk。<br><a target="_blank" rel="noopener" href="https://code.google.com/p/android-apktool/">https://code.google.com/p/android-apktool/</a></p>
+</li>
+<li><p>Dex2jar:  将Android的dex文件反编译为java源码。<br><a target="_blank" rel="noopener" href="https://code.google.com/p/dex2jar/w/list">https://code.google.com/p/dex2jar/w/list</a></p>
+</li>
+<li><p>Jd-gui:  反编译代码阅读工具。<br><a target="_blank" rel="noopener" href="http://jd.benow.ca/">http://jd.benow.ca/</a></p>
+</li>
+<li><p>Portecle:  证书管理工具，可以进行证书维护。<br><a target="_blank" rel="noopener" href="http://www.oschina.net/p/portecle">http://www.oschina.net/p/portecle</a></p>
+</li>
+<li><p>SuperOneClick:  Android手机root工具<br><a target="_blank" rel="noopener" href="http://www.superoneclick.cc/">http://www.superoneclick.cc/</a></p>
+</li>
+<li><p>Proxydroid:  Android手机用代理软件。<br><a target="_blank" rel="noopener" href="https://github.com/madeye/proxydroid">https://github.com/madeye/proxydroid</a></p>
+</li>
+<li><p>MemSpector:  Android手机内存修改工具<br><a target="_blank" rel="noopener" href="http://www.nosec.org">http://www.nosec.org</a></p>
+</li>
+<li><p>BurpSuite:  HTTP数据包修改、转发工具<br><a target="_blank" rel="noopener" href="http://portswigger.net/burp/">http://portswigger.net/burp/</a></p>
+</li>
+<li><p>Fiddler:  HTTP数据包修改、转发工具<br><a target="_blank" rel="noopener" href="http://www.fiddler2.com/fiddler2/">http://www.fiddler2.com/fiddler2/</a></p>
+</li>
+<li><p>Xposed框架:  系统级框架，用于开发底层插件进行测试<br><a target="_blank" rel="noopener" href="http://repo.xposed.info/module/de.robv.android.xposed.installer">http://repo.xposed.info/module/de.robv.android.xposed.installer</a></p>
+</li>
+<li><p>SwipeBack:  Xposed插件，用于绕过登陆界面<br><a target="_blank" rel="noopener" href="http://repo.xposed.info/module/us.shandian.mod.swipeback">http://repo.xposed.info/module/us.shandian.mod.swipeback</a></p>
+</li>
+<li><p>Android Development Tools:  支持Android开发的工具<br><a target="_blank" rel="noopener" href="http://developer.android.com/tools/help/adt.html">http://developer.android.com/tools/help/adt.html</a></p>
+</li>
+</ul>
+<h2 id="代码检测"><a href="#代码检测" class="headerlink" title="代码检测"></a>代码检测</h2><ul>
+<li>eclipse 使用插件findbugs</li>
+<li>studio 使用lint</li>
+<li>至于码云，是你把代码上传上去，码云会为你检测你的代码。</li>
+</ul>
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><ul>
+<li><p>加密分为对称加密和非对称加密</p>
+</li>
+<li><p>区分对称加密和非对称加密。对称加密的加密密钥和解密密钥是相同的。非对称加密的加密密钥和解密密钥不同<br>对称加密<br>– 特点：高效，存在密钥交换问题，安全度不如RSA，但是能胜任大部分加密<br>– 明文P 加密方法E 密文E(P) 解密方法D 加密密钥K 解密密钥K’<br>DK’(EK(P)) = P K = K’<br>EK(P)：这是加密</p>
+</li>
+<li><p>对称加密是基于乘积加密的（乘积加密是结合了置换算法和转置算法，有兴趣可以了解一下）。而AES和DES都是基于乘积加密。AES加密比DES要高。但是现在也有3DES加密。</p>
+</li>
+<li><p>非对称加密<br>– 特点：安全性高，没有密钥交换问题，效率低<br>– 明文P 加密方法E 密文E(P) 解密方法D 加密密钥K 解密密钥K’<br>DK’(EK(P)) = P K ！= K’（公钥和私钥不一样，但是同时产生）</p>
+</li>
+</ul>
+<!-- <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=songid&auto=1&height=66"></iframe> --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2017/08/07/17-08-07/">http://hdinson.cn/2017/08/07/17-08-07/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/08/08/17-08-08/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Android 项目最新架构</div></div></a></div><div class="next-post pull-right"><a href="/2017/07/11/17-07-11/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Android进程保活</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E9%87%8C%E5%85%88%E8%AF%B4%E4%B8%80%E4%B8%8BAPK%E5%8A%A0%E5%9B%BA"><span class="toc-number">2.</span> <span class="toc-text">这里先说一下APK加固</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%A3%80%E6%B5%8B%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="toc-number">3.</span> <span class="toc-text">安全检测的项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E5%8C%85%E5%90%AB"><span class="toc-number">3.1.</span> <span class="toc-text">客户端安全测试包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%8C%85%E5%90%AB"><span class="toc-number">3.2.</span> <span class="toc-text">敏感信息安全包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%86%E7%A0%81%E8%BD%AF%E9%94%AE%E7%9B%98"><span class="toc-number">3.3.</span> <span class="toc-text">密码软键盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%BF%E5%AF%86%E7%A0%81"><span class="toc-number">3.4.</span> <span class="toc-text">手势密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E4%BF%A1%E5%AE%89%E5%85%A8"><span class="toc-number">3.5.</span> <span class="toc-text">通信安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8"><span class="toc-number">3.6.</span> <span class="toc-text">业务安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8%E5%AE%89%E5%85%A8"><span class="toc-number">3.7.</span> <span class="toc-text">模拟器安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%AD%E4%BF%A1%E9%AA%8C%E8%AF%81"><span class="toc-number">3.8.</span> <span class="toc-text">短信验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#App%E6%B5%8B%E8%AF%95%E5%AE%89%E5%85%A8%E7%AD%89%E7%BA%A7%E5%88%92%E5%88%86"><span class="toc-number">3.9.</span> <span class="toc-text">App测试安全等级划分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%8F%8A%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-number">3.10.</span> <span class="toc-text">工具及相关资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%A3%80%E6%B5%8B"><span class="toc-number">4.</span> <span class="toc-text">代码检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86"><span class="toc-number">5.</span> <span class="toc-text">加密</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

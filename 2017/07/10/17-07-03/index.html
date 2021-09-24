@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>在百度地图上绘制运动轨迹图及相关事件处理 | DINSON</title><meta name="keywords" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 上篇文章讲述了如何在地图显示位置点，这篇文章主要讲述如何在地图上画运动轨迹，以及地图图层点击事件的处理。  本篇将要实现的效果  跑步结束后，静态的画出整个运动轨迹 跑步过程中，时时动态的画运动轨迹很多运动类的app都有画出跑步者运动轨迹的需求，拿咕咚来说，我们看一下它的效果图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在百度地图上绘制运动轨迹图及相关事件处理">
+<meta property="og:url" content="http://hdinson.cn/2017/07/10/17-07-03/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述 上篇文章讲述了如何在地图显示位置点，这篇文章主要讲述如何在地图上画运动轨迹，以及地图图层点击事件的处理。  本篇将要实现的效果  跑步结束后，静态的画出整个运动轨迹 跑步过程中，时时动态的画运动轨迹很多运动类的app都有画出跑步者运动轨迹的需求，拿咕咚来说，我们看一下它的效果图：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2017-07-10T02:44:08.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:10:29.947Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2017/07/10/17-07-03/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '在百度地图上绘制运动轨迹图及相关事件处理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 19:10:29'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">在百度地图上绘制运动轨迹图及相关事件处理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2017-07-10T02:44:08.000Z" title="undefined 2017-07-10 10:44:08">2017-07-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="在百度地图上绘制运动轨迹图及相关事件处理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>上篇文章讲述了如何在地图显示位置点，这篇文章主要讲述如何在地图上画运动轨迹，以及地图图层点击事件的处理。</p>
+</blockquote>
+<p>本篇将要实现的效果</p>
+<ol>
+<li>跑步结束后，静态的画出整个运动轨迹</li>
+<li>跑步过程中，时时动态的画运动轨迹<br>很多运动类的app都有画出跑步者运动轨迹的需求，拿咕咚来说，我们看一下它的效果图： </li>
+</ol>
+<span id="more"></span>
+<!-- 这是　　缩进-->
+<p>如何实现：</p>
+<ol>
+<li>将点与点连成线，在百度地图MapView上画出线条图层；</li>
+<li>获取定位点List<LatLng>：通过百度定位sdk：LocationClient类获取，户外运动画运动轨迹，要求位置点的精度高，所以我们必须使用gps定位类型的位置结果。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//允许使用gps定位</span><br><span class="line">mOption.setOpenGps(true);```</span><br><span class="line"></span><br><span class="line">## 静态画整个运动轨迹</span><br><span class="line">### 画轨迹</span><br></pre></td></tr></table></figure>
+<p>//伪代码<br>public void onCreate(){<br>  // 地图初始化<br>  MapView mMapView = (MapView) findViewById(R.id.bmapView);<br>  BaiduMap mBaiduMap = mMapView.getMap();<br>  // 开启定位图层<br>  mBaiduMap.setMyLocationEnabled(true);</p>
+<p>  //获取运动后的定位点<br>  coordinateConvert();</p>
+<p>  //设置缩放中点LatLng target，和缩放比例<br>  MapStatus.Builder builder = new MapStatus.Builder();<br>  builder.target(target).zoom(18f);</p>
+<p>  //地图设置缩放状态<br>  mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));</p>
+<p>  /**</p>
+<ul>
+<li>配置线段图层参数类： PolylineOptions</li>
+<li>ooPolyline.width(13)：线宽</li>
+<li>ooPolyline.color(0xAAFF0000)：线条颜色红色</li>
+<li><p>ooPolyline.points(latLngs)：List<LatLng> latLngs位置点，将相邻点与点连成线就成了轨迹了<br>*/<br>OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(latLngs);</p>
+<p>//在地图上画出线条图层，mPolyline：线条图层<br>mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);<br>mPolyline.setZIndex(3);<br>}```</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 我这里是在google地图取下来的wgs84坐标集合Const.googleWGS84，模拟的运动后获取的坐标集合，</span><br><span class="line">   所以需要转化成百度坐标；实际应该是将定位sdk返回的位置点加入到位置集合中，</span><br><span class="line">   定位sdk需要设置返回坐标为百度坐标：mOption.setCoorType(&quot;bd09ll&quot;)，这样就直接用，不用转换了。</span><br><span class="line"> */</span><br><span class="line">private void  coordinateConvert()&#123;</span><br><span class="line">  //百度坐标转化工具类CoordinateConverter </span><br><span class="line">  CoordinateConverter converter  = new CoordinateConverter(); </span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">  * 设置需要转化的坐标类型</span><br><span class="line">    CoordType.COMMON：google地图、腾讯地图、高德地图所用坐标</span><br><span class="line">    CoordType.GPS：设备采集的原始GPS坐标</span><br><span class="line">  */</span><br><span class="line">  converter.from(CoordType.COMMON);</span><br><span class="line"></span><br><span class="line">  double lanSum = 0;</span><br><span class="line">  double lonSum = 0;</span><br><span class="line">  for (int i = 0; i &lt; Const.googleWGS84.length; i++) &#123;</span><br><span class="line">    //&quot;39.881970,116.456218&quot;</span><br><span class="line">    String[] ll = Const.googleWGS84[i].split(&quot;,&quot;);</span><br><span class="line">    LatLng sourceLatLng = new LatLng(Double.valueOf(ll[0]), Double.valueOf(ll[1]));</span><br><span class="line">    converter.coord(sourceLatLng);  //需要转化的坐标点</span><br><span class="line">    LatLng desLatLng = converter.convert();  //转化成百度坐标点</span><br><span class="line">    latLngs.add(desLatLng);//加入定位点集合</span><br><span class="line">    lanSum += desLatLng.latitude;</span><br><span class="line">    lonSum += desLatLng.longitude;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  //我这里设置地图的缩放中心点为所有点的几何中心点</span><br><span class="line">  target = new LatLng(lanSum/latLngs.size(), lonSum/latLngs.size());</span><br><span class="line">&#125;```</span><br><span class="line"></span><br><span class="line">### 添加起始图标图层、点击图层响应事件</span><br></pre></td></tr></table></figure>
+<p>//始点图层图标<br>BitmapDescriptor startBD= BitmapDescriptorFactory<br>            .fromResource(R.drawable.ic_me_history_startpoint);<br>//终点图层图标<br>BitmapDescriptor finishBD= BitmapDescriptorFactory<br>            .fromResource(R.drawable.ic_me_history_finishpoint);</p>
+<p>//地图中显示信息窗口<br>InfoWindow mInfoWindow;</p>
+<p>MarkerOptions oStart = new MarkerOptions();//地图标记类型的图层参数配置类<br>oStart.position(latLngs.get(0));//图层位置点，第一个点为起点<br>oStart.icon(startBD);//设置图层图片<br>oStart.zIndex(1);//设置图层Index<br>//添加起点图层<br>Marker mMarkerA = (Marker) (mBaiduMap.addOverlay(oStart)); </p>
+<p>//添加终点图层<br>MarkerOptions oFinish = new MarkerOptions().position(latLngs.get(latLngs.size()-1)).icon(finishBD).zIndex(2);<br>Marker mMarkerB = (Marker) (mBaiduMap.addOverlay(oFinish));</p>
+<p>//设置图层点击监听回调<br>mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {<br>  public boolean onMarkerClick(final Marker marker) {<br>    if (marker.getZIndex() == mMarkerA.getZIndex() ) {//如果是起始点图层<br>      TextView textView = new TextView(getApplicationContext());<br>      textView.setText(“起点”);<br>      textView.setTextColor(Color.BLACK);<br>      textView.setGravity(Gravity.CENTER);<br>      textView.setBackgroundResource(R.drawable.popup);</p>
+<pre><code>  //设置信息窗口点击回调
+  OnInfoWindowClickListener listener = new OnInfoWindowClickListener() &#123;
+    public void onInfoWindowClick() &#123;
+      //这里是主线线程，可以实现自己的一些功能
+      Toast.makeText(getApplicationContext(),&quot;这里是起点&quot;, Toast.LENGTH_SHORT).show();
+      mBaiduMap.hideInfoWindow();//隐藏信息窗口
+    &#125;
+  &#125;;
+
+  LatLng latLng = marker.getPosition();//信息窗口显示的位置点
+
+  /**
+  * 通过传入的 bitmap descriptor 构造一个 InfoWindow
+  * bd - 展示的bitmap
+    position - InfoWindow显示的位置点
+    yOffset - 信息窗口会与图层图标重叠，设置Y轴偏移量可以解决
+    listener - 点击监听者
+  */
+  mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(textView), latLng, -47, listener);
+  mBaiduMap.showInfoWindow(mInfoWindow);//显示信息窗口
+&#125; else if (marker.getZIndex() == mMarkerB.getZIndex()) &#123;//如果是终点图层
+  Button button = new Button(getApplicationContext());
+  button.setText(&quot;终点&quot;);
+  button.setOnClickListener(new OnClickListener() &#123;
+    public void onClick(View v) &#123;
+      Toast.makeText(getApplicationContext(),&quot;这里是终点&quot;, Toast.LENGTH_SHORT).show();
+      mBaiduMap.hideInfoWindow();
+    &#125;
+  &#125;);
+
+  LatLng latLng = marker.getPosition();
+  /**
+  * 通过传入的 view 构造一个 InfoWindow, 此时只是利用该view生成一个Bitmap绘制在地图中，监听事件由自己实现。
+    view - 展示的 view
+    position - 显示的地理位置
+    yOffset - Y轴偏移量
+  */
+  mInfoWindow = new InfoWindow(button, latLng, -47);
+  mBaiduMap.showInfoWindow(mInfoWindow);
+&#125; 
+return true;
+</code></pre><p> }<br>});</p>
+<p>//也可以给运动轨迹添加点击事件<br>mBaiduMap.setOnPolylineClickListener(new BaiduMap.OnPolylineClickListener() {<br>  @Override<br>  public boolean onPolylineClick(Polyline polyline) {<br>    if (polyline.getZIndex() == mPolyline.getZIndex()) {<br>      Toast.makeText(getApplicationContext(),”点数：” + polyline.getPoints().size() + “,width:” + polyline.getWidth(), Toast.LENGTH_SHORT).show();<br>    }<br>    return false;<br>  }<br>});```</p>
+<p>到这里，运动结束后画出整个轨迹图和图层添加点击事件就介绍完了。</p>
+<h2 id="时时动态的画运动轨迹"><a href="#时时动态的画运动轨迹" class="headerlink" title="时时动态的画运动轨迹"></a>时时动态的画运动轨迹</h2><blockquote>
+<p>关键在于取点：gps刚接收到信号时返回的一些点精度不高，容易造成位置偏移，如何取点很重要。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br></pre></td><td class="code"><pre><span class="line">//伪代码</span><br><span class="line">public void onCreate() &#123;</span><br><span class="line">  mMapView = (MapView) findViewById(R.id.bmapView);</span><br><span class="line">  mBaiduMap = mMapView.getMap();</span><br><span class="line">  // 开启定位图层</span><br><span class="line">  mBaiduMap.setMyLocationEnabled(true);</span><br><span class="line"></span><br><span class="line">  /**添加地图缩放状态变化监听，当手动放大或缩小地图时，拿到缩放后的比例，然后获取到下次定位，</span><br><span class="line">  *  给地图重新设置缩放比例，否则地图会重新回到默认的mCurrentZoom缩放比例</span><br><span class="line">  */</span><br><span class="line">  mCurrentZoom = 18;</span><br><span class="line">  mBaiduMap.setOnMapStatusChangeListener(new OnMapStatusChangeListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onMapStatusChangeStart(MapStatus arg0) &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onMapStatusChangeFinish(MapStatus arg0) &#123;</span><br><span class="line">      mCurrentZoom = arg0.zoom;//获取手指缩放地图后的值</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onMapStatusChange(MapStatus arg0) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  //设置定位图标类型为跟随模式</span><br><span class="line">  mBaiduMap.setMyLocationConfiguration(new MyLocationConfiguration(</span><br><span class="line">                com.baidu.mapapi.map.MyLocationConfiguration.LocationMode.FOLLOWING, true, null));</span><br><span class="line"></span><br><span class="line">  // 定位初始化</span><br><span class="line">  mLocClient = new LocationClient(this);</span><br><span class="line">  mLocClient.registerLocationListener(myListener);</span><br><span class="line">  LocationClientOption option = new LocationClientOption();</span><br><span class="line">  option.setLocationMode(LocationMode.Device_Sensors);//只接受gps位置</span><br><span class="line">  option.setOpenGps(true); // 允许gps定位</span><br><span class="line">  option.setCoorType(&quot;bd09ll&quot;); // 设置坐标类型</span><br><span class="line">  option.setScanSpan(1000);//一秒一个gps</span><br><span class="line">  mLocClient.setLocOption(option);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//开始获取位置点</span><br><span class="line">public void onStart() &#123;</span><br><span class="line">  start.setOnClickListener(new OnClickListener() &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onClick(View v) &#123;</span><br><span class="line">        if (mLocClient != null &amp;&amp; !mLocClient.isStarted()) &#123;</span><br><span class="line">            mLocClient.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//位置回调，取点很重要</span><br><span class="line">public class MyLocationListenner implements BDLocationListener &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onReceiveLocation(final BDLocation location) &#123;</span><br><span class="line"></span><br><span class="line">        if (location == null || mMapView == null) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (location.getLocType() == BDLocation.TypeGpsLocation) &#123;//只要gps点</span><br><span class="line"></span><br><span class="line">            if (isFirstLoc) &#123;//首次定位</span><br><span class="line">                /**第一个点很重要，决定了轨迹的效果，gps刚接收到信号时返回的一些点精度不高，</span><br><span class="line">                * 尽量选一个精度相对较高的起始点，这个过程大概从gps刚接收到信号后5-10秒就可以完成，不影响效果。</span><br><span class="line">                * 注：gps接收卫星信号少则十几秒钟，多则几分钟，</span><br><span class="line">                * 如果长时间手机收不到gps，退出，重启手机再试，这是硬件的原因</span><br><span class="line">                */</span><br><span class="line">                LatLng ll = null;</span><br><span class="line"></span><br><span class="line">                //选一个精度相对较高的起始点</span><br><span class="line">                ll = getMostAccuracyLocation(location);</span><br><span class="line">                if(ll == null)&#123;</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                isFirstLoc = false;</span><br><span class="line">                points.add(ll);//加入集合</span><br><span class="line">                last = ll;</span><br><span class="line"></span><br><span class="line">                //显示当前定位点，缩放地图</span><br><span class="line">                locateAndZoom(location, ll);</span><br><span class="line"></span><br><span class="line">                //标记起点图层位置</span><br><span class="line">                MarkerOptions oStart = new MarkerOptions();// 地图标记覆盖物参数配置类</span><br><span class="line">                oStart.position(points.get(0));// 覆盖物位置点，第一个点为起点</span><br><span class="line">                oStart.icon(startBD);// 设置覆盖物图片</span><br><span class="line">                mBaiduMap.addOverlay(oStart); // 在地图上添加此图层</span><br><span class="line">                return;//画轨迹最少得2个点，首地定位到这里就可以返回了</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            //从第二个点开始</span><br><span class="line">            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());</span><br><span class="line">            //sdk回调gps位置的频率是1秒1个，位置点太近动态画在图上不是很明显，可以设置点之间距离大于为5米才添加到集合中</span><br><span class="line">            if (DistanceUtil.getDistance(last, ll) &lt; 5) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            points.add(ll);//如果要运动完成后画整个轨迹，位置点都在这个集合中</span><br><span class="line"></span><br><span class="line">            last = ll;</span><br><span class="line"></span><br><span class="line">            //显示当前定位点，缩放地图</span><br><span class="line">            locateAndZoom(location, ll);</span><br><span class="line"></span><br><span class="line">            //清除上一次轨迹，避免重叠绘画</span><br><span class="line">            mMapView.getMap().clear();</span><br><span class="line"></span><br><span class="line">            //起始点图层也会被清除，重新绘画</span><br><span class="line">            MarkerOptions oStart = new MarkerOptions();</span><br><span class="line">            oStart.position(points.get(0));</span><br><span class="line">            oStart.icon(startBD);</span><br><span class="line">            mBaiduMap.addOverlay(oStart);</span><br><span class="line"></span><br><span class="line">            //将points集合中的点绘制轨迹线条图层，显示在地图上</span><br><span class="line">            OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(points);</span><br><span class="line">            mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//首次定位很重要，选一个精度相对较高的起始点</span><br><span class="line">private LatLng getMostAccuracyLocation(final BDLocation location)&#123;</span><br><span class="line"></span><br><span class="line">    if (location.getRadius()&gt;25) &#123;//gps位置精度大于25米的点直接弃用</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());</span><br><span class="line"></span><br><span class="line">    if (DistanceUtil.getDistance(last, ll ) &gt; 5) &#123;</span><br><span class="line">        last = ll;</span><br><span class="line">        points.clear();//有两点位置大于5，重新来过</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    points.add(ll);</span><br><span class="line">    last = ll;</span><br><span class="line">    //有5个连续的点之间的距离小于5，认为gps已稳定，以最新的点为起始点</span><br><span class="line">    if(points.size() &gt;= 5)&#123;</span><br><span class="line">        points.clear();</span><br><span class="line">        return ll;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//显示当前定位点，缩放地图</span><br><span class="line">private void locateAndZoom(BDLocation location, LatLng ll) &#123;</span><br><span class="line">    /**</span><br><span class="line">    * 记录当前经纬度，当位置不变，手机转动，取得方向传感器的方向，</span><br><span class="line">      给地图重新设置位置参数，在跟随模式下可使地图箭头随手机转动而转动</span><br><span class="line">    */</span><br><span class="line">    mCurrentLat = location.getLatitude();</span><br><span class="line">    mCurrentLon = location.getLongitude();</span><br><span class="line">    locData = new MyLocationData.Builder().accuracy(0)//去掉精度圈</span><br><span class="line">            //此mCurrentDirection为自己获取到的手机传感器方向信息，顺时针0-360</span><br><span class="line">            .direction(mCurrentDirection).latitude(location.getLatitude())</span><br><span class="line">            .longitude(location.getLongitude()).build();</span><br><span class="line">    mBaiduMap.setMyLocationData(locData);//显示当前定位位置点</span><br><span class="line"></span><br><span class="line">    //给地图设置缩放中心点，和缩放比例值</span><br><span class="line">    builder = new MapStatus.Builder();</span><br><span class="line">    builder.target(ll).zoom(mCurrentZoom);</span><br><span class="line">    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//运动结束增加终点图标</span><br><span class="line">finish.setOnClickListener(new OnClickListener() &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onClick(View v) &#123;</span><br><span class="line"></span><br><span class="line">        if (mLocClient != null &amp;&amp; mLocClient.isStarted()) &#123;</span><br><span class="line">            mLocClient.stop();//停止定位</span><br><span class="line"></span><br><span class="line">            if(points.size() &lt;= 0)&#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            //运动结束记得标记终点图标</span><br><span class="line">            MarkerOptions oFinish = new MarkerOptions();</span><br><span class="line">            oFinish.position(points.get(points.size() - 1));</span><br><span class="line">            oFinish.icon(finishBD);</span><br><span class="line">            mBaiduMap.addOverlay(oFinish); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);```</span><br><span class="line"></span><br><span class="line">退出记得释放资源</span><br></pre></td></tr></table></figure>
+<p>//伪代码<br>protected void onDestroy() {<br>  // 退出时销毁定位<br>  mLocClient.unRegisterLocationListener(myListener);<br>  mLocClient.stop();<br>  // 关闭定位图层<br>  mBaiduMap.setMyLocationEnabled(false);<br>  mMapView.getMap().clear();<br>  mMapView.onDestroy();<br>  mMapView = null;<br>  startBD.recycle();<br>  finishBD.recycle();<br>}```</p>
+<blockquote>
+<p>我们画运动轨迹要求定位sdk返回的位置精度很高，轨迹的效果才会好，因而必须接受gps位置点。但是gps位置的在刚开始收到信号时精度不高，会出现位置漂移的情况，所以要选取一个精度较好的点。在建筑物、桥梁、大树、隧道里面，gps信号不好，精度不高，所以在开阔地带，运动轨迹效果更好。</p>
+</blockquote>
+<!-- <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=songid&auto=1&height=66"></iframe> --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2017/07/10/17-07-03/">http://hdinson.cn/2017/07/10/17-07-03/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/07/11/17-07-11/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Android进程保活</div></div></a></div><div class="next-post pull-right"><a href="/2017/07/01/17-07-01/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Lambda 表达式在 Android 开发中的使用</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E6%97%B6%E5%8A%A8%E6%80%81%E7%9A%84%E7%94%BB%E8%BF%90%E5%8A%A8%E8%BD%A8%E8%BF%B9"><span class="toc-number">2.</span> <span class="toc-text">时时动态的画运动轨迹</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

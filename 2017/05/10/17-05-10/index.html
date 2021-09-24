@@ -1,0 +1,443 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android全屏／沉浸式状态栏下，各种键盘挡住输入框解决办法 | DINSON</title><meta name="keywords" content="Android软键盘"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 在开发中，经常会遇到键盘挡住输入框的情况，比如登录界面或注册界面，弹出的软键盘把登录或注册按钮挡住了，用户必须把软键盘收起，才能点击相应按钮，这样的用户体验非常不好。像微信则直接把登录按钮做在输入框的上面，但有很多情况下，这经常满足不了需求。同时如果输入框特别多的情况下，点击输入时，当前输入框没被挡住，但是当前输入框下面的输入框却无法获取焦点，必须先把键盘收起，再去获取下面输入框焦点，这样用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android全屏／沉浸式状态栏下，各种键盘挡住输入框解决办法">
+<meta property="og:url" content="http://hdinson.cn/2017/05/10/17-05-10/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述 在开发中，经常会遇到键盘挡住输入框的情况，比如登录界面或注册界面，弹出的软键盘把登录或注册按钮挡住了，用户必须把软键盘收起，才能点击相应按钮，这样的用户体验非常不好。像微信则直接把登录按钮做在输入框的上面，但有很多情况下，这经常满足不了需求。同时如果输入框特别多的情况下，点击输入时，当前输入框没被挡住，但是当前输入框下面的输入框却无法获取焦点，必须先把键盘收起，再去获取下面输入框焦点，这样用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2017-05-10T01:24:17.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:10:14.562Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Android软键盘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2017/05/10/17-05-10/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android全屏／沉浸式状态栏下，各种键盘挡住输入框解决办法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 19:10:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android全屏／沉浸式状态栏下，各种键盘挡住输入框解决办法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2017-05-10T01:24:17.000Z" title="undefined 2017-05-10 09:24:17">2017-05-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android%E5%AB%A1%E7%B3%BB/">Android嫡系</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android全屏／沉浸式状态栏下，各种键盘挡住输入框解决办法"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>在开发中，经常会遇到键盘挡住输入框的情况，比如登录界面或注册界面，弹出的软键盘把登录或注册按钮挡住了，用户必须把软键盘收起，才能点击相应按钮，这样的用户体验非常不好。像微信则直接把登录按钮做在输入框的上面，但有很多情况下，这经常满足不了需求。同时如果输入框特别多的情况下，点击输入时，当前输入框没被挡住，但是当前输入框下面的输入框却无法获取焦点，必须先把键盘收起，再去获取下面输入框焦点，这样用户体验也非常不好，那有什么办法呢？ </p>
+</blockquote>
+<span id="more"></span>
+<h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><blockquote>
+<p>非透明状态栏下使用adjustResize和adjustPan，或是透明状态栏下使用fitsSystemWindows=true属性</p>
+</blockquote>
+<p>主要实现方法：<br>在AndroidManifest.xml对应的Activity里添加<br>Android:windowSoftInputMode=”adjustPan”或是android:windowSoftInputMode=”adjustResize”属性 </p>
+<p>这两种属性的区别，官方的解释是： </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>adjustResize</td>
+<td>该活动的主窗口始终调整大小，以使屏幕上的软键盘的余地。</td>
+</tr>
+<tr>
+<td>adjustPan</td>
+<td>该活动的主窗口无法调整大小，使软键盘的余地。相反，窗口的内容是自动平移以便当前焦点从来没有遮挡键盘，用户始终可以看到他们正在键入。这是比调整大小，一般是较不可取，因为用户可能需要关闭软键盘在获取和与模糊部分窗口的互动。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这两个属性作用都是为了调整界面使键盘不挡住输入框 ，我这里对这两种属性使用场景、优缺点、注意事项进行了全方面总结，不知大家平时使用时是否注意到了。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>注意事项</strong></th>
+<th><strong>优缺点</strong></th>
+<th><strong>失效情况</strong></th>
+<th><strong>适用情况</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>adjustResize</td>
+<td>需要界面本身可调整尺寸，如在布局添加ScrollView，或输入控件属于RecycleView/ListView某一项</td>
+<td>优点：1.不会把标题栏顶出当前布局；<br>2.有多项输入时，当前输入框下面的输入框可上下滑动输入<br>缺点：1.需要界面本身可调整尺寸;<br>2. 全屏时失效</td>
+<td>1.Activity主窗口尺寸无法调整；<br>2.Activity全屏<br>3.android5.0以上通过style设置沉浸式状态栏模式而不设置fitSystemWindow为true</td>
+<td>非全屏或是非沉浸式状态栏输入界面，输入框比较多</td>
+</tr>
+<tr>
+<td>adjustPan</td>
+<td>页面不会重新布局，当前输入框和键盘会直接将当前输入框以上界面整体向上平移，这样即使界面包含标题栏，也会被顶上去</td>
+<td>优点： 使用简单，不需要界面本身可调整尺寸，不会有失效情况 <br>缺点： 会把标题栏顶出当前布局；有多项输入时，当前输入框下面的输入框无法输入，必须收起键盘显示输入框再输入</td>
+<td>无</td>
+<td>有少量输入项，且输入量居界面上方</td>
+</tr>
+<tr>
+<td>fitsSystemWindows</td>
+<td>如果多个View设置了fitsSystemWindows=”true”,只有初始的view起作用，都是从第一个设置了fitsSystemWindows的view开始计算padding</td>
+<td>优点：使用简单，需要沉浸式状态栏的界面，不需要自己计算padding状态栏的高度<br>缺点：使用有限制</td>
+<td>1.View 的其他 padding 值被重新改写了<br>2.手机系统版本&gt;=android 4.4</td>
+<td>1.界面全屏<br>2.设置界面主题为沉浸式状态栏</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>adjustResize失效情况：activity设置了全屏属性指Theme.Light.NotittleBar.Fullscreen(键盘弹起时会将标题栏也推上去)或者设置了activity对应的主题中android:windowTranslucentStatus属性，设置方式为：android:windowTranslucentStatus=true，这时如果对应的页面上含有输入框，将会导致点击输入框时软键盘弹出后键盘覆盖输入框，导致输入框看不见。</li>
+<li>fitsSystemWindows=”true”,只有初始的view起作用：如果在布局中不是最外层控件设置fitsSystemWindows=”true”, 那么设置的那个控件高度会多出一个状态栏高度。若有多个view设置了，因第一个view已经消耗掉insect，其他view设置了也会被系统忽略。</li>
+</ul>
+<p>假设原始界面是一个LinearLayout包含若干EditText,如下图所示，在分别使用两种属性时的表现。<br><img src="http://dinson-blog.hdinson.cn/FiBssb1owc6o5RWvY8jttNlNpqEw.png" alt=""></p>
+<h3 id="adjustPan"><a href="#adjustPan" class="headerlink" title="adjustPan"></a>adjustPan</h3><p>整个界面向上平移，使输入框露出，它不会改变界面的布局；界面整体可用高度还是屏幕高度，这个可以通过下面的截图看出，如点击输入框6,输入框会被推到键盘上方，但输入框1被顶出去了，如果界面包含标题栏，也会被顶出去。<br><img src="http://dinson-blog.hdinson.cn/FqcA0acjqFTCdq7fhGMQAQLCymuy.png" alt=""></p>
+<h3 id="adjustResize"><a href="#adjustResize" class="headerlink" title="adjustResize"></a>adjustResize</h3><p><img src="http://dinson-blog.hdinson.cn/FlalEPmcfHwUAaQzlmbOZCOny3Qq.png" alt=""></p>
+<p>但使用这两种属性，我们可以总结以下几点：<br>1) 使用adjustPan, 如果需要输入的项比较多时，点击输入框，当前输入项会被顶到软键盘上方，但若当前输入框下面还有输入项时，却需要先收起键盘，再点击相应的输入项才能输入。这样操作太繁琐了，对于用户体验不大好；<br>2) adjustResize的使用，需要界面本身可显示的窗口内容能调整，可结合scrollview使用；</p>
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><blockquote>
+<p>在界面最外层布局包裹ScrollView</p>
+</blockquote>
+<h3 id="只使用ScrollView"><a href="#只使用ScrollView" class="headerlink" title="只使用ScrollView"></a>只使用ScrollView</h3><p>在相应界面的xml布局中，最外层添加一个ScrollView，不在AndroidMainfest.xml中设置任何android:windowSoftInputMode属性，此时点击输入框，输入框均不会被软键盘档住。即使当前输入框下方也有输入框，在键盘显示的情况下，也可以通过上下滑动界面来输入，而不用先隐藏键盘，点击下方输入框，再显示键盘输入。 </p>
+<p>我们可以根据Android Studio的Inspect Layout工具来查看界面真正占用的布局高度，工具在<br><img src="http://dinson-blog.hdinson.cn/FtVH5PO3wZr8dcUo_npuTi46j9Aj.png" alt=""><br>通过该工具，我们看到：<br>界面真正能用的高度=屏幕高度-状态栏高度-软键盘高度<br>界面中蓝框是真正界面所用的高度：<br><img src="http://dinson-blog.hdinson.cn/Fnd8_JCSsg5tPYqYC7yOjESZXX3U.png" alt=""></p>
+<h3 id="ScrollView-adjustPan"><a href="#ScrollView-adjustPan" class="headerlink" title="ScrollView+adjustPan"></a>ScrollView+adjustPan</h3><p>我们再在该类的AndroidMainfest.xml中设置windowSoftInputMode属性为adjustPan<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity android:name=&quot;.TestInputActivity&quot; android:windowSoftInputMode=&quot;adjustPan&quot;&gt;```</span><br><span class="line"></span><br><span class="line">发现当前输入框不会被挡住，但是输入框比较多时，在有键盘显示时，界面上下滑动，但只能滑动部分，且如果输入框在界面靠下方时，点击输入框，标题栏也会被顶出去，如下图所示： </span><br><span class="line">![](http://dinson-blog.hdinson.cn/FvQ_kx2DYkusBw3VGgEvueIr8kEb.png)</span><br><span class="line"></span><br><span class="line">我们借助Inspect Layout工具查看此设置布局可用高度，从下图可以看出，此时布局可用高度是屏幕的高度，上下滑动也只是此屏的高度，在输入框9以下的输入框滑不出来，向上滑动，也只能滑到输入框1。 </span><br><span class="line">![](http://dinson-blog.hdinson.cn/FhsoS1St7ob22uZpH5n2ZCvDp-Q-.png)</span><br><span class="line"></span><br><span class="line">### ScrollView+adjustResize</span><br><span class="line">我们前面说过adjustResize的使用必须界面布局高度是可变的，如最外层套个ScrollView或是界面可收缩的，才起作用。这里在该类的AndroidMainfest.xml中设置windowSoftInputMode属性为adjustResize</span><br></pre></td></tr></table></figure></p>
+<p><activity android:name=".TestInputActivity" android:windowSoftInputMode="adjustResize">```</p>
+<p>发现效果和1不设置任何windowSoftInputMode属性类似，其使用高度也是：屏幕高度-状态栏高度-软键盘高度<br><img src="http://dinson-blog.hdinson.cn/Fk4K9zDXpOsQlqHUKCqrBP20zEAI.png" alt=""></p>
+<p>我们再来看看windowSoftInputMode默认属性值stateUnspecified:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stateUnspecified</td>
+<td>软键盘的状态(隐藏或可见)没有被指定。系统将选择一个合适的状态或依赖于主题的设置</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>可以看出，系统将选择合适的状态，也就是在界面最外层包含一层ScrollView时，设置默认属性值stateUnspecified其实就是adjustResize属性。</p>
+<p>但以下两方面无法满足需求：<br>1) 当Activity设置成全屏fullscreen模式时或是使用沉浸式状态栏时，界面最外层包裹 ScrollView，当输入框超过一屏，当前输入框下面的输入框并不能上下滑动来输入，情况类似于ScrollView+adjustPan，只能滑动部分，通过Inspect Layout也可以看到，界面可用高度是整个屏幕高度，并不会进行调整高度。即使设置adjustResize，也不起作用。<br>2) 如果是类似于注册界面或是登录界面，键盘会挡住输入框下面的登录按钮。</p>
+<h3 id="沉浸式状态栏／透明状态栏情况下"><a href="#沉浸式状态栏／透明状态栏情况下" class="headerlink" title="沉浸式状态栏／透明状态栏情况下"></a>沉浸式状态栏／透明状态栏情况下</h3><p>自android系统4.4(API&gt;=19）就开始支持沉浸式状态栏，当使用觉System windows(系统窗口),显示系统一些属性和操作区域，如 最上方的状态及没有实体按键的最下方的虚拟导航栏。<br>android:fitsSystemWindows=“true”会使得屏幕上的可布局空间位于状态栏下方与导航栏上方</p>
+<h2 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h2><blockquote>
+<p>使用scrollTo方法，当键盘弹起时，让界面整体上移；键盘收起，让界面整体下移<br>使用场景：针对界面全屏或是沉浸式状态栏，输入框不会被键盘遮挡。主要用于一些登录界面，或是需要把界面整体都顶上去的场景。</p>
+</blockquote>
+<h3 id="主要实现步骤"><a href="#主要实现步骤" class="headerlink" title="主要实现步骤"></a>主要实现步骤</h3><ol>
+<li>获取Activity布局xml的最外层控件，如xml文件如下： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">	&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">	    xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">	    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">	    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">	    android:id=&quot;@+id/main&quot;</span><br><span class="line">	    tools:context=&quot;com.example.liubin1.softkeyboardhelper.MainActivity&quot;&gt;</span><br><span class="line">	</span><br><span class="line">	    &lt;EditText</span><br><span class="line">	        android:id=&quot;@+id/name&quot;</span><br><span class="line">	        android:hint=&quot;请输入用户名：&quot;</span><br><span class="line">	        android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">	        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">	        android:layout_height=&quot;50dp&quot;</span><br><span class="line">	        /&gt;</span><br><span class="line">	    &lt;EditText</span><br><span class="line">	        android:id=&quot;@+id/pas&quot;</span><br><span class="line">	        android:layout_below=&quot;@id/name&quot;</span><br><span class="line">	        android:hint=&quot;请输入密码：&quot;</span><br><span class="line">	        android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">	        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">	        android:layout_height=&quot;50dp&quot;</span><br><span class="line">	        /&gt;</span><br><span class="line">	    &lt;Button</span><br><span class="line">	        android:id=&quot;@+id/login_btn&quot;</span><br><span class="line">	        android:layout_below=&quot;@id/rpas&quot;</span><br><span class="line">	        android:layout_centerHorizontal=&quot;true&quot;</span><br><span class="line">	        android:text=&quot;登录&quot;</span><br><span class="line">	        android:layout_width=&quot;180dp&quot;</span><br><span class="line">	        android:layout_height=&quot;50dp&quot; /&gt;</span><br><span class="line">	&lt;/RelativeLayout&gt;```</span><br><span class="line">2. 先获取到最外层控件，再获取到最后一个控件，如上面的xml文件，最后一个控件是Button</span><br></pre></td></tr></table></figure>
+ RelativeLayout main = (RelativeLayout) findViewById(R.id.main);<br> Button login_btn = (Button) findViewById(R.id.login_btn);```</li>
+<li>给最外层控件和最后一个控件添加监听事件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">//在Activity的onCreate里添加如下方法</span><br><span class="line">addLayoutListener(main,login_btn);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**   </span><br><span class="line"> * addLayoutListener方法如下</span><br><span class="line"> * @param main 根布局</span><br><span class="line"> * @param scroll 需要显示的最下方View</span><br><span class="line"> */</span><br><span class="line">public void addLayoutListener(final View main, final View scroll) &#123;</span><br><span class="line">	main.getViewTreeObserver().addOnGlobalLayoutListener(new  ViewTreeObserver.OnGlobalLayoutListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onGlobalLayout() &#123;</span><br><span class="line">                Rect rect = new Rect();</span><br><span class="line">                //1、获取main在窗体的可视区域</span><br><span class="line">                main.getWindowVisibleDisplayFrame(rect);</span><br><span class="line">                //2、获取main在窗体的不可视区域高度，在键盘没有弹起时，main.getRootView().getHeight()调节度应该和rect.bottom高度一样</span><br><span class="line">                int mainInvisibleHeight = main.getRootView().getHeight() - rect.bottom;</span><br><span class="line">                int screenHeight = main.getRootView().getHeight();//屏幕高度</span><br><span class="line">                //3、不可见区域大于屏幕本身高度的1/4：说明键盘弹起了</span><br><span class="line">                if (mainInvisibleHeight &gt; screenHeight / 4) &#123;</span><br><span class="line">                    int[] location = new int[2];</span><br><span class="line">                    scroll.getLocationInWindow(location);</span><br><span class="line">                    // 4､获取Scroll的窗体坐标，算出main需要滚动的高度</span><br><span class="line">                    int srollHeight = (location[1] + scroll.getHeight()) - rect.bottom;</span><br><span class="line">                    //5､让界面整体上移键盘的高度</span><br><span class="line">                    main.scrollTo(0, srollHeight);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                //3、不可见区域小于屏幕高度1/4时,说明键盘隐藏了，把界面下移，移回到原有高度</span><br><span class="line">                    main.scrollTo(0, 0);</span><br><span class="line">        		&#125;</span><br><span class="line">    		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;```</span><br><span class="line">### 实现原理</span><br><span class="line">此方法通过监听Activity最外层布局控件来检测软键盘是否弹出，然后去手动调用控件的scrollTo方法达到调整布局目的。</span><br><span class="line">### 弊端</span><br><span class="line">此种方法需要在当前界面写比较多的代码，在某些手机上，若输入时，软键盘高度是可变的，如中英文切换，高度变化时，会发现适配的不大好。如下图：</span><br><span class="line">![](http://dinson-blog.hdinson.cn/FkeMDvMrmpqiAagMm2xTPeIq-nMV.gif)</span><br><span class="line">从上图可以看出，如果键盘高度变化，键盘还是会挡住登录按钮。</span><br><span class="line"></span><br><span class="line">## 方法四</span><br><span class="line">&gt; 适配键盘高度变化情况，当键盘弹起时，让界面整体上移；键盘收起，让界面整体下移</span><br><span class="line">&gt; 此方法主要是通过在需要移动的控件外套一层scrollView，同时最布局最外层使用自定义view监听键盘弹出状态，计算键盘高度，再进行计算需要移动的位置，这个和方法三有点类似，但能适配键盘高度变化情况。</span><br><span class="line"></span><br><span class="line">### 实现步骤</span><br><span class="line">1. 先写自定义View，实时临听界面键盘弹起状态，计算键盘高度</span><br></pre></td></tr></table></figure>
+<p>public class KeyboardLayout extends FrameLayout {</p>
+<pre><code>private KeyboardLayoutListener mListener;
+private boolean mIsKeyboardActive = false; //输入法是否激活
+private int mKeyboardHeight = 0; // 输入法高度
+
+public KeyboardLayout(Context context) &#123;
+    this(context, null, 0);
+&#125;
+
+public KeyboardLayout(Context context, AttributeSet attrs) &#123;
+    this(context, attrs, 0);
+&#125;
+
+public KeyboardLayout(Context context, AttributeSet attrs, int defStyleAttr) &#123;
+    super(context, attrs, defStyleAttr);
+    // 监听布局变化
+    getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardOnGlobalChangeListener());
+&#125;
+
+public void setKeyboardListener(KeyboardLayoutListener listener) &#123;
+    mListener = listener;
+&#125;
+
+public KeyboardLayoutListener getKeyboardListener() &#123;
+    return mListener;
+&#125;
+
+public boolean isKeyboardActive() &#123;
+    return mIsKeyboardActive;
+&#125;
+
+/**
+ * 获取输入法高度
+ *
+ * @return
+ */
+public int getKeyboardHeight() &#123;
+    return mKeyboardHeight;
+&#125;
+
+public interface KeyboardLayoutListener &#123;
+    /**
+     * @param isActive       输入法是否激活
+     * @param keyboardHeight 输入法面板高度
+     */
+    void onKeyboardStateChanged(boolean isActive, int keyboardHeight);
+&#125;
+
+private class KeyboardOnGlobalChangeListener implements ViewTreeObserver.OnGlobalLayoutListener &#123;
+
+    int mScreenHeight = 0;
+
+    private int getScreenHeight() &#123;
+        if (mScreenHeight &gt; 0) &#123;
+            return mScreenHeight;
+        &#125;
+        mScreenHeight = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getHeight();
+        return mScreenHeight;
+    &#125;
+
+    @Override
+    public void onGlobalLayout() &#123;
+        Rect rect = new Rect();
+        // 获取当前页面窗口的显示范围
+        ((Activity) getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        int screenHeight = getScreenHeight();
+        int keyboardHeight = screenHeight - rect.bottom; // 输入法的高度
+        boolean isActive = false;
+        if (Math.abs(keyboardHeight) &gt; screenHeight / 4) &#123;
+            isActive = true; // 超过屏幕五分之一则表示弹出了输入法
+            mKeyboardHeight = keyboardHeight;
+        &#125;
+        mIsKeyboardActive = isActive;
+        if (mListener != null) &#123;
+            mListener.onKeyboardStateChanged(isActive, keyboardHeight);
+        &#125;
+    &#125;
+&#125;
+</code></pre><p>}```</p>
+<ol>
+<li><p>xml文件编写，在界面最外层套上自定义view，在需要滚动的控件外层添加scrollView</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.example.smilexie.softboradblockedittext.util.KeyboardLayout</span><br><span class="line">        android:id=&quot;@+id/main_ll&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;</span><br><span class="line">        android:background=&quot;@mipmap/login_bg&quot;</span><br><span class="line">        android:orientation=&quot;vertical&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;ScrollView</span><br><span class="line">            android:id=&quot;@+id/login_ll&quot;</span><br><span class="line">            android:layout_width=&quot;match_parent&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line"></span><br><span class="line">            &lt;LinearLayout</span><br><span class="line">                android:layout_width=&quot;match_parent&quot;</span><br><span class="line">                android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                android:orientation=&quot;vertical&quot;&gt;</span><br><span class="line"></span><br><span class="line">                &lt;LinearLayout</span><br><span class="line">                    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">                    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                    android:layout_marginLeft=&quot;50dp&quot;</span><br><span class="line">                    android:layout_marginRight=&quot;50dp&quot;</span><br><span class="line">                    android:layout_marginTop=&quot;200dp&quot;</span><br><span class="line">                    android:background=&quot;@mipmap/login_input_field_icon&quot;</span><br><span class="line">                    android:orientation=&quot;horizontal&quot;&gt;</span><br><span class="line"></span><br><span class="line">                    &lt;ImageView</span><br><span class="line">                        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">                        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                        android:layout_gravity=&quot;center_vertical&quot;</span><br><span class="line">                        android:layout_marginLeft=&quot;20dp&quot;</span><br><span class="line">                        android:background=&quot;@mipmap/login_yonghuming_icon&quot; /&gt;</span><br><span class="line"></span><br><span class="line">                    &lt;EditText</span><br><span class="line">                        android:id=&quot;@+id/ui_username_input&quot;</span><br><span class="line">                        style=&quot;@style/editext_input_style&quot;</span><br><span class="line">                        android:layout_marginLeft=&quot;40dp&quot;</span><br><span class="line">                        android:layout_marginRight=&quot;20dp&quot;</span><br><span class="line">                        android:background=&quot;@null&quot;</span><br><span class="line">                        android:hint=&quot;@string/login_hint_username&quot;</span><br><span class="line">                        android:imeOptions=&quot;actionNext&quot;</span><br><span class="line">                        android:textColor=&quot;@android:color/white&quot;</span><br><span class="line">                        android:textColorHint=&quot;@android:color/white&quot;&gt;</span><br><span class="line"></span><br><span class="line">                        &lt;requestFocus /&gt;</span><br><span class="line">                    &lt;/EditText&gt;</span><br><span class="line">                &lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                &lt;LinearLayout</span><br><span class="line">                    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">                    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                    android:layout_marginLeft=&quot;50dp&quot;</span><br><span class="line">                    android:layout_marginRight=&quot;50dp&quot;</span><br><span class="line">                    android:layout_marginTop=&quot;20dp&quot;</span><br><span class="line">                    android:background=&quot;@mipmap/login_input_field_icon&quot;</span><br><span class="line">                    android:orientation=&quot;horizontal&quot;&gt;</span><br><span class="line"></span><br><span class="line">                    &lt;ImageView</span><br><span class="line">                        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">                        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                        android:layout_gravity=&quot;center_vertical&quot;</span><br><span class="line">                        android:layout_marginLeft=&quot;20dp&quot;</span><br><span class="line">                        android:background=&quot;@mipmap/login_mima_icon&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                    &lt;EditText</span><br><span class="line">                        android:id=&quot;@+id/ui_password_input&quot;</span><br><span class="line">                        style=&quot;@style/editext_input_style&quot;</span><br><span class="line">                        android:layout_marginLeft=&quot;40dp&quot;</span><br><span class="line">                        android:layout_marginRight=&quot;20dp&quot;</span><br><span class="line">                        android:background=&quot;@null&quot;</span><br><span class="line">                        android:hint=&quot;@string/login_hint_pwd&quot;</span><br><span class="line">                        android:imeOptions=&quot;actionDone&quot;</span><br><span class="line">                        android:inputType=&quot;textPassword&quot;</span><br><span class="line">                        android:textColor=&quot;@android:color/white&quot;</span><br><span class="line">                        android:textColorHint=&quot;@android:color/white&quot;&gt;&lt;/EditText&gt;</span><br><span class="line">                &lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line">                &lt;Button</span><br><span class="line">                    android:id=&quot;@+id/login_btn&quot;</span><br><span class="line">                    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">                    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                    android:layout_marginLeft=&quot;50dp&quot;</span><br><span class="line">                    android:layout_marginRight=&quot;50dp&quot;</span><br><span class="line">                    android:layout_marginTop=&quot;20dp&quot;</span><br><span class="line">                    android:background=&quot;@mipmap/login_button_bg_icon&quot;</span><br><span class="line">                    android:text=&quot;@string/login&quot;</span><br><span class="line">                    android:textColor=&quot;@color/titlebar_main_color&quot;</span><br><span class="line">                    android:textSize=&quot;@dimen/font_normal&quot; /&gt;</span><br><span class="line">            &lt;/LinearLayout&gt;</span><br><span class="line">        &lt;/ScrollView&gt;</span><br><span class="line">&lt;/com.example.smilexie.softboradblockedittext.util.KeyboardLayout&gt;```</span><br><span class="line"></span><br><span class="line">3. Activity调用，自定义view控件添加键盘响应，在键盘变化时调用scrollView的smoothScrollTo去滚动界面</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>/**</p>
+<ul>
+<li><p>监听键盘状态，布局有变化时，靠scrollView去滚动界面<br>*/<br>public void addLayoutListener() {<br>bindingView.mainLl.setKeyboardListener(new  KeyboardLayout.KeyboardLayoutListener() {</p>
+<pre><code>  @Override
+   public void onKeyboardStateChanged(boolean isActive, int keyboardHeight) &#123;
+       Log.e(&quot;onKeyboardStateChanged&quot;, &quot;isActive:&quot; + isActive + &quot; keyboardHeight:&quot; + keyboardHeight);
+       if (isActive) &#123;
+           scrollToBottom();
+       &#125;
+   &#125;
+</code></pre><p>   });<br>}</p>
+<p>/**</p>
+<ul>
+<li><p>弹出软键盘时将SVContainer滑到底<br>*/<br>private void scrollToBottom() {</p>
+<p> bindingView.loginLl.postDelayed(new Runnable() {</p>
+<pre><code> @Override
+ public void run() &#123;
+     bindingView.loginLl.smoothScrollTo(0, bindingView.loginLl.getBottom() + SoftKeyInputHidWidget.getStatusBarHeight(LoginActivityForDiffkeyboardHeight.this));
+ &#125;
+</code></pre><p> }, 100);<br>}<br>}```</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>具体实现代码见demo中的LoginActivityForDiffkeyboardHeight类。实现效果如下：<br><img src="http://dinson-blog.hdinson.cn/Fprl5ny3iQ-8LXr6R_IOJNDsDlxY.gif" alt=""><br>可以看到键盘高度变化了，也不会影响界面布局</p>
+<h2 id="方法五"><a href="#方法五" class="headerlink" title="方法五"></a>方法五</h2><blockquote>
+<p>监听Activity顶层View，判断软键盘是否弹起，对界面重新绘制<br>使用场景：针对界面全屏或是沉浸式状态栏，界面包含比较多输入框，界面即使包裹了一层ScrollView,在键盘显示时，当前输入框下面的输入不能通过上下滑动界面来输入。</p>
+</blockquote>
+<h3 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h3><ol>
+<li>把SoftHideKeyBoardUtil类复制到项目中； </li>
+<li>在需要使用的Activity的onCreate方法中添加：SoftHideKeyBoardUtil.assistActivity(this);即可。</li>
+</ol>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>SoftHideKeyBoardUtil类具体代码如下：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 解决键盘档住输入框</span><br><span class="line"> * Created by SmileXie on 2017/4/3.</span><br><span class="line"> */</span><br><span class="line">public class SoftHideKeyBoardUtil &#123;</span><br><span class="line">    public static void assistActivity (Activity activity) &#123;</span><br><span class="line">        new SoftHideKeyBoardUtil(activity);</span><br><span class="line">    &#125;</span><br><span class="line">    private View mChildOfContent;</span><br><span class="line">    private int usableHeightPrevious;</span><br><span class="line">    private FrameLayout.LayoutParams frameLayoutParams;</span><br><span class="line">    //为适应华为小米等手机键盘上方出现黑条或不适配</span><br><span class="line">    private int contentHeight;//获取setContentView本来view的高度</span><br><span class="line">    private boolean isfirst = true;//只用获取一次</span><br><span class="line">    private  int statusBarHeight;//状态栏高度</span><br><span class="line">    private SoftHideKeyBoardUtil(Activity activity) &#123;</span><br><span class="line">   //1､找到Activity的最外层布局控件，它其实是一个DecorView,它所用的控件就是FrameLayout</span><br><span class="line">        FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);</span><br><span class="line">        //2､获取到setContentView放进去的View</span><br><span class="line">        mChildOfContent = content.getChildAt(0);</span><br><span class="line">        //3､给Activity的xml布局设置View树监听，当布局有变化，如键盘弹出或收起时，都会回调此监听  </span><br><span class="line">          mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() &#123;</span><br><span class="line">        //4､软键盘弹起会使GlobalLayout发生变化</span><br><span class="line">            public void onGlobalLayout() &#123;</span><br><span class="line">            if (isfirst) &#123;</span><br><span class="line">                    contentHeight = mChildOfContent.getHeight();//兼容华为等机型</span><br><span class="line">                    isfirst = false;</span><br><span class="line">                &#125;</span><br><span class="line">                //5､当前布局发生变化时，对Activity的xml布局进行重绘</span><br><span class="line">                possiblyResizeChildOfContent();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        //6､获取到Activity的xml布局的放置参数</span><br><span class="line">        frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 获取界面可用高度，如果软键盘弹起后，Activity的xml布局可用高度需要减去键盘高度  </span><br><span class="line">    private void possiblyResizeChildOfContent() &#123;</span><br><span class="line">        //1､获取当前界面可用高度，键盘弹起后，当前界面可用布局会减少键盘的高度</span><br><span class="line">        int usableHeightNow = computeUsableHeight();</span><br><span class="line">        //2､如果当前可用高度和原始值不一样</span><br><span class="line">        if (usableHeightNow != usableHeightPrevious) &#123;</span><br><span class="line">            //3､获取Activity中xml中布局在当前界面显示的高度</span><br><span class="line">            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();</span><br><span class="line">            //4､Activity中xml布局的高度-当前可用高度</span><br><span class="line">            int heightDifference = usableHeightSansKeyboard - usableHeightNow;</span><br><span class="line">            //5､高度差大于屏幕1/4时，说明键盘弹出</span><br><span class="line">            if (heightDifference &gt; (usableHeightSansKeyboard/4)) &#123;</span><br><span class="line">                // 6､键盘弹出了，Activity的xml布局高度应当减去键盘高度</span><br><span class="line">                if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT)&#123;</span><br><span class="line">                    frameLayoutParams.height = usableHeightSansKeyboard - heightDifference + statusBarHeight;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                frameLayoutParams.height = contentHeight;</span><br><span class="line">            &#125;</span><br><span class="line">            //7､ 重绘Activity的xml布局</span><br><span class="line">            mChildOfContent.requestLayout();</span><br><span class="line">            usableHeightPrevious = usableHeightNow;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    private int computeUsableHeight() &#123;</span><br><span class="line">        Rect r = new Rect();</span><br><span class="line">        mChildOfContent.getWindowVisibleDisplayFrame(r);</span><br><span class="line">        // 全屏模式下：直接返回r.bottom，r.top其实是状态栏的高度</span><br><span class="line">        return (r.bottom - r.top);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;```</span><br><span class="line">### 原理分析</span><br><span class="line">( 1 ) 找到Activity的最外层布局控件，我们知道所有的Activity都是DecorView，它就是一个FrameLayout控件，该控件id是系统写死叫R.id.content，就是我们setContentView时，把相应的View放在此FrameLayout控件里</span><br></pre></td></tr></table></figure><br>FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);```<br>所以content.getChildAt(0)获取到的mChildOfContent，也就是我们用setContentView放进去的View。 </p>
+<p>( 2 ) 给我们的Activity的xml布局View设置一个Listener监听<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(&#123; </span><br><span class="line">        possiblyResizeChildOfContent();</span><br><span class="line">&#125;);```</span><br><span class="line"></span><br><span class="line">View.getViewTreeObserver()可以获取一个ViewTreeObserver对象——它是一个观察者，用以监听当前View树所发生的变化。这里所注册的addOnGlobalLayoutListener，就是会在当前的View树的全局布局（GlobalLayout）发生变化、或者其中的View可视状态有变化时，进行通知回调。『软键盘弹出/隐 』都能监听到。</span><br><span class="line"></span><br><span class="line">( 3 ) 获取当前界面可用高度</span><br></pre></td></tr></table></figure><br>private int computeUsableHeight() {<br>    Rect rect = new Rect();<br>    mChildOfContent.getWindowVisibleDisplayFrame(rect);<br>    // rect.top其实是状态栏的高度，如果是全屏主题，直接 return rect.bottom就可以了<br>    return (rect.bottom - rect.top);<br>}```</p>
+<p>如下图所示：<br><img src="http://dinson-blog.hdinson.cn/Fu0LdpFKY1wxCoC-_00ybugeipUu.png" alt=""></p>
+<p>( 4 ) 重设高度， 我们计算出的可用高度，是目前在视觉效果上能看到的界面高度。但当前界面的实际高度是比可用高度要多出一个软键盘的距离的。</p>
+<p>注意：如果既使用了沉浸式状态栏，又加了fitSystetemWindow=true属性，就需要在AndroidMainfest.xml注册Activity的地方添加上以下属性。因为你两种都用，系统不知道用哪种了。fitSystetemWindow已经有resize屏幕的作用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>下面对上面几种方法进行对比：</p>
+<ul>
+<li><p>方法一：优点：使用简单，只需在Activity的AndroidMainfest.xml中设置windowSoftInput属性即可。<br>注意点：adjustResize属性必须要界面大小可以自身改变；<br>缺点：当输入框比较多时，当前输入框下方的输入框会初键盘挡住，须收起键盘再进入输入；使用adjustPan，输入框较多时，因它是把界面当成一个整体，只会显示一屏的高度，会把ActionBar顶上去。</p>
+</li>
+<li><p>方法二：优点：使用简单，只需在Activity的最外层布局包裹一个ScrollView即可。<br>注意点：不可使用adjustPan属性，否则ScrollView失效；<br>缺点：对于全屏时，在键盘显示时，无法上下滑动界面达到输入的目的；</p>
+</li>
+<li><p>方法三：优点：可以解决全屏时，键盘挡入按钮问题。<br>缺点：只要有此需求的Activity均需要获取到最外层控件和最后一个控件，监测键盘是否弹出，再调用控件的scrollTo方法对界面整体上移或是下移。代码冗余。对于键盘高度变化时，适配不好。</p>
+</li>
+<li><p>方法四：优点：可以解决全屏时，键盘挡入按钮问题。<br>缺点：只要有此需求的Activity均需要获取到最外层控件和最后一个控件，布局多出一层。</p>
+</li>
+<li><p>方法五：优点：可以解决全屏时，键盘挡入输入框问题。只需要写一个全局类，其他有需求的界面直接在onCreate方法里调用此类的全局方法，即可。<br>缺点：多用了一个类。</p>
+</li>
+</ul>
+<p>综上所述： </p>
+<ol>
+<li>当输入框比较少时，界面只有一个输入框时，可以通过方法一设置adjustPan； </li>
+<li>如果对于非全屏/非沉浸式状态栏需求，只需要使用方法二ScrollView+adjustResize； </li>
+<li>如果对于使用沉浸式状态栏，使用fitSystemWindow=true属性，按道理android系统已经做好适配，键盘不会挡住输入框； </li>
+<li>如果全屏/沉浸式状态栏界面，类似于登录界面，有需要把登录键钮或是评论按钮也顶起，如果键盘没有变化需求，可以使用方法三，若需要适配键盘高度变化，则需要使用方法四； </li>
+<li>如果界面使用全屏或沉浸式状态栏，没有使用fitSystemWindow=true属性，一般如需要用到抽屈而且状态栏颜色也需要跟着变化，则选择方法五更恰当。</li>
+</ol>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=4154790&auto=1&height=66"></iframe>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2017/05/10/17-05-10/">http://hdinson.cn/2017/05/10/17-05-10/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Android%E8%BD%AF%E9%94%AE%E7%9B%98/">Android软键盘</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/05/11/17-05-11/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Android ConstraintLayout 使用指南</div></div></a></div><div class="next-post pull-right"><a href="/2017/05/09/17-05-09/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Android双缓冲绘图技术分析</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="toc-number">2.</span> <span class="toc-text">方法一</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#adjustPan"><span class="toc-number">2.1.</span> <span class="toc-text">adjustPan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#adjustResize"><span class="toc-number">2.2.</span> <span class="toc-text">adjustResize</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="toc-number">3.</span> <span class="toc-text">方法二</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AA%E4%BD%BF%E7%94%A8ScrollView"><span class="toc-number">3.1.</span> <span class="toc-text">只使用ScrollView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ScrollView-adjustPan"><span class="toc-number">3.2.</span> <span class="toc-text">ScrollView+adjustPan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%89%E6%B5%B8%E5%BC%8F%E7%8A%B6%E6%80%81%E6%A0%8F%EF%BC%8F%E9%80%8F%E6%98%8E%E7%8A%B6%E6%80%81%E6%A0%8F%E6%83%85%E5%86%B5%E4%B8%8B"><span class="toc-number">3.3.</span> <span class="toc-text">沉浸式状态栏／透明状态栏情况下</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89"><span class="toc-number">4.</span> <span class="toc-text">方法三</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">4.1.</span> <span class="toc-text">主要实现步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%94"><span class="toc-number">5.</span> <span class="toc-text">方法五</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.1.</span> <span class="toc-text">实现步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">5.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DINSON</title><meta name="keywords" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="面朝电脑 | 栀子花开">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DINSON">
+<meta property="og:url" content="http://hdinson.cn/page/3/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="面朝电脑 | 栀子花开">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hdinson.cn/img/avatar.jpg">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Android,设计模式,安卓入门,安卓高级,前端,JavaScript,h5,css3,Jquery">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hdinson.cn/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/page/3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'DINSON',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-09-24 22:13:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/background.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">DINSON</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/29/17-05-29/" title="CoordinatorLayout 自定义Behavior并不难，由简到难手把手带你飞 (未完...)">CoordinatorLayout 自定义Behavior并不难，由简到难手把手带你飞 (未完...)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-29T07:58:33.000Z" title="发表于 2017-05-29 15:58:33">2017-05-29</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android%E5%AB%A1%E7%B3%BB/">Android嫡系</a></span></div><div class="content">概述
+其实Behavior就是一个应用于View的观察者模式，一个View跟随者另一个View的变化而变化，或者说一个View监听另一个View。在Behavior中，被观察View 也就是事件源被称为denpendcy，而观察View，则被称为child。
+
+
+
+难度1 Button与TextView首先在布局文件中跟布局设置为CoordinatorLayout，里面放一个Button和一个TextView。12345678910111213141516171819202122&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;android.support.design.widget.CoordinatorLayout    android:layout_width=&quot;match_parent&quot;    android:layout_height=&quot;match_parent&quot;    xmlns:android=&quot;http://schemas.andro ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/28/17-05-28/" title="Python从入门到放弃（8）-- Socket">Python从入门到放弃（8）-- Socket</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-28T06:29:37.000Z" title="发表于 2017-05-28 14:29:37">2017-05-28</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">概述
+socket通常也称作”套接字”，用于描述IP地址和端口，是一个通信链的句柄，应用程序通常通过”套接字”向网络发出请求或者应答网络请求。
+socket起源于Unix，而Unix/Linux基本哲学之一就是“一切皆文件”，对于文件用【打开】【读写】【关闭】模式来操作。socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭）
+
+socket和file的区别：
+
+file模块是针对某个指定文件进行【打开】【读写】【关闭】
+socket模块是针对 服务器端 和 客户端Socket 进行【打开】【读写】【关闭】
+
+
+
+
+
+socket server:12345678910111213141516171819import socketip_port = (&#x27;127.0.0.1&#x27;,9999)sk = socket.socket()sk.bind(ip_port)sk.listen(5)while True:    print &#x27;server waiting...&#x27;    conn, ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/27/17-05-27/" title="Python从入门到放弃（7）-- 面向对象编程进阶">Python从入门到放弃（7）-- 面向对象编程进阶</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-27T03:38:12.000Z" title="发表于 2017-05-27 11:38:12">2017-05-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">概述
+
+面向对象高级语法部分　- 经典类vs新式类　　　- 静态方法、类方法、属性方法　- 类的特殊方法　- 反射
+异常处理
+
+
+
+
+经典类vs新式类把下面代码用python2 和python3都执行一下1234567891011121314151617181920212223242526272829class A:    def __init__(self):        self.n = &#x27;A&#x27; class B(A):    def __init__(self):        self.n = &#x27;B&#x27;    pass class C(A):    def __init__(self):        self.n = &#x27;C&#x27; class D(B,C):    def __init__(self):        self.n = &#x27;D&#x27;    pass obj = D() print(obj.n)```小结:经典类：深度优先新式类：广度优先super()用法## 静态方法通过**@staticmet ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/26/17-05-26/" title="Python从入门到放弃（6）-- 常用模块学习">Python从入门到放弃（6）-- 常用模块学习</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-26T06:09:51.000Z" title="发表于 2017-05-26 14:09:51">2017-05-26</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">概述
+
+模块介绍
+time &amp;datetime模块
+random模块
+os模块
+sys模块
+shutil模块
+json &amp; picle模块
+shelve模块
+xml处理模块
+yaml处理模块
+configparser模块
+hashlib模块
+subprocess模块
+logging模块
+re正则表达式模块
+
+
+
+
+模块介绍模块，用一砣代码实现了某个功能的代码集合。 
+类似于函数式编程和面向过程编程，函数式编程则完成一个功能，其他代码用来调用即可，提供了代码的重用性和代码间的耦合。而对于一个复杂的功能来，可能需要多个函数才能完成（函数又可以在不同的.py文件中），n个 .py 文件组成的代码集合就称为模块。
+如：os 是系统相关的模块；file是文件操作相关的模块
+模块分为三种：
+
+自定义模块
+开源模块
+内置标准模块（又称标准库）
+
+自定义模块
+定义模块　　情景一：　　　　情景二：　　　　情景三：　　
+导入模块Python之所以应用越来越广泛，在一定程度上也依赖于其为程序员提供了大量的模块以供使用，如果想要使用模块，则需要导入。导入模块有一下几种方法：123456789	 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/25/17-05-25/" title="Python从入门到放弃（5）-- Python基础5">Python从入门到放弃（5）-- Python基础5</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-25T07:30:08.000Z" title="发表于 2017-05-25 15:30:08">2017-05-25</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">生成器列表生成式
+现在有个需求，看列表[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],我要求你把列表里的每个值加1，你怎么实现？你可能会想到3种方式
+原值修改1234a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]for index,i in enumerate(a):    a[index] +=1列表生成12&gt;&gt;&gt; a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]&gt;&gt;&gt; a = map(lambda x:x+1, a)
+123&gt;&gt;&gt; a = [i+1 for i in range(10)]&gt;&gt;&gt; a[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+生成器通过列表生成式，我们可以直接创建一个列表。但是，受到内存限制，列表容量肯定是有限的。而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。
+所以，如果列表元素可以按照某种算法推算出来，那我们是否可以在循环的过程 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/24/17-05-24/" title="Python从入门到放弃（4）-- Python基础4">Python从入门到放弃（4）-- Python基础4</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-24T01:51:53.000Z" title="发表于 2017-05-24 09:51:53">2017-05-24</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">概述
+
+函数基本语法及特性
+参数与局部变量
+返回值
+嵌套函数
+递归
+匿名函数
+函数式编程介绍
+高阶函数
+内置函数
+
+
+
+
+函数基本语法及特性背景提要现在老板让你写一个监控程序，监控服务器的系统状况，当cpu＼memory＼disk等指标的使用量超过阀值时即发邮件报警，你掏空了所有的知识量，写出了以下代码1234567891011121314151617181920212223	while True：	    if cpu利用率 &gt; 90%:	        #发送邮件提醒	        连接邮箱服务器	        发送邮件	        关闭连接	     	    if 硬盘使用空间 &gt; 90%:	        #发送邮件提醒	        连接邮箱服务器	        发送邮件	        关闭连接	     	    if 内存占用 &gt; 80%:	        #发送邮件提醒	        连接邮箱服务器	        发送邮件	        关闭连接```上面的代码实现了功能，但即使是邻居老王也看出了端倪，老王亲切的摸了下你家儿子的脸 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/23/17-05-23/" title="2017 年最流行的 15 个数据科学 Python 库">2017 年最流行的 15 个数据科学 Python 库</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-23T00:34:58.000Z" title="发表于 2017-05-23 08:34:58">2017-05-23</time></span></div><div class="content">概述
+Python 近几年在数据科学行业获得了人们的极大青睐，各种资源也层出不穷。数据科学解决方案公司 ActiveWizards 近日根据他们自己的应用开发经验，总结了数据科学家和工程师将在 2017 年最常使用的 Python 库。
+
+
+
+核心库NumPy地址：http://www.numpy.org
+当使用 Python 开始处理科学任务时，不可避免地需要求助 Python 的 SciPy Stack，它是专门为 Python 中的科学计算而设计的软件的集合（不要与 SciPy 混淆，它只是这个 stack 的一部分，以及围绕这个 stack 的社区）。这个 stack 相当庞大，其中有十几个库，所以我们想聚焦在核心包上（特别是最重要的）。
+NumPy（代表 Numerical Python）是构建科学计算 stack 的最基础的包。它为 Python 中的 n 维数组和矩阵的操作提供了大量有用的功能。该库还提供了 NumPy 数组类型的数学运算向量化，可以提升性能，从而加快执行速度。
+SciPy地址：https://www.scipy.org
+SciPy 是一个工程和科学软件库 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/22/17-05-22/" title="Python从入门到放弃（3）-- Python基础3">Python从入门到放弃（3）-- Python基础3</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-22T01:04:43.000Z" title="发表于 2017-05-22 09:04:43">2017-05-22</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">概述
+
+集合操作
+文件操作
+字符编码与转码
+
+
+
+
+集合操作集合是一个无序的，不重复的数据组合，它的主要作用如下：
+
+去重，把一个列表变成集合，就自动去重了,天生去重
+关系测试，测试两组数据之前的交集、差集、并集等关系
+
+创建1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253	s = set([5, 2, 1, 4, 3])		# 增	# s.add(&quot;Dinson&quot;)  # &#123;1, 2, 3, 4, 5, &#x27;Dinson&#x27;&#125;	# s.update([&quot;Disnon&quot;, 4, 6])  # &#123;1, 2, 3, 4, 5, &#x27;Disnon&#x27;, 6&#125;		# 删	# s.remove(1)  # &#123;2, 3, 4, 5&#125; 删除一项	# s.discard(8)  # &#123;1, 2, 3, 4, 5&#12 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/21/17-05-21/" title="Python从入门到放弃（2）-- Python基础2">Python从入门到放弃（2）-- Python基础2</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-21T12:19:17.000Z" title="发表于 2017-05-21 20:19:17">2017-05-21</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">概述
+
+列表、元组操作
+字符串操作
+字典操作
+
+
+
+
+列表、元组操作列表是我们最以后最常用的数据类型之一，通过列表可以对数据实现最方便的存储、修改等操作12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970name = [&quot;张三&quot;, &quot;李四&quot;, &quot;王五&quot;, &quot;赵六&quot;, &quot;赵六&quot;]print(name.clear())  # []print(name.count(&quot;赵六&quot;))  # 2print(name.index(&quot;赵六&quot;))  # 3print(name[0], name[2], name[-4])  # 张三 王五 李四print(name[:])  # [&#x27;张三&#x27;, &#x27;李四&#x27;, &#x27;王五& ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/05/20/17-05-20/" title="Python从入门到放弃（1）-- Python基础1">Python从入门到放弃（1）-- Python基础1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-05-20T09:40:27.000Z" title="发表于 2017-05-20 17:40:27">2017-05-20</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">Python从入门到放弃</a></span></div><div class="content">概述
+
+Python介绍
+发展史
+Python 2 or 3?
+安装
+Hello World程序
+变量
+用户输入
+模块初识
+.pyc是个什么鬼？
+数据类型初识
+数据运算
+表达式if …else语句
+表达式for 循环
+break and continue 
+表达式while 循环
+一切皆对象
+
+
+
+Python介绍python的创始人为吉多·范罗苏姆（Guido van Rossum）。1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承。  
+最新的TIOBE排行榜，Python赶超PHP占据第四， Python崇尚优美、清晰、简单，是一个优秀并广泛使用的语言。
+由上图可见，Python整体呈上升趋势，反映出Python应用越来越广泛并且也逐渐得到业内的认可！！！
+Python可以应用于众多领域，如：数据分析、组件集成、网络服务、图像处理、数值计算和科学计算等众多领域。目前业内几乎所有大中型互联网企业都在使用Python，如：Youtube、Dropbox、BT、Quora（中国知乎）、豆瓣、知乎、Google、Yah ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#content-inner">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#content-inner">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#content-inner">6</a><a class="extend next" rel="next" href="/page/4/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">DINSON</div><div class="author-info__description">面朝电脑 | 栀子花开</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hdinson"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Android%E5%AB%A1%E7%B3%BB/"><span class="card-category-list-name">Android嫡系</span><span class="card-category-list-count">24</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Android%E5%BA%B6%E7%B3%BB/"><span class="card-category-list-name">Android庶系</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Kotlin%E4%BB%8E%E6%94%BE%E5%BC%83%E5%88%B0%E5%85%A5%E9%97%A8/"><span class="card-category-list-name">Kotlin从放弃到入门</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Python%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/"><span class="card-category-list-name">Python从入门到放弃</span><span class="card-category-list-count">9</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/RN/"><span class="card-category-list-name">RN</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/UI%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">UI设计</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E8%BE%9B%E9%85%B8%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">个人博客辛酸系列</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE/"><span class="card-category-list-name">系统配置</span><span class="card-category-list-count">1</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/AS/" style="font-size: 1.37em; color: #99a4b2">AS</a> <a href="/tags/Android%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">Android优化</a> <a href="/tags/Android%E8%BD%AF%E9%94%AE%E7%9B%98/" style="font-size: 1.1em; color: #999">Android软键盘</a> <a href="/tags/ConstraintLayout/" style="font-size: 1.1em; color: #999">ConstraintLayout</a> <a href="/tags/Fragment/" style="font-size: 1.1em; color: #999">Fragment</a> <a href="/tags/GitHub/" style="font-size: 1.1em; color: #999">GitHub</a> <a href="/tags/Gradle/" style="font-size: 1.1em; color: #999">Gradle</a> <a href="/tags/Hexo/" style="font-size: 1.37em; color: #99a4b2">Hexo</a> <a href="/tags/I-O%E5%A4%A7%E4%BC%9A/" style="font-size: 1.1em; color: #999">I/O大会</a> <a href="/tags/ImageSpan/" style="font-size: 1.37em; color: #99a4b2">ImageSpan</a> <a href="/tags/Kotlin/" style="font-size: 1.1em; color: #999">Kotlin</a> <a href="/tags/Lambda/" style="font-size: 1.1em; color: #999">Lambda</a> <a href="/tags/MaterialDesign/" style="font-size: 1.1em; color: #999">MaterialDesign</a> <a href="/tags/Monkey%E5%B7%A5%E5%85%B7/" style="font-size: 1.1em; color: #999">Monkey工具</a> <a href="/tags/SharedPreferences/" style="font-size: 1.1em; color: #999">SharedPreferences</a> <a href="/tags/Splash/" style="font-size: 1.1em; color: #999">Splash</a> <a href="/tags/UI/" style="font-size: 1.1em; color: #999">UI</a> <a href="/tags/ViewPager%E7%B3%BB%E5%88%97/" style="font-size: 1.5em; color: #99a9bf">ViewPager系列</a> <a href="/tags/%E4%B8%BB%E9%A2%98%E6%8D%A2%E8%82%A4/" style="font-size: 1.23em; color: #999ea6">主题换肤</a> <a href="/tags/%E4%BC%98%E5%8C%96/" style="font-size: 1.23em; color: #999ea6">优化</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 1.23em; color: #999ea6">博客</a> <a href="/tags/%E5%8F%8D%E7%BC%96%E8%AF%91/" style="font-size: 1.1em; color: #999">反编译</a> <a href="/tags/%E5%AE%89%E5%8D%93%E6%8C%89%E9%94%AE/" style="font-size: 1.1em; color: #999">安卓按键</a> <a href="/tags/%E5%BA%94%E7%94%A8%E5%8C%85%E5%90%8D/" style="font-size: 1.1em; color: #999">应用包名</a> <a href="/tags/%E5%BC%82%E5%B8%B8/" style="font-size: 1.1em; color: #999">异常</a> <a href="/tags/%E5%BD%95%E5%B1%8F/" style="font-size: 1.1em; color: #999">录屏</a> <a href="/tags/%E6%87%92%E5%8A%A0%E8%BD%BD/" style="font-size: 1.1em; color: #999">懒加载</a> <a href="/tags/%E6%88%AA%E5%9B%BE/" style="font-size: 1.1em; color: #999">截图</a> <a href="/tags/%E6%8E%92%E8%A1%8C%E6%A6%9C/" style="font-size: 1.1em; color: #999">排行榜</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 1.1em; color: #999">插件</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 1.1em; color: #999">架构</a> <a href="/tags/%E7%A0%B4%E8%A7%A3/" style="font-size: 1.1em; color: #999">破解</a> <a href="/tags/%E7%AD%BE%E5%90%8D/" style="font-size: 1.1em; color: #999">签名</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE/" style="font-size: 1.1em; color: #999">系统配置</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" style="font-size: 1.1em; color: #999">自动化测试</a> <a href="/tags/%E8%87%AA%E5%AE%9A%E4%B9%89VIEW/" style="font-size: 1.23em; color: #999ea6">自定义VIEW</a> <a href="/tags/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6/" style="font-size: 1.1em; color: #999">自定义控件</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%B8%88/" style="font-size: 1.1em; color: #999">设计师</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 1.1em; color: #999">设计模式</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/11/"><span class="card-archive-list-date">十一月 2017</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/08/"><span class="card-archive-list-date">八月 2017</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/07/"><span class="card-archive-list-date">七月 2017</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/06/"><span class="card-archive-list-date">六月 2017</span><span class="card-archive-list-count">11</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/05/"><span class="card-archive-list-date">五月 2017</span><span class="card-archive-list-count">21</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/04/"><span class="card-archive-list-date">四月 2017</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2016/07/"><span class="card-archive-list-date">七月 2016</span><span class="card-archive-list-count">8</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2016/06/"><span class="card-archive-list-date">六月 2016</span><span class="card-archive-list-count">6</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">57</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-09-24T14:13:48.603Z"></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/background.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function subtitleType () {
+  if (false) { 
+    var typed = new Typed("#subtitle", {
+      strings: "自强不息 | 厚德载物".split(","),
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("subtitle").innerHTML = '自强不息 | 厚德载物'
+  }
+}
+
+if (false) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

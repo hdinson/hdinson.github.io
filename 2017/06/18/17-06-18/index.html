@@ -1,0 +1,375 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Splash 页面三秒跳转和动态下载最新背景图 | DINSON</title><meta name="keywords" content="Splash,Android"><meta name="author" content="DINSON"><meta name="copyright" content="DINSON"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 最近公司产品大大说我们需要一个动态替换的闪屏页面，like 某猫，某东一样，可以动态替换。产品大大就是厉害，说一句话我们就需要实现好几个功能：  创建一个冷启动后的闪屏页面（Splash 页面） 这个页面默认 3s 倒计时，点击倒计时按钮可以跳转并结束倒计时 点击图片如果有外链，则跳转应用的 web 页面用来作为活动页面（没错这点和某猫很像） 动态替换厉害了，我们需要在进入这个页面后去后台请">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Splash 页面三秒跳转和动态下载最新背景图">
+<meta property="og:url" content="http://hdinson.cn/2017/06/18/17-06-18/index.html">
+<meta property="og:site_name" content="DINSON">
+<meta property="og:description" content="概述 最近公司产品大大说我们需要一个动态替换的闪屏页面，like 某猫，某东一样，可以动态替换。产品大大就是厉害，说一句话我们就需要实现好几个功能：  创建一个冷启动后的闪屏页面（Splash 页面） 这个页面默认 3s 倒计时，点击倒计时按钮可以跳转并结束倒计时 点击图片如果有外链，则跳转应用的 web 页面用来作为活动页面（没错这点和某猫很像） 动态替换厉害了，我们需要在进入这个页面后去后台请">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2017-06-18T01:16:45.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:10:27.889Z">
+<meta property="article:author" content="DINSON">
+<meta property="article:tag" content="Splash">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://hdinson.cn/2017/06/18/17-06-18/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Splash 页面三秒跳转和动态下载最新背景图',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 19:10:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_8ce77jkwodt5ipb9.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DINSON</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont icon-all"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont icon-tag"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://hdinson.github.io/Python/index.html"><i class="fa-fw iconfont icon-python"></i><span> Python</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Splash 页面三秒跳转和动态下载最新背景图</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2017-06-18T01:16:45.000Z" title="undefined 2017-06-18 09:16:45">2017-06-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android%E5%AB%A1%E7%B3%BB/">Android嫡系</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Splash 页面三秒跳转和动态下载最新背景图"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>最近公司产品大大说我们需要一个动态替换的闪屏页面，like 某猫，某东一样，可以动态替换。<br>产品大大就是厉害，说一句话我们就需要实现好几个功能：</p>
+<ol>
+<li>创建一个冷启动后的闪屏页面（Splash 页面）</li>
+<li>这个页面默认 3s 倒计时，点击倒计时按钮可以跳转并结束倒计时</li>
+<li>点击图片如果有外链，则跳转应用的 web 页面用来作为活动页面（没错这点和某猫很像）</li>
+<li>动态替换厉害了，我们需要在进入这个页面后去后台请求一下是否有新的图片，如果是新的图片则下载到本地，替换掉原来的图片，下次用户在进入 Splash 就会看到一个崭新的图片。</li>
+</ol>
+</blockquote>
+<p><img src="http://dinson-blog.hdinson.cn/FvIf_0HDYO6ORF0G4pp-wLu1Fghp.png" alt=""></p>
+<span id="more"></span>
+<!-- 这是　　缩进-->
+<h2 id="布局实现"><a href="#布局实现" class="headerlink" title="布局实现"></a>布局实现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">             android:layout_width=&quot;match_parent&quot;</span><br><span class="line">             android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line">    &lt;ImageView</span><br><span class="line">        android:id=&quot;@+id/sp_bg&quot;</span><br><span class="line">        android:src=&quot;@mipmap/icon_splash&quot;</span><br><span class="line">        android:scaleType=&quot;centerCrop&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:visibility=&quot;invisible&quot;</span><br><span class="line">        android:gravity=&quot;center&quot;</span><br><span class="line">        android:textSize=&quot;10sp&quot;</span><br><span class="line">        android:textColor=&quot;@color/white&quot;</span><br><span class="line">        android:id=&quot;@+id/sp_jump_btn&quot;</span><br><span class="line">        android:background=&quot;@drawable/btn_splash_shape&quot;</span><br><span class="line">        android:layout_width=&quot;60dp&quot;</span><br><span class="line">        android:layout_height=&quot;30dp&quot;</span><br><span class="line">        android:layout_alignParentRight=&quot;true&quot;</span><br><span class="line">        android:layout_alignParentTop=&quot;true&quot;</span><br><span class="line">        android:layout_marginRight=&quot;20dp&quot;</span><br><span class="line">        android:layout_marginTop=&quot;20dp&quot;/&gt;</span><br><span class="line">&lt;/RelativeLayout&gt;```</span><br><span class="line">布局文件文件相对来说还是比较简单，就需要一个 ImageView 和 Button 即可，Button 的背景是一个自定义的 shape，透明度颜色啥的,根据UI妹砸说的算就好了。</span><br></pre></td></tr></table></figure>
+<p><shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle"><br>    <solid android:color="#99c4c4c4"/><br>    <corners android:radius="20dp"/><br>    <stroke
+        android:width="0.7dp"
+        android:color="#7fffffff"/>
+</shape>```</p>
+<h2 id="倒计时功能实现"><a href="#倒计时功能实现" class="headerlink" title="倒计时功能实现"></a>倒计时功能实现</h2><p>实现倒计时的功能方法有很多，最基本的你可以使用 Handler 来实现吧，还可以是用 Timer 吧。</p>
+<p>但是由于之前写验证码倒计时的时候发现 android.os 中有一个神奇的类叫 <a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/os/CountDownTimer.html"><code>CountDownTimer</code></a> 的类，此类神奇之处就在于你完全不需要理会那些线程交互他都给你处理好了，你只管在回调中处理时间设置跳转逻辑就好了。</p>
+<p>但是有一个不足的地方就它的第一秒的倒计时有时候会不可见，所以我们将倒计时总时间设置为 3200ms 。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private CountDownTimer countDownTimer = new CountDownTimer(3200, 1000) &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onTick(long millisUntilFinished) &#123;</span><br><span class="line">        mSpJumpBtn.setText(&quot;跳过(&quot; + millisUntilFinished / 1000 + &quot;s)&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onFinish() &#123;</span><br><span class="line">        mSpJumpBtn.setText(&quot;跳过(&quot; + 0 + &quot;s)&quot;);</span><br><span class="line">        gotoLoginOrMainActivity();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;```</span><br><span class="line">最后需要在有闪屏页面的情况下，进入开启倒计时：</span><br></pre></td></tr></table></figure><br>private void startClock() {<br>    mSpJumpBtn.setVisibility(View.VISIBLE);<br>    countDownTimer.start();<br>}```</p>
+<h2 id="下载功能实现点击跳转功能实现"><a href="#下载功能实现点击跳转功能实现" class="headerlink" title="下载功能实现点击跳转功能实现"></a>下载功能实现点击跳转功能实现</h2><p>上边说了我们 APP 点击图片需要可以跳转，下面代码给出了背景点击跳转的逻辑：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">    super.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_splash);</span><br><span class="line">    ButterKnife.bind(this);</span><br><span class="line">    checkSDCardPermission();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@OnClick(&#123;R.id.sp_bg, R.id.sp_jump_btn&#125;)</span><br><span class="line">public void onViewClicked(View view) &#123;</span><br><span class="line">    switch (view.getId()) &#123;</span><br><span class="line">        case R.id.sp_bg:</span><br><span class="line">            gotoWebActivity();</span><br><span class="line">            break;</span><br><span class="line">        case R.id.sp_jump_btn:</span><br><span class="line">            gotoLoginOrMainActivity();</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;```</span><br><span class="line">跳转逻辑可以根据实际的项目需求来规定，下面的代码中 Splash 为本地序列化的 model 用来存储网络下载的闪屏页面信息，稍后会有详细的序列化过程，此刻我们只需要关注跳转逻辑：</span><br></pre></td></tr></table></figure><br>private Splash mSplash;<br>private void gotoWebActivity() {<br>    if (mSplash != null &amp;&amp; mSplash.click_url != null) {<br>        Intent intent = new Intent(this, BannerActivity.class);<br>        intent.putExtra(“url”, mSplash.click_url);<br>        intent.putExtra(“title”, mSplash.title);<br>        intent.putExtra(“fromSplash”, true);<br>        intent.putExtra(“needShare”, false);<br>        startActivity(intent);<br>        finish();<br>    }<br>}```<br>机智的你可能看出来我们并没有在离开页面的时候结束掉 timer，其实我们是复写了 onDestroy 方法。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onDestroy() &#123;</span><br><span class="line">    super.onDestroy();</span><br><span class="line">    if (countDownTimer != null)</span><br><span class="line">        countDownTimer.cancel();</span><br><span class="line">&#125;```</span><br><span class="line">其实跳转以后还有一个坑就是，从 web 页面返回的时候，因为闪屏页面是你应用的第一个页面，而跳转到 web 页面的是你 finish 掉了该页面，那么从 web 页返回的时候不做处理，用户就直接退出了 app 这样当然是不允许的。</span><br><span class="line"></span><br><span class="line">所以请在 web 页面中添加以下逻辑：</span><br></pre></td></tr></table></figure><br>//此方法是toolbar 的返回事件调用的方法 mFromSplash 为启动页面传递过来的参数<br>@Override<br>protected void onLeftClick(View view) {<br>    if (mFromSplash) {<br>        gotoLoginOrMainActivity();<br>    } else {<br>        super.onLeftClick(view);<br>    }<br>}</p>
+<p>// 此方法为系统返回键的监听<br>@Override<br>public void onBackPressed() {<br>    if (mWebView.canGoBack()) {<br>        mWebView.goBack();<br>    } else if (mFromSplash) {<br>        gotoLoginOrMainActivity();<br>    } else {<br>        super.onBackPressed();<br>    }<br>}<br> // 下面是跳转逻辑<br> private void gotoLoginOrMainActivity() {<br>    if (UserCenter.getInstance().getToken() == null) {<br>        gotoLoginActivity();<br>    } else {<br>        gotoMainActivity();<br>    }<br>}</p>
+<p>…. gotoLoginActivity，gotoMainActivity 太长了，不给了自己写 (<em>^__^</em>) 嘻嘻……```</p>
+<h2 id="下载网络图片以及序列化本地"><a href="#下载网络图片以及序列化本地" class="headerlink" title="下载网络图片以及序列化本地"></a>下载网络图片以及序列化本地</h2><p>上边说了我们有这样一个需求，就是如果后台的接口返回的图片与本地序列化的图片不同，我们需要将新的图片下载到本地，然后下次进入 Splash 的时候就展示的新的图片了。</p>
+<p>这里你需要知道知识有下边几个：</p>
+<blockquote>
+<ol>
+<li>java bean 序列化与反序列化的知识</li>
+<li>IntentService 服务的知识</li>
+<li>AsycTask 的使用</li>
+<li>6.0 以上权限申请 EasyPermissions 的使用。<br>以上不熟悉的同学，看到下边的代码可能会引起适量身体不适</li>
+</ol>
+<p>其实这里更好的操作，我们可以将图片下载到内存中，这样并不需要申请sdk权限。这里当时实现的时候有点欠考虑了。如果您们保存图片的地址在内存中，就可以跳过这一步。</p>
+</blockquote>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><p>首先我们注意到已进入 Splash 页面我们就进行权限检查，因为我们需要下载最新的闪屏到本地，并取出序列化的对象，来展示对应的内容。</p>
+<p>其中 checkSDCardPermission 涉及到 6.0 以上下载最新图片的逻辑，这里采用的是 官方的 EasyPermissions 来处理，关于 EasyPermissions 的使用这里就不多说了，需要了解的请移步 <a target="_blank" rel="noopener" href="https://github.com/googlesamples/easypermissions">EasyPermissions</a>；<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static final int RC_PERMISSION = 123;</span><br><span class="line"></span><br><span class="line">@TargetApi(Build.VERSION_CODES.JELLY_BEAN)</span><br><span class="line">@AfterPermissionGranted(RC_PERMISSION)</span><br><span class="line">private void checkSDCardPermission() &#123;</span><br><span class="line">    if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) &#123;</span><br><span class="line">        initSplashImage();</span><br><span class="line">        startImageDownLoad();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        EasyPermissions.requestPermissions(this, &quot;需要您提供【**】App 读写内存卡权限来确保应用更好的运行&quot;, RC_PERMISSION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;```</span><br><span class="line">简单来说在 `EasyPermissions.hasPermissions` 的回调中我们就可以正确的做我们下载图片的工作了。</span><br></pre></td></tr></table></figure><br>private void initSplashImage() {<br>    mSplash = getLocalSplash();<br>    //如果取出本地序列化的对象成功 则进行图片加载和倒计时<br>    if (mSplash != null &amp;&amp; !TextUtils.isEmpty(mSplash.savePath)) {<br>        Logcat.d(“SplashActivity 获取本地序列化成功” + mSplash);<br>        Glide.with(this).load(mSplash.savePath).dontAnimate().into(mSpBgImage);<br>        startClock();//加载成功 开启倒计时<br>    } else {<br>    // 如果本地没有 直接跳转<br>        mSpJumpBtn.setVisibility(View.INVISIBLE);<br>        mSpJumpBtn.postDelayed(new Runnable() {<br>            @Override<br>            public void run() {<br>                gotoLoginOrMainActivity();<br>            }<br>        }, 400);<br>    }<br>}</p>
+<p>// 取出本地序列化的 Splash<br>private Splash getLocalSplash() {<br>    Splash splash = null;<br>    try {<br>        File serializableFile = SerializableUtils.getSerializableFile(Constants.SPLASH_PATH, Constants.SPLASH_FILE_NAME);<br>        splash = (Splash) SerializableUtils.readObject(serializableFile);<br>    } catch (IOException e) {<br>        Logcat.e(“SplashActivity 获取本地序列化闪屏失败” + e.getMessage());<br>    }<br>    return splash;<br>}```</p>
+<h3 id="创建本地序列化对象-Splash-Entity"><a href="#创建本地序列化对象-Splash-Entity" class="headerlink" title="创建本地序列化对象 Splash Entity"></a>创建本地序列化对象 Splash Entity</h3><p>Splash 内容如下：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public class Splash implements Serializable &#123;</span><br><span class="line"></span><br><span class="line">    private static final long serialVersionUID = 7382351359868556980L;//这里需要写死 序列化Id</span><br><span class="line">    public int id;</span><br><span class="line">    public String burl;//大图 url</span><br><span class="line">    public String surl;//小图url</span><br><span class="line">    public int type;//图片类型 Android 1 IOS 2</span><br><span class="line">    public String click_url; // 点击跳转 URl</span><br><span class="line">    public String savePath;//图片的存储地址</span><br><span class="line">    public String title;//图片的存储地址</span><br><span class="line"></span><br><span class="line">    public Splash(String burl, String surl, String click_url, String savePath) &#123;</span><br><span class="line">        this.burl = burl;</span><br><span class="line">        this.surl = surl;</span><br><span class="line">        this.click_url = click_url;</span><br><span class="line">        this.savePath = savePath;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return &quot;Splash&#123;&quot; +</span><br><span class="line">                &quot;id=&quot; + id +</span><br><span class="line">                &quot;, burl=&#x27;&quot; + burl + &#x27;\&#x27;&#x27; +</span><br><span class="line">                &quot;, surl=&#x27;&quot; + surl + &#x27;\&#x27;&#x27; +</span><br><span class="line">                &quot;, type=&quot; + type +</span><br><span class="line">                &quot;, click_url=&#x27;&quot; + click_url + &#x27;\&#x27;&#x27; +</span><br><span class="line">                &quot;, savePath=&#x27;&quot; + savePath + &#x27;\&#x27;&#x27; +</span><br><span class="line">                &#x27;&#125;&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;```</span><br><span class="line">### 序列化反序列话的工具类 SerializableUtils</span><br><span class="line"></span><br><span class="line">由于项目用到序列化地方还有挺多的，所以这里封装了一个序列化工具类`SerializableUtils`：</span><br></pre></td></tr></table></figure><br>public class SerializableUtils {</p>
+<pre><code>public static &lt;T extends Serializable&gt; Object readObject(File file) &#123;
+    ObjectInputStream in = null;
+    T t = null;
+    try &#123;
+        in = new ObjectInputStream(new FileInputStream(file));
+        t = (T) in.readObject();
+    &#125; catch (EOFException e) &#123;
+        // ... this is fine
+    &#125; catch (IOException e) &#123;
+        Logcat.e(&quot;e &quot; + e.getMessage());
+    &#125; catch (ClassNotFoundException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        try &#123;
+            if (in != null) in.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+    return t;
+&#125;
+
+public static &lt;T extends Serializable&gt; boolean writeObject(T t, String fileName) &#123;
+    ObjectOutputStream out = null;
+    try &#123;
+        out = new ObjectOutputStream(new FileOutputStream(fileName));
+        out.writeObject(t);
+        Logcat.d(&quot;序列化成功 &quot; + t.toString());
+        return true;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+        Logcat.d(&quot;序列化失败 &quot; + e.getMessage());
+        return false;
+    &#125; finally &#123;
+        try &#123;
+            if (out != null) out.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+
+public static File getSerializableFile(String rootPath, String fileName) throws IOException &#123;
+    File file = new File(rootPath);
+    if (!file.exists()) file.mkdirs();
+    File serializable = new File(file, fileName);
+    if (!serializable.exists()) serializable.createNewFile();
+    return serializable;
+&#125;
+</code></pre><p>}```<br>经过上边的努力我们已经完成了从本地反序列化内容，然后加载图片的工作了，剩下的需要做的就是下载最新图片的工作。</p>
+<h3 id="请求接口下载最新的闪屏信息和图片"><a href="#请求接口下载最新的闪屏信息和图片" class="headerlink" title="请求接口下载最新的闪屏信息和图片"></a>请求接口下载最新的闪屏信息和图片</h3><blockquote>
+<p>这里经过考虑，我决定采用服务去下载，因为这样可以少很多麻烦，也不影响程序的正常运行。但是绝不是你们要采用这样的方法，你们也可以单独写个工具类内部去开线程做这件事。</p>
+<p>项目中使用开启 IntentServie 来下载图片，关于这中服务的最大的好处就是，我们不需要关注服务是否执行完任务，当他执行完<br>onHandleIntent 方法后他就自己挑用 stop 方法了。我们只需要关注下载逻辑和序列化逻辑就好。</p>
+</blockquote>
+<p><code>checkSDCardPermission</code> 中调用的 <code>startImageDownLoad（）</code> 方法：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private void startImageDownLoad() &#123;</span><br><span class="line">SplashDownLoadService.startDownLoadSplashImage(this, Constants.DOWNLOAD_SPLASH);</span><br><span class="line">&#125;```</span><br><span class="line">SplashDownLoadService 内容，IntentService 在调用了 startService 后会执行 `onHandleIntent` 方法，在这方法中我们去请求服务器最新的数据即 `loadSplashNetDate`：</span><br></pre></td></tr></table></figure><br>public SplashDownLoadService() {<br>    super(“SplashDownLoad”);<br>}</p>
+<p>public static void startDownLoadSplashImage(Context context, String action) {<br>    Intent intent = new Intent(context, SplashDownLoadService.class);<br>    intent.putExtra(Constants.EXTRA_DOWNLOAD, action);<br>    context.startService(intent);<br>}</p>
+<p>@Override<br>protected void onHandleIntent(@Nullable Intent intent) {<br>    if (intent != null) {<br>        String action = intent.getStringExtra(Constants.EXTRA_DOWNLOAD);<br>        if (action.equals(Constants.DOWNLOAD_SPLASH)) {<br>            loadSplashNetDate();<br>        }<br>    }<br>}```<br>由于是公司项目，请求方法就不给出了，但是需要讲下请求数据后如何判断是否需要执行下载任务：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mScreen = common.attachment.flashScreen;</span><br><span class="line">Splash splashLocal = getSplashLocal();</span><br><span class="line">if (mScreen != null) &#123;</span><br><span class="line">   if (splashLocal == null) &#123;</span><br><span class="line">      Logcat.d(&quot;splashLocal 为空导致下载&quot;);</span><br><span class="line">      startDownLoadSplash(Constants.SPLASH_PATH, mScreen.burl);</span><br><span class="line">    &#125; else if (isNeedDownLoad(splashLocal.savePath, mScreen.burl)) &#123;</span><br><span class="line">          Logcat.d(&quot;isNeedDownLoad 导致下载&quot;);</span><br><span class="line">          startDownLoadSplash(Constants.SPLASH_PATH, mScreen.burl);</span><br><span class="line">   &#125;</span><br><span class="line">&#125; else &#123;//由于活动是一段时间，等活动结束后我们并不需要在进入闪屏页面，这个时候我们就需要将本地文件删除，下次在进来，本地文件为空，就会直接 finish 掉 Splash 页面，进入主页面。</span><br><span class="line">  if (splashLocal != null) &#123;</span><br><span class="line">        File splashFile = SerializableUtils.getSerializableFile(Constants.SPLASH_PATH, SPLASH_FILE_NAME);</span><br><span class="line">         if (splashFile.exists()) &#123;</span><br><span class="line">                 splashFile.delete();</span><br><span class="line">                 Logcat.d(&quot;mScreen为空删除本地文件&quot;);</span><br><span class="line">           &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;```</span><br><span class="line">由于活动是一段时间，等活动结束后我们并不需要在进入闪屏页面，这个时候我们就需要将本地文件删除，下次在进来，本地文件为空，就会直接 finish 掉 Splash 页面，进入主页面。</span><br><span class="line"></span><br><span class="line">`getSplashLocal` 方法即反序列话本地存储的 Splash Entity 的过程，上边已经给出这里就不细说，主要讲一下判断逻辑 `isNeedDownLoad`：</span><br></pre></td></tr></table></figure><br>/**</p>
+<ul>
+<li>@param path 本地存储的图片绝对路径</li>
+<li>@param url  网络获取url</li>
+<li><p>@return 比较储存的 图片名称的哈希值与 网络获取的哈希值是否相同<br>*/<br>private boolean isNeedDownLoad(String path, String url) {<br> // 如果本地存储的内容为空则进行下载<br> if (TextUtils.isEmpty(path)) {</p>
+<pre><code> return true;
+</code></pre><p> }<br> // 如果本地文件不存在则进行下载，这里主要防止用户误删操作<br> File file = new File(path);<br> if (!file.exists()) {</p>
+<pre><code> return true;
+</code></pre><p> }<br> // 如果两者都存在则判断图片名称的 hashCode 是否相同，不相同则下载<br> if (getImageName(path).hashCode() != getImageName(url).hashCode()) {</p>
+<pre><code> return true;
+</code></pre><p> }<br> return false;<br>}```<br>分隔 uri 取图片名称的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private String getImageName(String url) &#123;</span><br><span class="line">        if (TextUtils.isEmpty(url)) &#123;</span><br><span class="line">            return &quot;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        String[] split = url.split(&quot;/&quot;);</span><br><span class="line">        String nameWith_ = split[split.length - 1];</span><br><span class="line">        String[] split1 = nameWith_.split(&quot;\\.&quot;);</span><br><span class="line">        return split1[0];</span><br><span class="line">    &#125;```</span><br><span class="line">满足下载条件后则调用 DownLoadTask 下载。</span><br></pre></td></tr></table></figure>
+<p>public class DownLoadUtils {</p>
+<p> public interface DownLoadInterFace {</p>
+<pre><code> void afterDownLoad(ArrayList&lt;String&gt; savePaths);
+</code></pre><p> }</p>
+<p> public static void downLoad(String savePath, DownLoadInterFace downLoadInterFace, String… download) {</p>
+<pre><code> new DownLoadTask(savePath, downLoadInterFace).execute(download);
+</code></pre><p> }</p>
+<p> private static class DownLoadTask extends AsyncTask<String, Integer, ArrayList<String>&gt; {</p>
+<pre><code> private String mSavePath;
+ private DownLoadInterFace mDownLoadInterFace;
+
+ private DownLoadTask(String savePath, DownLoadInterFace downLoadTask) &#123;
+     this.mSavePath = savePath;
+     this.mDownLoadInterFace = downLoadTask;
+ &#125;
+
+ @Override
+ protected ArrayList&lt;String&gt; doInBackground(String... params) &#123;
+     ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+     for (String url : params) &#123;
+         if (!TextUtils.isEmpty(url)) &#123;
+             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) &#123;
+                 // 获得存储卡的路径
+                 FileOutputStream fos = null;
+                 InputStream is = null;
+                 try &#123;
+                     URL downUrl = new URL(url);
+                     // 创建连接
+                     HttpURLConnection conn = (HttpURLConnection) downUrl.openConnection();
+                     conn.connect();
+                     // 创建输入流
+                     is = conn.getInputStream();
+                     File file = new File(mSavePath);
+                     // 判断文件目录是否存在
+                     if (!file.exists()) &#123;
+                         file.mkdirs();
+                     &#125;
+
+                     String[] split = url.split(&quot;/&quot;);
+                     String fileName = split[split.length - 1];
+                     File mApkFile = new File(mSavePath, fileName);
+                     names.add(mApkFile.getAbsolutePath());
+                     fos = new FileOutputStream(mApkFile, false);
+                     int count = 0;
+                     // 缓存
+                     byte buf[] = new byte[1024];
+                     while (true) &#123;
+                         int read = is.read(buf);
+                         if (read == -1) &#123;
+                             break;
+                         &#125;
+                         fos.write(buf, 0, read);
+                         count += read;
+                         publishProgress(count);
+                     &#125;
+                     fos.flush();
+
+                 &#125; catch (Exception e) &#123;
+                     Logcat.e(e.getMessage());
+                 &#125; finally &#123;
+                     try &#123;
+                         if (is != null) &#123;
+                             is.close();
+                         &#125;
+                         if (fos != null) &#123;
+                             fos.close();
+                         &#125;
+                     &#125; catch (IOException e1) &#123;
+                         e1.printStackTrace();
+                     &#125;
+                 &#125;
+             &#125;
+         &#125;
+     &#125;
+     return names;
+ &#125;
+
+ @Override
+ protected void onPostExecute(ArrayList&lt;String&gt; strings) &#123;
+     super.onPostExecute(strings);
+     if (mDownLoadInterFace != null) &#123;
+         mDownLoadInterFace.afterDownLoad(strings);
+     &#125;
+ &#125;
+</code></pre><p> }<br>}```<br>由于下载完成后需要拿到文件存储地址这里写了一个 mDownLoadInterFace.afterDownLoad 的回调在 service 拿到回调后：</p>
+<pre><code>public void afterDownLoad(ArrayList&lt;String&gt; savePaths) &#123;
+             if (savePaths.size() == 1) &#123;
+                 Logcat.d(&quot;闪屏页面下载完成&quot; + savePaths);
+                 if (mScreen != null) &#123;
+                     mScreen.savePath = savePaths.get(0);
+                 &#125;
+                 // 序列化 Splash 到本地
+                 SerializableUtils.writeObject(mScreen, Constants.SPLASH_PATH + &quot;/&quot; + SPLASH_FILE_NAME);
+             &#125; else &#123;
+                 Logcat.d(&quot;闪屏页面下载失败&quot; + savePaths);
+             &#125;
+         &#125;
+</code></pre><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2></li>
+</ul>
+<p>上边 bb 这么多，我们可以看出产品一句话，我们程序员可能就需要工作一天了，所以我们需要将这个常见的功能记录下，下个公司产品再说实现一个闪屏功能，然后我们就可以说 这功能可能需要 1天时间，然后等他答应了，copy 一下，其他的时间你就可以学习下 Rxjava2 ，kotlin， js 之类的了。哈哈哈哈 我真tm机智。</p>
+<!-- <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="//music.163.com/outchain/player?type=2&id=songid&auto=1&height=66"></iframe> --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DINSON</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hdinson.cn/2017/06/18/17-06-18/">http://hdinson.cn/2017/06/18/17-06-18/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hdinson.cn" target="_blank">DINSON</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Splash/">Splash</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/06/20/17-06-20/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">模仿手机QQ底部导航栏Icon拖拽效果</div></div></a></div><div class="next-post pull-right"><a href="/2017/06/14/17-06-14/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Android中高德地图与百度地图坐标转换</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E5%B1%80%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">布局实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%92%E8%AE%A1%E6%97%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">倒计时功能实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E7%82%B9%E5%87%BB%E8%B7%B3%E8%BD%AC%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">下载功能实现点击跳转功能实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87%E4%BB%A5%E5%8F%8A%E5%BA%8F%E5%88%97%E5%8C%96%E6%9C%AC%E5%9C%B0"><span class="toc-number">5.</span> <span class="toc-text">下载网络图片以及序列化本地</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="toc-number">5.1.</span> <span class="toc-text">权限管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%BA%8F%E5%88%97%E5%8C%96%E5%AF%B9%E8%B1%A1-Splash-Entity"><span class="toc-number">5.2.</span> <span class="toc-text">创建本地序列化对象 Splash Entity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%8E%A5%E5%8F%A3%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%9A%84%E9%97%AA%E5%B1%8F%E4%BF%A1%E6%81%AF%E5%92%8C%E5%9B%BE%E7%89%87"><span class="toc-number">5.3.</span> <span class="toc-text">请求接口下载最新的闪屏信息和图片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">6.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By DINSON</div><div class="footer_custom_text"><a style="margin-inline:5px" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn"><img style="position:relative;top:4px" src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" data-lazy-src="https://cdn.jsdelivr.net/gh/caibhh/CDN/img/blog/icp.webp" alt="ICP" data-ll-status="loaded" class="entered loaded">&nbsp;<span>闽ICP备20013255号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
