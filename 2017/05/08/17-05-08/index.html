@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
 <meta property="article:published_time" content="2017-05-08T14:50:54.000Z">
-<meta property="article:modified_time" content="2021-09-24T11:10:13.539Z">
+<meta property="article:modified_time" content="2021-09-25T02:48:52.970Z">
 <meta property="article:author" content="DINSON">
 <meta property="article:tag" content="SharedPreferences">
 <meta name="twitter:card" content="summary">
@@ -58,7 +58,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2021-09-24 19:10:13'
+  postUpdate: '2021-09-25 10:48:52'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -168,17 +168,10 @@
 <p>总结下来就是，其他进程在启动时获取到的SharedPreferences的值只能是这个进程启动前这个值的最后值，即在进程启动后对值的修改只对当前进程有效，须等到进程重启或者app重启才能与其他进程进行“同步”。</p>
 <p>这里<strong>即使把获取SharedPreferences对象的模式改为MODE_MULTI_PROCESS，也仅仅是在Android 3.0以下才有效，在Android 3.0以上也是一样不行的。</strong></p>
 <p>那么为什么会这样子呢，笔者带大家从源码的角度来分析一下，我们来看一下关于SharedPreferences的源码。</p>
-<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>通常我们获取SharedPreferences对象一般是这样</p>
-<pre><code class="lang-JavaScript">    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-    //或者这样
-    SharedPreferences sharedPreferences = getSharedPreferences(&quot;name&quot;, Context.MODE_PRIVATE);
-</code></pre>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>通常我们获取SharedPreferences对象一般是这样<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(<span class="built_in">this</span>);</span><br><span class="line"><span class="comment">//或者这样</span></span><br><span class="line">SharedPreferences sharedPreferences = getSharedPreferences(<span class="string">&quot;name&quot;</span>, Context.MODE_PRIVATE);</span><br></pre></td></tr></table></figure></p>
 <p>实际上PreferenceManager.getDefaultSharedPreferences(context)方法也是对getSharedPreferences做了封装</p>
 <p><img src="http://dinson-blog.hdinson.cn/FvywJ70yizMOhfF3aaqGv2vpojew.png" alt=""></p>
-<p>所以不管通过哪种方式，最终都是通过Context中的getSharedPreferences方法来获取SharedPreferences对象，在Context中，getSharedPreferences方法是一个抽象方法，没有具体实现。</p>
-<pre><code class="lang-JavaScript">    public abstract SharedPreferences 
-            getSharedPreferences(String name, int mode);
-</code></pre>
+<p>所以不管通过哪种方式，最终都是通过Context中的getSharedPreferences方法来获取SharedPreferences对象，在Context中，getSharedPreferences方法是一个抽象方法，没有具体实现。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public abstract SharedPreferences </span><br><span class="line">            getSharedPreferences(<span class="built_in">String</span> name, int mode);</span><br></pre></td></tr></table></figure></p>
 <p>我们知道Context的实现类其实就是ContextImpl，所以这里我们直接去到ContextImpl的getSharedPreferences方法中，<br><img src="http://dinson-blog.hdinson.cn/FvnQplSy9iuRj4G-AdhNU3jApBRS.png" alt=""></p>
 <p>这里比较简单，先判断了ArrayMap中是否存在该File对象，不存在则创建一个并放入ArrayMap，然后调用getSharedPreferences的重载方法getSharedPreferences(file, mode)，我们看一下这个方法的源码<br><img src="http://dinson-blog.hdinson.cn/FudqaDKO4sr06vuTurN5IHzJq5a0.png" alt=""></p>
 <p>可以看到，这里将SharedPreferences的实例对象SharedPreferencesImpl缓存起来，以后每次获取如果内存中已经存在那么直接返回，如果不存在才会进行重新创建;</p>

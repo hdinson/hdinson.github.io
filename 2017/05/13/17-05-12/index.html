@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
 <meta property="article:published_time" content="2017-05-13T06:20:59.000Z">
-<meta property="article:modified_time" content="2021-09-24T11:10:15.592Z">
+<meta property="article:modified_time" content="2021-09-25T02:48:53.475Z">
 <meta property="article:author" content="DINSON">
 <meta property="article:tag" content="录屏">
 <meta property="article:tag" content="截图">
@@ -59,7 +59,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2021-09-24 19:10:15'
+  postUpdate: '2021-09-25 10:48:53'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -161,9 +161,23 @@
 <p>6 : 将 Image 对象转换成 bitmap</p>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>步骤已经给出了，我们就按照步骤来实现代码吧。</p>
 <p>首先 MediaProjectionManager 是系统服务，我们通过<br><code>getSystemService(MEDIA_PROJECTION_SERVICE)</code>获取它</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	projectionManager = (MediaProjectionManager)getSystemService(MEDIA_PROJECTION_SERVICE);```</span><br><span class="line"></span><br><span class="line">然后调用 startActivityForResult 传入 projectionManager.createScreenCaptureIntent() 创建的 Intent</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>startActivityForResult(projectionManager.createScreenCaptureIntent(), SCREEN_SHOT);```
-</code></pre><p>紧接着我们就可以在 onActivityResult(int requestCode, int resultCode, Intent data) 中通过 resultCode 和 data 来获取 MediaProjection：<br><img src="http://dinson-blog.hdinson.cn/FvvwP2iend8mydeWF0tijrsyMnbx.png" alt=""><br>然后就是创建 ImageReader 和 VirtualDisplay：<br><img src="http://dinson-blog.hdinson.cn/FtclwbgSmfNuAKRzLV7ItmxQ2TUB.png" alt=""><br><strong>这里我们依次讲解一下：</strong><br>首先是 ImageReader.newInstance 方法：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">	public static ImageReader newInstance(int width, int height, int format, int maxImages)```</span><br><span class="line"></span><br><span class="line">方法里接收四个参数。前两个 width,height 是用来指定生成图像的宽和高。</span><br><span class="line">**第三个参数** format 是图像的格式，这个格式必须是 ImageFormat或 PixelFormat 中的一个，这两个 Format 里有很多格式，大家可以点进去看看，我们例子中使用的是 PixelFormat.RGBA_8888 格式(需要注意的是并不是所有的格式都被 ImageReader 支持，比如说 ImageFormat.NV21)。</span><br><span class="line"></span><br><span class="line">**第四个参数** maxImages，这个参数指的是你想同时在 ImageReader 里获取到的 Image对象 的个数，这个参数我不是很懂，我不理解同时的意思。我的理解是 ImageReader 是一个类似数组的东西，然后我们可以通过 acquireLatestImage() 或 acquireNextImage() 方法来得到里面的 Image对象(可能有误，仅供参考)。这个值应该设置的越小越好，但是得大于0，所以我们上面设置的是1。</span><br><span class="line"></span><br><span class="line">然后我们看看 mediaProjection.createVirtualDisplay 方法：</span><br><span class="line">![](http://dinson-blog.hdinson.cn/FtUczK9qlxRq-TQdEndwzXTgfn6F.png)</span><br><span class="line">首先这个方法返回的是 VirtualDisplay。</span><br><span class="line">前四个不用说了，分别是 VirtualDisplay 的名字，宽，高和dpi。</span><br><span class="line"></span><br><span class="line">**第五个参数**，大家可以访问</span><br><span class="line">&gt; [https://developer.android.google.cn/reference/android/hardware/display/DisplayManager.html](https://developer.android.google.cn/reference/android/hardware/display/DisplayManager.html)</span><br><span class="line"></span><br><span class="line">查看 DisplayManager 的所有flags，我没有具体的研究过，在本次要实现的例子里，除了 VIRTUAL_DISPLAY_FLAG_SECURE 这个会报错，其他的 flags 效果都一样。</span><br><span class="line"></span><br><span class="line">**第六个参数** 是一个 Surface。我这里表达一下我的理解，当 VirtualDisplay 被创建出来时，也就是 createVirtualDisplay 调用后，你在真实屏幕上的每一帧都会输入到 Surface参数 里。也就是说，如果你放个 SurfaceView，然后传入 SurfaceView 的 Surface 那么你在屏幕上的操作都会显示在 SurfaceView 里(这里我们后面录屏会讲)。我们这里传入的是 ImageReader 的 Surface。这其中的逻辑我的理解是这样的，真实屏幕的每一帧都都会传给 ImageReader，根据 ImageReader 的 maxImages参数，比如说 maxImages 是 2，那么 ImageReader 始终保持两帧图片，但这两帧图片是一直随着真实屏幕的操作而更新的(不知道大家有没有听懂)。</span><br><span class="line"></span><br><span class="line">**第七个参数** 是一个回调函数，在 VirtualDisplay 状态改变时调用。因为我们这里没有，所以传 null。</span><br><span class="line"></span><br><span class="line">**第八个参数** 这里我给出原文：“The Handler on which the callback should be invoked, or null if the callback should be invoked on the calling thread&#x27;s main Looper.” 因为我翻译不好。不过和普通的 Handler 使用场景类似。</span><br><span class="line"></span><br><span class="line">现在我们 ImageReader 和 VirtualDisplay，接下来我们就可以通过 ImageReader 的 acquireLatestImage() 或 acquireNextImage() 来得到 Image对象 了。</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>    SystemClock.sleep(1000);<br>    Image image = imageReader.acquireNextImage();```</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">projectionManager = (MediaProjectionManager)getSystemService(MEDIA_PROJECTION_SERVICE);</span><br></pre></td></tr></table></figure>
+<p>然后调用 startActivityForResult 传入 projectionManager.createScreenCaptureIntent() 创建的 Intent</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startActivityForResult(projectionManager.createScreenCaptureIntent(), SCREEN_SHOT);</span><br></pre></td></tr></table></figure>
+<p>紧接着我们就可以在 onActivityResult(int requestCode, int resultCode, Intent data) 中通过 resultCode 和 data 来获取 MediaProjection：<br><img src="http://dinson-blog.hdinson.cn/FvvwP2iend8mydeWF0tijrsyMnbx.png" alt=""><br>然后就是创建 ImageReader 和 VirtualDisplay：<br><img src="http://dinson-blog.hdinson.cn/FtclwbgSmfNuAKRzLV7ItmxQ2TUB.png" alt=""><br><strong>这里我们依次讲解一下：</strong><br>首先是 ImageReader.newInstance 方法：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static ImageReader newInstance(int width, int height, int format, int maxImages)</span><br></pre></td></tr></table></figure></p>
+<p>方法里接收四个参数。前两个 width,height 是用来指定生成图像的宽和高。<br><strong>第三个参数</strong> format 是图像的格式，这个格式必须是 ImageFormat或 PixelFormat 中的一个，这两个 Format 里有很多格式，大家可以点进去看看，我们例子中使用的是 PixelFormat.RGBA_8888 格式(需要注意的是并不是所有的格式都被 ImageReader 支持，比如说 ImageFormat.NV21)。</p>
+<p><strong>第四个参数</strong> maxImages，这个参数指的是你想同时在 ImageReader 里获取到的 Image对象 的个数，这个参数我不是很懂，我不理解同时的意思。我的理解是 ImageReader 是一个类似数组的东西，然后我们可以通过 acquireLatestImage() 或 acquireNextImage() 方法来得到里面的 Image对象(可能有误，仅供参考)。这个值应该设置的越小越好，但是得大于0，所以我们上面设置的是1。</p>
+<p>然后我们看看 mediaProjection.createVirtualDisplay 方法：<br><img src="http://dinson-blog.hdinson.cn/FtUczK9qlxRq-TQdEndwzXTgfn6F.png" alt=""><br>首先这个方法返回的是 VirtualDisplay。<br>前四个不用说了，分别是 VirtualDisplay 的名字，宽，高和dpi。</p>
+<p><strong>第五个参数</strong>，大家可以访问</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/hardware/display/DisplayManager.html">https://developer.android.google.cn/reference/android/hardware/display/DisplayManager.html</a></p>
+</blockquote>
+<p>查看 DisplayManager 的所有flags，我没有具体的研究过，在本次要实现的例子里，除了 VIRTUAL_DISPLAY_FLAG_SECURE 这个会报错，其他的 flags 效果都一样。</p>
+<p><strong>第六个参数</strong> 是一个 Surface。我这里表达一下我的理解，当 VirtualDisplay 被创建出来时，也就是 createVirtualDisplay 调用后，你在真实屏幕上的每一帧都会输入到 Surface参数 里。也就是说，如果你放个 SurfaceView，然后传入 SurfaceView 的 Surface 那么你在屏幕上的操作都会显示在 SurfaceView 里(这里我们后面录屏会讲)。我们这里传入的是 ImageReader 的 Surface。这其中的逻辑我的理解是这样的，真实屏幕的每一帧都都会传给 ImageReader，根据 ImageReader 的 maxImages参数，比如说 maxImages 是 2，那么 ImageReader 始终保持两帧图片，但这两帧图片是一直随着真实屏幕的操作而更新的(不知道大家有没有听懂)。</p>
+<p><strong>第七个参数</strong> 是一个回调函数，在 VirtualDisplay 状态改变时调用。因为我们这里没有，所以传 null。</p>
+<p><strong>第八个参数</strong> 这里我给出原文：“The Handler on which the callback should be invoked, or null if the callback should be invoked on the calling thread’s main Looper.” 因为我翻译不好。不过和普通的 Handler 使用场景类似。</p>
+<p>现在我们 ImageReader 和 VirtualDisplay，接下来我们就可以通过 ImageReader 的 acquireLatestImage() 或 acquireNextImage() 来得到 Image对象 了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SystemClock.sleep(1000);</span><br><span class="line">Image image = imageReader.acquireNextImage();</span><br></pre></td></tr></table></figure>
 <p>这里有个坑，就是你在获取 Image 的时候，得先暂停1秒左右，不然就会获取失败(原因未知)。</p>
 <p>现在我们有了 Image对象，但是 Image对象 并不能直接作为UI资源被使用，我们可以将它转换成 Bitmap对象。<br><img src="http://dinson-blog.hdinson.cn/FkMjyveYJT5Rk3XXBS6V8-3xAb31.png" alt=""></p>
 <p>这里最主要的逻辑就是像素与字节的转换，我们需要将 Image对象 的字节流写进 Bitmap 里，但是 Bitmap 接收的是像素格式的。</p>
@@ -173,9 +187,10 @@
 <p>然后获取 PixelStride，这指的是两个像素的距离(就是一个像素头部到相邻像素的头部)，这是字节格式的。</p>
 <p>RowStride 是一行占用的距离(就是一行像素头部到相邻行像素的头部)，这个大小和 width 有关，这里需要注意，因为内存对齐的原因，所以每行会有一些空余。这个值也是字节格式的。</p>
 <p>紧接着我们需要创建一个 Bitmap 用来接受 Image 的 buffer 的输入，buffer 是字节流，它会按照我们设置的 format 转换成像素，所以这里最重要的一个地方就是 Bitmap 创建的大小，因为高度就是行数所以就是 height，但是宽度因为上面说的内存对齐问题会有些空余，所以我们要先求出空余部分，然后加上 width。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	int rowPadding = rowStride - pixelStride * width;```</span><br><span class="line"></span><br><span class="line">这句话用整行的距离减去了一行里像素及空隙占用的距离，剩下的就是空余部分。但是这个是字节格式的。我们将它除以 pixelStride，也就是一个像素及空隙占用的字节大小，就转换成了像素格式。然后：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>width + rowPadding / pixelStride```
-</code></pre><p>这个就是一行里像素的占用了，我们将它传给Bitmap：<br><img src="http://dinson-blog.hdinson.cn/FjyAwd7uOuIyoNuuaec1qCa3nymr.png" alt=""></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int rowPadding = rowStride - pixelStride * width;</span><br></pre></td></tr></table></figure>
+<p>这句话用整行的距离减去了一行里像素及空隙占用的距离，剩下的就是空余部分。但是这个是字节格式的。我们将它除以 pixelStride，也就是一个像素及空隙占用的字节大小，就转换成了像素格式。然后：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">width + rowPadding / pixelStride</span><br></pre></td></tr></table></figure>
+<p>这个就是一行里像素的占用了，我们将它传给Bitmap：<br><img src="http://dinson-blog.hdinson.cn/FjyAwd7uOuIyoNuuaec1qCa3nymr.png" alt=""></p>
 <p>创建出合适大小的 Bitmap，然后把 Image 的 buffer 传给它，就成功的将 Image对象 转换成了 Bitmap。这里我可能讲的不清楚，我给大家画了张图：<br><img src="http://dinson-blog.hdinson.cn/FnWlneYKo0wXmd93bqaRDI4M34d4.png" alt=""></p>
 <p>上面的一小格一小格是一块块像素。</p>
 <p>好了，现在我们已经获取到了 bitmap 了，我们可以把它放到 ImageView 里显示一下，我写了一个例子，效果如下：<br><img src="http://dinson-blog.hdinson.cn/FtWvLYP7rKhdUAWUPx34llXrOGK3.png" alt=""></p>
