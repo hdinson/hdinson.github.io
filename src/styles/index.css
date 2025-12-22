@@ -68,46 +68,102 @@
   }
 }
 
-/* 2. Manual Override (Higher Priority) */
 [data-theme='light'] {
-  --color-brand: var(--color-sky-900);
-  --color-secondary: var(--color-sky-800);
-  --color-bg: var(--color-neutral-100);
-  --color-tx: var(--color-sky-900);
-  --color-hr: var(--color-neutral-300);
-  --color-selected: var(--color-sky-900);
-  --color-run-date: var(--color-neutral-800);
-  --color-run-table-thead: var(--color-neutral-800);
-  --color-run-row-hover-background: var(--color-neutral-200);
-  --color-activity-card: var(--color-neutral-300);
-  --svg-color-inactive-cell: var(--color-neutral-600);
-  --svg-color-active-cell: var(--color-neutral-400);
-  --svg-special-color: #d4a574;
-  --svg-special-color2: #c5756b;
+  /* Brand Colors */
+  --color-brand: #6e5f52;
+  /* 柔和的咖灰色（高级不土） */
+  --color-secondary: #8b7c6f;
+  /* 更浅一点的奶咖色 */
+
+  /* Background & Text */
+  --color-bg: #faf9f7;
+  /* 柔白 + 微暖，不刺眼 */
+  --color-tx: #2e2b28;
+  /* 深咖黑 - 比纯黑更柔和 */
+
+  /* Borders / Lines */
+  --color-hr: #e2ded9;
+  /* 奶灰色边框 */
+
+  /* Selected / Highlight */
+  --color-selected: #6e5f52;
+  /* 同 brand，统一风格 */
+
+  /* Run page specific */
+  --color-run-date: #3e3a36;
+  /* 深棕灰 */
+  --color-run-table-thead: #3e3a36;
+  --color-run-row-hover-background: #f0eeeb;
+  /* 微灰奶白 hover */
+  --color-activity-card: #ece9e5;
+  /* 卡片浅灰奶白 */
+
+  /* SVG Colors */
+  --svg-color-inactive-cell: #c3bdb5;
+  /* 奶灰色（低饱和） */
+  --svg-color-active-cell: #9f9083;
+  /* 活跃柔咖色 */
+
+  /* Accent Colors（点缀色，用低饱和暖色） */
+  --svg-special-color: #d9b99b;
+  /* 浅卡其杏色 */
+  --svg-special-color2: #c99583;
+  /* 柔和肉桂色 */
+
+  /* Fonts */
   --font-sans: 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }
 
 [data-theme='dark'] {
-  /* const nike = 'rgb(224,237,94)'; */
-  --color-brand: #e0ed5e;
-  --color-secondary: #ccd94a;
-  --color-bg: var(--color-neutral-900);
-  --color-tx: var(--color-brand);
-  --color-hr: var(--color-red-500);
-  --color-selected: var(--color-brand);
-  --color-run-date: var(--color-neutral-300);
-  --color-run-table-thead: var(--color-zinc-300);
-  --color-run-row-hover-background: var(--color-neutral-800);
-  --color-activity-card: var(--color-neutral-700);
-  --svg-color-active-cell: #4dd2ff;
-  --svg-special-color: #f7d02c;
-  --svg-special-color2: #f56c6c;
+  /* Brand Colors */
+  --color-brand: #8ea7b3;
+  /* 低饱和雾蓝色（高级） */
+  --color-secondary: #6d828c;
+  /* 深蓝灰辅助色 */
+
+  /* Background & Text */
+  --color-bg: #14181b;
+  /* 极夜蓝灰，比纯黑更柔和 */
+  --color-tx: #e7ebed;
+  /* 柔和冷白，不刺眼 */
+
+  /* Borders / Lines */
+  --color-hr: #2a3135;
+  /* 深灰蓝分割线 */
+
+  /* Selected / Highlight */
+  --color-selected: #8ea7b3;
+  /* 主色雾蓝，统一风格 */
+
+  /* Run page specific */
+  --color-run-date: #cfd4d7;
+  /* 柔和浅灰蓝 */
+  --color-run-table-thead: #cfd4d7;
+  --color-run-row-hover-background: #1c2327;
+  /* 微亮雾蓝灰 Hover */
+  --color-activity-card: #1b2023;
+  /* 深灰蓝卡片背景 */
+
+  /* SVG colors */
+  --svg-color-inactive-cell: #46545b;
+  /* 深灰蓝（低亮度） */
+  --svg-color-active-cell: #9fb5bf;
+  /* 浅雾蓝，高级不刺 */
+
+  /* Accent Colors - Warm soft contrast */
+  --svg-special-color: #c9a27c;
+  /* 低饱和暖金，深色下非常高级 */
+  --svg-special-color2: #b57e73;
+  /* 柔和砖红点缀 */
+
+  /* Fonts */
   --font-sans: 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }
 
 @layer base {
+
   html,
   body {
     background-color: var(--color-background);
@@ -178,6 +234,11 @@ hr {
 .grid-svg .svg-special-color {
   fill: none;
   stroke: var(--svg-special-color);
+}
+
+/* Reduce title size on mobile */
+.text-5xl {
+  font-size: 2rem !important;
 }
 
 .grid-svg .svg-special-color2 {

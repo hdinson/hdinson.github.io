@@ -42,6 +42,7 @@ class Track:
         self.polylines = []
         self.polyline_str = ""
         self.track_name = None
+        self.track_description = None
         self.start_time = None
         self.end_time = None
         self.start_time_local = None
@@ -254,6 +255,8 @@ class Track:
         for t in gpx.tracks:
             if self.track_name is None:
                 self.track_name = t.name
+            if self.track_description is None:
+                self.track_description = t.description
             if hasattr(t, "type") and t.type:
                 self.type = "Run" if t.type == "running" else t.type
             for s in t.segments:
@@ -475,6 +478,7 @@ class Track:
         d = {
             "id": self.run_id,
             "name": (self.track_name if self.track_name else ""),  # maybe change later
+            "description": (self.track_description if self.track_description else ""),
             "type": self.type,
             "subtype": (self.subtype if self.subtype else ""),
             "start_date": self.start_time.strftime("%Y-%m-%d %H:%M:%S"),

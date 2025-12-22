@@ -2,6 +2,7 @@ import {
   formatPace,
   titleForRun,
   formatRunTime,
+  formatDateShort,
   Activity,
   RunIds,
 } from '@/utils/utils';
@@ -27,6 +28,7 @@ const RunRow = ({
   const paceParts = run.average_speed ? formatPace(run.average_speed) : null;
   const heartRate = run.average_heartrate;
   const runTime = formatRunTime(run.moving_time);
+  const startDateLocal = formatDateShort(run.start_date_local);
   const handleClick = () => {
     if (runIndex === elementIndex) {
       setRunIndex(-1);
@@ -43,13 +45,29 @@ const RunRow = ({
       key={run.start_date_local}
       onClick={handleClick}
     >
-      <td>{titleForRun(run)}</td>
+      <td>
+        {titleForRun(run)}<br />
+        <span
+          style={{
+            fontSize: "12px",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,           // 显示2行
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "normal",          // 允许换行
+            maxWidth: "600px"              // 避免撑宽表格，可按需调整
+          }}
+        >
+          {run.description}
+        </span>
+      </td>
       <td>{distance}</td>
-      {SHOW_ELEVATION_GAIN && <td>{(run.elevation_gain ?? 0.0).toFixed(1)}</td>}
+      {SHOW_ELEVATION_GAIN && <td>{(run.elevation_gain ?? 0).toFixed(0)}</td>}
       {paceParts && <td>{paceParts}</td>}
       <td>{heartRate && heartRate.toFixed(0)}</td>
       <td>{runTime}</td>
-      <td className={styles.runDate}>{run.start_date_local}</td>
+      <td className={styles.runDate}>{startDateLocal}</td>
     </tr>
   );
 };

@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # if your default branches is not master, please change it here
-          ref: master
+          ref: dinson
           fetch-depth: 0
           persist-credentials: false
 
@@ -94,9 +94,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build
-        env:
-          REPO_NAME: ${{ github.event.repository.name }}
-        run: PATH_PREFIX=/$REPO_NAME pnpm build
+        run: PATH_PREFIX=/ pnpm build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

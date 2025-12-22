@@ -1,6 +1,7 @@
 /* Mobile-specific improvements for running page */
 
 @media only screen and (max-width: 768px) {
+
   /* Prevent horizontal overflow on the main container */
   .mobile-map-container {
     margin-bottom: 1rem;
@@ -28,7 +29,7 @@
 
   /* Reduce title size on mobile */
   .text-5xl {
-    font-size: 2.5rem !important;
+    font-size: 2rem !important;
   }
 
   /* Optimize margin for mobile */
@@ -44,6 +45,7 @@
 
 /* Additional mobile table improvements */
 @media only screen and (max-width: 480px) {
+
   /* For very small screens, make table even more compact */
   .runTable {
     min-width: 550px !important;

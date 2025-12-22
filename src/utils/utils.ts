@@ -34,6 +34,7 @@ export type RunIds = Array<number> | [];
 export interface Activity {
   run_id: number;
   name: string;
+  description: string;
   distance: number;
   moving_time: string;
   type: string;
@@ -58,9 +59,8 @@ const titleForShow = (run: Activity): string => {
   if (run.name) {
     name = run.name;
   }
-  return `${name} ${date} ${distance} KM ${
-    !run.summary_polyline ? '(No map data for this run)' : ''
-  }`;
+  return `${name} ${date} ${distance} KM ${!run.summary_polyline ? '(No map data for this run)' : ''
+    }`;
 };
 
 const formatPace = (d: number): string => {
@@ -80,19 +80,42 @@ const convertMovingTime2Sec = (moving_time: string): number => {
   const days = splits.length == 2 ? parseInt(splits[0]) : 0;
   const time = splits.splice(-1)[0];
   const [hours, minutes, seconds] = time.split(':').map(Number);
-  const totalSeconds = ((days * 24 + hours) * 60 + minutes) * 60 + seconds;
+  const sec = Math.round(seconds);
+  const totalSeconds = ((days * 24 + hours) * 60 + minutes) * 60 + sec;
   return totalSeconds;
 };
 
 const formatRunTime = (moving_time: string): string => {
   const totalSeconds = convertMovingTime2Sec(moving_time);
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  const minutes = (totalSeconds - seconds) / 60;
-  if (minutes === 0) {
-    return seconds + 's';
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
+  if (hours > 0) {
+    return `${hours}:${pad(minutes)}:${pad(seconds)}`;
+  } else {
+    return `${pad(minutes)}:${pad(seconds)}`;
   }
-  return minutes + 'min';
 };
+
+const formatDateShort = (dateStr: string): string => {
+  const date = new Date(dateStr);
+
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  const hour = `${date.getHours()}`.padStart(2, "0");
+  const minute = `${date.getMinutes()}`.padStart(2, "0");
+
+  const weekStr = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+
+  const week = weekStr[date.getDay()];
+
+  return `${month}-${day} ${hour}:${minute} ${week}`;
+};
+
 
 // for scroll to the map
 const scrollToMap = () => {
@@ -500,6 +523,7 @@ export {
   sortDateFuncReverse,
   getBoundsForGeoData,
   formatRunTime,
+  formatDateShort,
   convertMovingTime2Sec,
   getMapStyle,
   isTouchDevice,

@@ -34,13 +34,14 @@
   background-color: var(--color-background);
   font-family: var(--font-mono);
   table-layout: auto;
+
   :is(thead) {
     color: var(--color-run-table-thead);
 
     :is(th) {
       padding: 0.5rem;
       white-space: nowrap;
-      text-align: center;
+      text-align: end;
     }
 
     :is(th):first-child {
@@ -51,6 +52,7 @@
       text-align: right;
     }
   }
+
   :is(th, td) {
     white-space: nowrap;
     text-align: center;
@@ -67,10 +69,12 @@
 
 .runRow {
   cursor: pointer;
+
   :is(td) {
     padding: 0.5rem;
     border: 0;
-    text-align: center; /* 默认居中 */
+    text-align: end;
+    /* 默认居中 */
   }
 
   :is(td):first-child {
